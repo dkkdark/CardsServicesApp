@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_tabs"
+    app:startDestination="@id/allCardsFragment">
+
+    <fragment
+        android:id="@+id/addCardsFragment"
+        android:name="com.kseniabl.tasksapp.ui.AddCardsFragment"
+        android:label="Add Cards" />
+    <fragment
+        android:id="@+id/allCardsFragment"
+        android:name="com.kseniabl.tasksapp.ui.AllCardsFragment"
+        android:label="All Cards" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.kseniabl.tasksapp.ui.SettingsFragment"
+        android:label="Settings" />
+</navigation>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.kseniabl.tasksapp.ui.LoginFragment"
+        android:label="Welcome!" >
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/slide_out_top"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_top"/>
+        <action
+            android:id="@+id/action_loginFragment_to_tabsFragment"
+            app:destination="@id/tabsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.kseniabl.tasksapp.ui.RegistrationFragment"
+        android:label="Welcome!" />
+    <fragment
+        android:id="@+id/tabsFragment"
+        android:name="com.kseniabl.tasksapp.ui.TabsFragment"
+        android:label="TabsFragment" >
+        <action
+            android:id="@+id/action_tabsFragment_to_cardDetailsFragment"
+            app:destination="@id/cardDetailsFragment" />
+        <action
+            android:id="@+id/action_tabsFragment_to_freelancerDetailsFragment"
+            app:destination="@id/freelancerDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cardDetailsFragment"
+        android:name="com.kseniabl.tasksapp.ui.CardDetailsFragment"
+        android:label="Card Info" />
+    <fragment
+        android:id="@+id/freelancerDetailsFragment"
+        android:name="com.kseniabl.tasksapp.ui.FreelancerDetailsFragment"
+        android:label="Freelancer Info" />
+</navigation>

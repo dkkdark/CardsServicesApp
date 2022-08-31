@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_freelancer_details"
+    app:startDestination="@id/freelancerInfoFragment">
+
+    <fragment
+        android:id="@+id/freelancerInfoFragment"
+        android:name="com.kseniabl.tasksapp.ui.FreelancerInfoFragment"
+        android:label="FreelancerInfoFragment" />
+    <fragment
+        android:id="@+id/freelancerCardsFragment"
+        android:name="com.kseniabl.tasksapp.ui.FreelancerCardsFragment"
+        android:label="FreelancerCardsFragment" />
+</navigation>

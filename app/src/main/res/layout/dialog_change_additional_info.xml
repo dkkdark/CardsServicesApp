@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/additionalInfoCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/professionCardView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="15dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:id="@+id/additionalInfoText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Additional Information"
+                android:fontFamily="@font/opensans_extrabold"
+                android:textSize="20dp"
+                android:textColor="@color/purple"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="20dp"
+                android:ellipsize="end" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/dialogAdditionalDescriptionField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/additionalInfoText"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/dialogAdditionalDescriptionText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:gravity="start"
+                    android:hint="Additional information"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/dialogCountryField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dialogAdditionalDescriptionField"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/dialogCountryText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:gravity="start"
+                    android:hint="Your country"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/dialogCityField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dialogCountryField"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/dialogCityText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:gravity="start"
+                    android:hint="Your city"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/dialogTypeOfWorkField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dialogCityField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/dialogAdditionalChangeButton"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/button_outline"
+                android:popupBackground="@drawable/button_outline" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/dialogAdditionalCloseButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="20dp"
+                android:layout_toStartOf="@+id/dialogAdditionalChangeButton"
+                android:backgroundTint="@color/white"
+                android:text="Close"
+                android:textColor="@color/purple"
+                android:textStyle="bold"
+                app:cornerRadius="16dp"
+                app:layout_constraintEnd_toStartOf="@+id/dialogAdditionalChangeButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dialogTypeOfWorkField" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/dialogAdditionalChangeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/dialogTypeOfWorkField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/dialogAdditionalCloseButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/white"
+                android:text="Change"
+                android:textColor="@color/purple"
+                android:textStyle="bold"
+                app:cornerRadius="16dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

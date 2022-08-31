@@ -1,0 +1,53 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.TasksApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple</item>
+        <item name="colorPrimaryVariant">@color/purple</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/purple</item>
+        <item name="colorSecondaryVariant">@color/purple</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+
+        <!-- Font -->
+        <item name="android:textViewStyle">@style/OpenSansTextViewStyle</item>
+        <item name="android:buttonStyle">@style/OpenSansButtonStyle</item>
+
+        <item name="android:windowContentTransitions">true</item>
+
+    </style>
+
+    <style name="FullScreenDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+
+    <style name="OpenSansTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/opensans_medium</item>
+    </style>
+
+    <style name="OPSansBoldTextViewStyle" >
+        <item name="android:fontFamily">@font/opensans_extrabold</item>
+        <item name="android:textSize">24dp</item>
+    </style>
+
+    <style name="OpenSansButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/opensans_medium</item>
+    </style>
+
+    <style name="Theme.TasksApp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.CardTasks.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.CardTasks.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

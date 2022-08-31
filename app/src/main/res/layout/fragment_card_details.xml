@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardDetailsConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp">
+
+        <View
+            android:id="@+id/additionalSpace"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:orientation="vertical"
+            android:background="@drawable/circular_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/detailTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="40dp"
+                android:text="Title"
+                android:textColor="@color/white"
+                android:fontFamily="@font/montserrat_bold"
+                android:textSize="22dp"/>
+
+            <TextView
+                android:id="@+id/feeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/detailTitle"
+                app:layout_constraintTop_toBottomOf="@id/detailTitle"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="Fee: " />
+
+            <TextView
+                android:id="@+id/feeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 $"
+                app:layout_constraintTop_toTopOf="@id/feeTitle"
+                app:layout_constraintBottom_toBottomOf="@id/feeTitle"
+                app:layout_constraintStart_toEndOf="@id/feeTitle"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/montserrat_bold"/>
+
+            <TextView
+                android:id="@+id/untilTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/feeTitle"
+                app:layout_constraintTop_toBottomOf="@id/feeTitle"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="Until:" />
+
+            <TextView
+                android:id="@+id/untilText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 Feb 2022"
+                app:layout_constraintTop_toTopOf="@id/untilTitle"
+                app:layout_constraintBottom_toBottomOf="@id/untilTitle"
+                app:layout_constraintStart_toStartOf="@id/feeText"
+                android:textColor="@color/white"
+                android:fontFamily="@font/montserrat_bold"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/descriptionCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerLayout">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp">
+
+                <TextView
+                    android:id="@+id/descriptionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans_extrabold"
+                    android:text="Description"
+                    android:textSize="20dp"
+                    android:textColor="@color/purple"/>
+
+                <TextView
+                    android:id="@+id/descriptionText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_below="@id/descriptionTitle"
+                    android:layout_marginTop="10dp"
+                    android:textSize="12dp" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/FreelancerCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCardView">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:id="@+id/FreelancerTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans_extrabold"
+                    android:text="Freelancer"
+                    android:textColor="@color/purple"
+                    android:textSize="20dp" />
+
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/imageViewProfile"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_below="@id/FreelancerTitle"
+                    android:src="@drawable/user"
+                    app:civ_border_width="0dp"
+                    app:civ_shadow="true"
+                    app:civ_shadow_color="#323232"
+                    app:civ_shadow_radius="5dp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/imageViewProfile"
+                    android:layout_alignBottom="@id/imageViewProfile"
+                    android:layout_toEndOf="@id/imageViewProfile"
+                    android:layout_marginStart="10dp">
+
+                    <TextView
+                        android:id="@+id/nameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/specializationText"
+                        android:textColor="@color/black"
+                        android:textSize="12dp"/>
+
+                    <TextView
+                        android:id="@+id/specializationText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        app:layout_constraintTop_toBottomOf="@id/nameText"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:textColor="@color/black"
+                        android:textSize="12dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/respondToTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/FreelancerCardView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textSize="12dp"
+            android:backgroundTint="@color/white"
+            android:text="Respond to task"
+            android:textColor="@color/purple"
+            android:textStyle="bold"
+            app:cornerRadius="16dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

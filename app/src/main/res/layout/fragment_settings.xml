@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+    <RelativeLayout
+        android:id="@+id/nameAndEditIcon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/imageViewProfile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/user"
+            app:civ_border_width="0dp"
+            app:civ_shadow="true"
+            app:civ_shadow_color="#323232"
+            app:civ_shadow_radius="10dp" />
+
+        <TextView
+            android:id="@+id/profileNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="14dp"
+            android:layout_below="@id/imageViewProfile"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:fontFamily="@font/opensans_bold"/>
+
+        <ImageView
+            android:id="@+id/changeNameImage"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_toEndOf="@id/profileNameText"
+            android:layout_alignBottom="@id/profileNameText"
+            android:layout_alignTop="@id/profileNameText"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/pencil"/>
+
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/professionCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nameAndEditIcon">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="20dp">
+
+            <TextView
+                android:id="@+id/professionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/opensans_extrabold"
+                android:text="Profession"
+                android:textSize="20dp"
+                android:textColor="@color/purple"/>
+
+            <ImageView
+                android:id="@+id/editProfessionImage"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignBottom="@id/professionText"
+                android:layout_alignTop="@id/professionText"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/edit"/>
+
+
+            <TextView
+                android:id="@+id/specializationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Specialization:"
+                android:layout_below="@id/editProfessionImage"
+                android:fontFamily="@font/opensans_bold"
+                android:layout_marginTop="10dp"
+                android:textSize="14dp"/>
+
+            <TextView
+                android:id="@+id/specializationChangeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/specializationText"
+                android:layout_alignBottom="@id/specializationText"
+                android:layout_alignTop="@id/specializationText"
+                android:layout_marginStart="10dp"
+                android:text="—"
+                android:textSize="14dp"/>
+
+            <TextView
+                android:id="@+id/descriptionSpecializationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description:"
+                android:layout_below="@id/specializationText"
+                android:fontFamily="@font/opensans_bold"
+                android:layout_marginTop="10dp"
+                android:textSize="14dp"/>
+
+            <TextView
+                android:id="@+id/descriptionSpecializationChangeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/descriptionSpecializationText"
+                android:layout_alignBottom="@id/descriptionSpecializationText"
+                android:layout_alignTop="@id/descriptionSpecializationText"
+                android:layout_marginStart="10dp"
+                android:text="—"
+                android:textSize="14dp" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/additionalInfoCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/professionCardView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="15dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="20dp">
+
+            <TextView
+                android:id="@+id/additionalInfoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Additional Information"
+                android:fontFamily="@font/opensans_extrabold"
+                android:textSize="20dp"
+                android:textColor="@color/purple"/>
+
+            <ImageView
+                android:id="@+id/editAdditionalInfoImage"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignBottom="@id/additionalInfoText"
+                android:layout_alignTop="@id/additionalInfoText"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/edit"/>
+
+            <TextView
+                android:id="@+id/descriptionAddInfoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description:"
+                android:layout_below="@id/editAdditionalInfoImage"
+                android:fontFamily="@font/opensans_bold"
+                android:layout_marginTop="20dp"
+                android:textSize="14dp"/>
+
+            <TextView
+                android:id="@+id/descriptionAddInfoChangeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/descriptionAddInfoText"
+                android:layout_alignBottom="@id/descriptionAddInfoText"
+                android:layout_alignTop="@id/descriptionAddInfoText"
+                android:layout_marginStart="10dp"
+                android:text="—"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/countryText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Country:"
+                android:layout_below="@id/descriptionAddInfoText"
+                android:fontFamily="@font/opensans_bold"
+                android:layout_marginTop="10dp"
+                android:textSize="14dp"/>
+
+            <TextView
+                android:id="@+id/countryChangeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/countryText"
+                android:layout_alignBottom="@id/countryText"
+                android:layout_alignTop="@id/countryText"
+                android:layout_marginStart="10dp"
+                android:text="—"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/cityText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="City:"
+                android:layout_below="@id/countryText"
+                android:fontFamily="@font/opensans_bold"
+                android:layout_marginTop="10dp"
+                android:textSize="14dp"/>
+
+            <TextView
+                android:id="@+id/cityChangeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/cityText"
+                android:layout_alignBottom="@id/cityText"
+                android:layout_alignTop="@id/cityText"
+                android:layout_marginStart="10dp"
+                android:text="—"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/typeOfWorkText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type of work:"
+                android:layout_below="@id/cityText"
+                android:fontFamily="@font/opensans_bold"
+                android:layout_marginTop="10dp"
+                android:textSize="14dp"/>
+
+            <TextView
+                android:id="@+id/typeOfWorkChangeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/typeOfWorkText"
+                android:layout_alignBottom="@id/typeOfWorkText"
+                android:layout_alignTop="@id/typeOfWorkText"
+                android:layout_marginStart="10dp"
+                android:text="—"
+                android:textSize="14dp" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/otherInfoCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/additionalInfoCardView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="30dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="15dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp">
+
+            <TextView
+                android:id="@+id/otherInfoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/opensans_extrabold"
+                android:text="Other"
+                android:textColor="@color/purple"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/emailText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/otherInfoText"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/opensans_bold"
+                android:textColor="@color/black"
+                android:text="Email:"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/emailChangeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/emailText"
+                android:layout_alignBottom="@id/emailText"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/emailText"
+                android:text=""
+                android:textSize="14dp"/>
+
+            <TextView
+                android:id="@+id/beFreelancerText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/emailText"
+                android:layout_marginTop="10dp"
+                android:text="Be an Freelancer"
+                android:textSize="14dp"
+                android:fontFamily="@font/opensans_bold"
+                android:textColor="@color/black"/>
+
+            <CheckBox
+                android:id="@+id/beFreelancerCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:layout_alignTop="@id/beFreelancerText"
+                android:layout_alignBottom="@id/beFreelancerText"
+                android:layout_marginStart="6dp"
+                android:layout_toEndOf="@id/beFreelancerText"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/changePasswordButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/beFreelancerText"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/white"
+                android:text="Change password"
+                android:textColor="@color/purple"
+                android:textStyle="bold"
+                app:cornerRadius="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/logoutButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/changePasswordButton"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/white"
+                android:text="Logout"
+                android:textColor="@color/purple"
+                android:textStyle="bold"
+                app:cornerRadius="16dp" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

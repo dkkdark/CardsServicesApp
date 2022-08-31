@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/app_gradient.xml" value="0.1465" />
+        <entry key="app/src/main/res/drawable/button_outline.xml" value="0.1465" />
+        <entry key="app/src/main/res/drawable/circular_background.xml" value="0.1465" />
+        <entry key="app/src/main/res/drawable/gradient_fab.xml" value="0.1465" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.17291666666666666" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.22239583333333332" />
+        <entry key="app/src/main/res/layout/all_cards_item.xml" value="0.209375" />
+        <entry key="app/src/main/res/layout/dialog_change_additional_info.xml" value="0.21510416666666668" />
+        <entry key="app/src/main/res/layout/dialog_change_name.xml" value="0.21510416666666668" />
+        <entry key="app/src/main/res/layout/dialog_change_profession.xml" value="0.21510416666666668" />
+        <entry key="app/src/main/res/layout/dialog_create_new_task.xml" value="0.21614583333333334" />
+        <entry key="app/src/main/res/layout/fragment_add_cards.xml" value="0.22135416666666666" />
+        <entry key="app/src/main/res/layout/fragment_all_cards.xml" value="0.22239583333333332" />
+        <entry key="app/src/main/res/layout/fragment_card_details.xml" value="0.22447916666666667" />
+        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.22135416666666666" />
+        <entry key="app/src/main/res/layout/fragment_freelancer_cards.xml" value="0.2015625" />
+        <entry key="app/src/main/res/layout/fragment_freelancer_details.xml" value="0.2015625" />
+        <entry key="app/src/main/res/layout/fragment_freelancer_info.xml" value="0.22239583333333332" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.22135416666666666" />
+        <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.22135416666666666" />
+        <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.22135416666666666" />
+        <entry key="app/src/main/res/layout/fragment_show_item.xml" value="0.22135416666666666" />
+        <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.22135416666666666" />
+        <entry key="app/src/main/res/layout/fragment_tabs.xml" value="0.22239583333333332" />
+        <entry key="app/src/main/res/layout/freelancer_item.xml" value="0.209375" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.18697916666666667" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/additionalSpace"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/circular_background"/>
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/imageViewFreelancer"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/user"
+            app:civ_border_width="0dp"
+            app:civ_shadow="true"
+            app:civ_shadow_color="#323232"
+            app:civ_shadow_radius="10dp" />
+
+        <TextView
+            android:id="@+id/freelancerNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="16dp"
+            app:layout_constraintTop_toBottomOf="@id/imageViewFreelancer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/white"
+            android:fontFamily="@font/opensans_bold"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/infoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/white"
+            android:text="Info"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:cornerRadius="16dp"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toStartOf="@id/cardsButton"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/freelancerNameText"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cardsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/white"
+            android:text="Cards"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:cornerRadius="16dp"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/infoButton"
+            app:layout_constraintTop_toBottomOf="@id/freelancerNameText"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_details_activity"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/infoButton"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
