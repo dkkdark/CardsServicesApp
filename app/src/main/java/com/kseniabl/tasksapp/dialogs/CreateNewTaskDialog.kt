@@ -65,8 +65,7 @@ class CreateNewTaskDialog: BaseDialog(), DatePickerDialog.OnDateSetListener, Tim
         }
 
         showInitialDate()
-        if (title != "")
-            setDataToDialog(title, description, date, cost, active, agreement)
+        setDataToDialog(title, description, date, cost, active, agreement)
         clickOnButtonsListeners()
         setListener()
         deleteTask()

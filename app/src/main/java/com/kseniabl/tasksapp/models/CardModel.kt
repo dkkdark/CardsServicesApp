@@ -1,7 +1,11 @@
 package com.kseniabl.tasksapp.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class CardModel(
-    var id: String,
+    @PrimaryKey var id: String,
     var title: String,
     var description: String,
     var date: String,

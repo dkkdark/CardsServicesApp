@@ -1,14 +1,14 @@
-/*
 package com.kseniabl.tasksapp.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.kseniabl.tasksapp.models.UserModel
+import com.kseniabl.tasksapp.models.CardModel
 
-@Database(entities = [UserModel::class], version = 1)
+@Database(entities = [CardModel::class], version = 1)
 abstract class CardsTasksDatabase : RoomDatabase() {
+    abstract fun addCardDao(): AddCardDao
 
     companion object {
         private var instance: CardsTasksDatabase? = null
@@ -25,4 +25,4 @@ abstract class CardsTasksDatabase : RoomDatabase() {
             return instance as CardsTasksDatabase
         }
     }
-}*/
+}

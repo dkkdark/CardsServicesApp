@@ -5,6 +5,7 @@ import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.os.Bundle
 import com.kseniabl.tasksapp.R
+import java.util.*
 import java.util.regex.Pattern
 
 object HelperFunctions {
@@ -36,5 +37,10 @@ object HelperFunctions {
             floatArrayOf(0f, 1f),
             Shader.TileMode.CLAMP
         )
+    }
+
+    fun generateRandomKey(): String {
+        val uuid = UUID.randomUUID()
+        return uuid.toString()
     }
 }
