@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.kseniabl.tasksapp.databinding.FragmentAddCardsBinding
 import com.kseniabl.tasksapp.databinding.FragmentFreelancerInfoBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FreelancerInfoFragment: Fragment() {
 
     private var _binding: FragmentFreelancerInfoBinding? = null

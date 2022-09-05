@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "200871481513",
+    "project_id": "tasks-app-6ef9f",
+    "storage_bucket": "tasks-app-6ef9f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200871481513:android:08188252e645993bd1d9b8",
+        "android_client_info": {
+          "package_name": "com.kseniabl.tasksapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "200871481513-7q4qrrjnn290tk1pbevdnt7vfd9msj15.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kseniabl.tasksapp",
+            "certificate_hash": "b1f1f365404ce5775d704f77ce6948c192c26b78"
+          }
+        },
+        {
+          "client_id": "200871481513-l8av4g5tdfnpqf11kmb32voha3cj3dns.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJLXv-on2TLE_NcWw5t__u14V-trVSNIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200871481513-l8av4g5tdfnpqf11kmb32voha3cj3dns.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

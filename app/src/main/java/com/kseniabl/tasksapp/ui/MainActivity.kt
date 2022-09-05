@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.ActivityMainBinding
 import com.kseniabl.tasksapp.models.AdditionalInfo
@@ -26,6 +27,8 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var userSave: UserSaveInterface
+    @Inject
+    lateinit var auth: FirebaseAuth
 
     private lateinit var binding: ActivityMainBinding
     private var navController: NavController? = null
@@ -36,16 +39,20 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val isUserLogin = true
         //userSave.saveCurrentUser(UserModel("1", "", "", "", false, "", "", AdditionalInfo("", "", "", ""), Profession("", "", arrayListOf())))
-
-        val navController = getNavController()
-        setupStartDestination(navController, isUserLogin)
-        onNavControllerActivated(navController)
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, true)
     }
 
+    override fun onStart() {
+        super.onStart()
+        val currentUser = auth.currentUser
+        val isUserLogin = currentUser != null
+
+        val navController = getNavController()
+        setupStartDestination(navController, isUserLogin)
+        onNavControllerActivated(navController)
+    }
 
     private fun getNavController(): NavController {
         val navHostFragment =

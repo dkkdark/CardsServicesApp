@@ -6,7 +6,6 @@ data class UserModel(
     val id: String,
     var username: String,
     var email: String,
-    var password: String,
     var isFreelancer: Boolean,
     var token: String,
 

@@ -1,6 +1,9 @@
 package com.kseniabl.tasksapp.di
 
 import android.content.Context
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.kseniabl.tasksapp.TasksApplication
 import com.kseniabl.tasksapp.adapters.AddTasksAdapter
 import com.kseniabl.tasksapp.db.TasksRepository
@@ -29,4 +32,12 @@ object AppModule {
     @Singleton
     @Provides
     fun provideRepository(@ApplicationContext context: Context): TasksRepositoryInterface = TasksRepository(context)
+
+    @Singleton
+    @Provides
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Singleton
+    @Provides
+    fun provideFirebaseDbReference(): DatabaseReference = FirebaseDatabase.getInstance().reference
 }

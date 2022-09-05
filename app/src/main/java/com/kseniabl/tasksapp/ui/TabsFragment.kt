@@ -11,7 +11,9 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.FragmentTabsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TabsFragment: Fragment() {
 
     private var _binding: FragmentTabsBinding? = null
