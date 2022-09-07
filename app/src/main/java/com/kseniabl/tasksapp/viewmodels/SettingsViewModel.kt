@@ -4,14 +4,26 @@ import android.util.Log
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
+import com.kseniabl.tasksapp.db.TasksRepository
+import com.kseniabl.tasksapp.db.TasksRepositoryInterface
+import com.kseniabl.tasksapp.models.AdditionalInfo
+import com.kseniabl.tasksapp.models.Profession
 import com.kseniabl.tasksapp.models.UserModel
 import com.kseniabl.tasksapp.utils.UserSave
 import com.kseniabl.tasksapp.utils.UserSaveInterface
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(private val userSave: UserSaveInterface): ViewModel() {
+class SettingsViewModel @Inject constructor(
+    private val userSave: UserSaveInterface,
+    private val repository: TasksRepositoryInterface,
+    private val saveUser: UserSaveInterface,
+    private val auth: FirebaseAuth
+    ) : ViewModel() {
 
     val liveUser = userSave.getLiveSharedPref()
 
@@ -56,6 +68,15 @@ class SettingsViewModel @Inject constructor(private val userSave: UserSaveInterf
         val user = userSave.readSharedPref()
         user?.isFreelancer = state
         user?.let { userSave.saveCurrentUser(it) }
+    }
+
+    fun signOut() {
+        val user = UserModel("", "", "",false, "", "", AdditionalInfo("", "", "", ""), Profession("", "", arrayListOf()))
+        saveUser.saveCurrentUser(user)
+        viewModelScope.launch {
+            repository.clearAddProdCards()
+        }
+        auth.signOut()
     }
 
     private fun checkIsEmpty(textView: TextView, value: String) {

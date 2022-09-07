@@ -33,4 +33,10 @@ class TasksRepository @Inject constructor(val context: Context): TasksRepository
             addCardDao.updateCards(card)
         }
     }
+
+    override fun clearAddProdCards() {
+        CoroutineScope(Dispatchers.IO).launch {
+            addCardDao.deleteAllCards()
+        }
+    }
 }

@@ -7,14 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.FragmentSettingsBinding
 import com.kseniabl.tasksapp.dialogs.ChangeAdditionalInfoDialog
 import com.kseniabl.tasksapp.dialogs.ChangeNameDialogFragment
 import com.kseniabl.tasksapp.dialogs.ChangeProfessionDialogFragment
+import com.kseniabl.tasksapp.models.AdditionalInfo
+import com.kseniabl.tasksapp.models.Profession
 import com.kseniabl.tasksapp.models.UserModel
 import com.kseniabl.tasksapp.utils.HelperFunctions.getTextGradient
 import com.kseniabl.tasksapp.utils.UserSaveInterface
+import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.utils.stringLiveData
 import com.kseniabl.tasksapp.viewmodels.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,6 +52,10 @@ class SettingsFragment: Fragment() {
 
             beFreelancerCheckBox.setOnCheckedChangeListener { _, value ->
                 viewModel.updateUserFreelanceState(value)
+            }
+            logoutButton.setOnClickListener {
+                viewModel.signOut()
+                findTopNavController().navigate(R.id.action_tabsFragment_to_loginFragment)
             }
         }
 

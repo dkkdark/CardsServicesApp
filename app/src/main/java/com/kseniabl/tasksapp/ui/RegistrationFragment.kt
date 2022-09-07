@@ -1,19 +1,19 @@
 package com.kseniabl.tasksapp.ui
 
+import android.content.Intent
+import android.content.Intent.getIntent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.kseniabl.tasksapp.databinding.FragmentAddCardsBinding
 import com.kseniabl.tasksapp.databinding.FragmentRegistrationBinding
 import com.kseniabl.tasksapp.models.AdditionalInfo
 import com.kseniabl.tasksapp.models.Profession
@@ -22,6 +22,7 @@ import com.kseniabl.tasksapp.utils.HelperFunctions.generateRandomKey
 import com.kseniabl.tasksapp.utils.UserSaveInterface
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class RegistrationFragment: Fragment() {
@@ -62,26 +63,38 @@ class RegistrationFragment: Fragment() {
                     if (user == null) Snackbar.make(view, "User can't be create. Please try again",
                         Snackbar.LENGTH_SHORT).show()
                     else {
-                        addUserToDb(email, name)
-                        guideToLoginFragment(email)
+                        sendVerificationEmail(user, email, name)
                     }
                 } else {
-                    Log.e("qqq", "${task.exception}")
-                    Snackbar.make(view, "Authentication failed. Please try again",
+                    Snackbar.make(view, "${task.exception}. Please try again.",
                         Snackbar.LENGTH_SHORT).show()
                 }
             }
     }
 
-    private fun addUserToDb(email: String, name: String) {
-        val id = generateRandomKey()
+    private fun sendVerificationEmail(user: FirebaseUser, email: String, name: String) {
+        user.sendEmailVerification()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    addUserToDb(user, email, name)
+                    guideToLoginFragment(email)
+
+                } else {
+                    auth.signOut()
+                }
+            }
+    }
+
+    private fun addUserToDb(fUser: FirebaseUser, email: String, name: String) {
+        val id = fUser.uid
         val user = UserModel(id, name, email,false, "", "", AdditionalInfo("", "", "", ""), Profession("", "", arrayListOf()))
         userSave.saveCurrentUser(user)
         database.child("users").child(id).setValue(user)
     }
 
     private fun guideToLoginFragment(email: String) {
-
+        parentFragmentManager.setFragmentResult(REQUEST_CODE, bundleOf(EMAIL_EXTRA to email))
+        findNavController().popBackStack()
     }
 
     private fun checkEmptyFields(view: View): Boolean {
@@ -120,5 +133,10 @@ class RegistrationFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val EMAIL_EXTRA = "EMAIL_CODE"
+        const val REQUEST_CODE = "REQUEST_CODE"
     }
 }
