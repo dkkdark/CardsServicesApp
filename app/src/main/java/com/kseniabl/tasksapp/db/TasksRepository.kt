@@ -20,6 +20,12 @@ class TasksRepository @Inject constructor(val context: Context): TasksRepository
         }
     }
 
+    override fun insertAllCards(cards: List<CardModel>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            addCardDao.insertAllCards(cards)
+        }
+    }
+
     override fun getAddCards(): Flow<List<CardModel>> {
         return addCardDao.loadAllCardsLive()
     }

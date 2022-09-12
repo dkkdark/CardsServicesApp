@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TasksRepositoryInterface {
     fun insertAddCard(card: CardModel)
+    fun insertAllCards(cards: List<CardModel>)
     fun getAddCards(): Flow<List<CardModel>>
     fun allAddCards(): List<CardModel>
     fun changeAddProdCard(card: CardModel)
