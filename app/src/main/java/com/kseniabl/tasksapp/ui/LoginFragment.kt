@@ -74,19 +74,21 @@ class LoginFragment: Fragment() {
     }
 
     private fun getUserCards(view: View) {
-        auth.currentUser?.uid?.let {
-            database.child("cards").child(it).get()
+        auth.currentUser?.uid?.let { id ->
+            database.child("cards").get()
                 .addOnSuccessListener { data ->
                     val list = arrayListOf<CardModel>()
                     data.children.forEach { child ->
-                        val card = child.getValue(CardModel::class.java) as CardModel
-                        list.add(card)
+                        if (child.child("user_id").value == id) {
+                            val card = child.getValue(CardModel::class.java) as CardModel
+                            list.add(card)
+                        }
                     }
                     CoroutineScope(Dispatchers.IO).launch { repository.insertAllCards(list) }
                 }
                 .addOnFailureListener {
-                    Snackbar.make(view, "We couldn't load your cards. Check internet connection",
-                    Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(view, "We couldn't load your cards. Please check internet connection",
+                        Snackbar.LENGTH_SHORT).show()
                 }
         }
     }

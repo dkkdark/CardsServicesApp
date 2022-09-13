@@ -3,14 +3,19 @@ package com.kseniabl.tasksapp.db
 import android.content.Context
 import androidx.lifecycle.LiveData
 import com.kseniabl.tasksapp.models.CardModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class TasksRepository @Inject constructor(val context: Context): TasksRepositoryInterface {
+@Singleton
+class TasksRepository @Inject constructor(
+    @ApplicationContext val context: Context
+    ): TasksRepositoryInterface {
     private var db = CardsTasksDatabase.getInstance(context)
     private val addCardDao: AddCardDao = db.addCardDao()
 

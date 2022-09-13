@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kseniabl.tasksapp.adapters.AddTasksAdapter
 import com.kseniabl.tasksapp.databinding.FragmentAddCardsBinding
+import com.kseniabl.tasksapp.di.AddCardsScope
 import com.kseniabl.tasksapp.dialogs.CreateNewTaskDialog
 import com.kseniabl.tasksapp.models.CardModel
 import com.kseniabl.tasksapp.utils.HelperFunctions.generateRandomKey
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Provider
 
 @AndroidEntryPoint
 class AddCardsFragment: Fragment() {
@@ -36,8 +38,11 @@ class AddCardsFragment: Fragment() {
     private var _binding: FragmentAddCardsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var tasksAdapter: AddTasksAdapter
-    private lateinit var layoutManager: LinearLayoutManager
+    @Inject
+    lateinit var tasksAdapter: AddTasksAdapter
+    @Inject
+    @AddCardsScope
+    lateinit var linearLayoutManager: Provider<LinearLayoutManager>
 
     private val viewModel: AddCardsViewModel by viewModels()
 
@@ -49,8 +54,7 @@ class AddCardsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tasksAdapter = AddTasksAdapter(viewModel)
-        layoutManager = LinearLayoutManager(requireContext())
+        val layoutManager = linearLayoutManager.get()
 
         binding.apply {
             addCardsRecycler.layoutManager = layoutManager
@@ -86,7 +90,7 @@ class AddCardsFragment: Fragment() {
 
     private fun setupTasksRecyclerView(active: Boolean, array: List<CardModel>) {
         val list = array.filter { if (active) it.active else !it.active}
-        tasksAdapter.submitList(list)
+        CoroutineScope(Dispatchers.Main).launch { tasksAdapter.submitList(list) }
     }
 
     override fun onDestroyView() {

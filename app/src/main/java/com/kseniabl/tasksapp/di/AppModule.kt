@@ -10,6 +10,7 @@ import com.kseniabl.tasksapp.db.TasksRepository
 import com.kseniabl.tasksapp.db.TasksRepositoryInterface
 import com.kseniabl.tasksapp.utils.UserSave
 import com.kseniabl.tasksapp.utils.UserSaveInterface
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,18 +21,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-    @Singleton
-    @Provides
-    fun provideContext(@ApplicationContext context: Context) = context
-
-    @Singleton
-    @Provides
-    fun provideSaveUser(@ApplicationContext context: Context): UserSaveInterface = UserSave(context)
-
-    @Singleton
-    @Provides
-    fun provideRepository(@ApplicationContext context: Context): TasksRepositoryInterface = TasksRepository(context)
 
     @Singleton
     @Provides

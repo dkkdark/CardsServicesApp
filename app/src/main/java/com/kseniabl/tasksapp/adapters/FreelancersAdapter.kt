@@ -11,9 +11,15 @@ import com.bumptech.glide.Glide
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.FreelancerItemBinding
 import com.kseniabl.tasksapp.models.FreelancerModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.FragmentScoped
 import javax.inject.Inject
 
-class FreelancersAdapter constructor(private var context: Context) : RecyclerView.Adapter<FreelancersAdapter.FreelancersHolder>(), AllCardsAdapterInterface {
+class FreelancersAdapter @Inject constructor() : RecyclerView.Adapter<FreelancersAdapter.FreelancersHolder>(), AllCardsAdapterInterface {
+
+    @Inject
+    @ApplicationContext
+    lateinit var context: Context
 
     private val diffCallback = object : DiffUtil.ItemCallback<FreelancerModel>() {
         override fun areItemsTheSame(oldItem: FreelancerModel, newItem: FreelancerModel): Boolean =

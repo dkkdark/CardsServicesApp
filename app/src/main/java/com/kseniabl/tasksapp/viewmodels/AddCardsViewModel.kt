@@ -54,7 +54,7 @@ class AddCardsViewModel @Inject constructor(
 
     private fun setCardToDatabase(card: CardModel) {
         auth.currentUser?.uid?.let {
-            database.child("cards").child(it).child(card.id).setValue(card)
+            database.child("cards").child(card.id).setValue(card)
         }
     }
 

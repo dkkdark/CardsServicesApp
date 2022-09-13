@@ -1,6 +1,7 @@
 package com.kseniabl.tasksapp.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,19 +12,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kseniabl.tasksapp.adapters.AllTasksAdapter
 import com.kseniabl.tasksapp.adapters.FreelancersAdapter
 import com.kseniabl.tasksapp.databinding.FragmentAllCardsBinding
+import com.kseniabl.tasksapp.di.AllCardsScope
 import com.kseniabl.tasksapp.models.*
 import com.kseniabl.tasksapp.viewmodels.AllCardsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import javax.inject.Provider
 
 @AndroidEntryPoint
 class AllCardsFragment: Fragment() {
 
-    //@Inject
-    private lateinit var layoutManager: LinearLayoutManager
-    //@Inject
-    private lateinit var allTasksAdapter: AllTasksAdapter
-    //@Inject
-    private lateinit var freelancersAdapter: FreelancersAdapter
+    @Inject
+    @AllCardsScope
+    lateinit var linearLayoutManager: Provider<LinearLayoutManager>
+    @Inject
+    lateinit var allTasksAdapter: AllTasksAdapter
+    @Inject
+    lateinit var freelancersAdapter: FreelancersAdapter
 
     private val viewModel: AllCardsViewModel by viewModels()
 
@@ -38,9 +43,8 @@ class AllCardsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        layoutManager = LinearLayoutManager(requireContext())
-        allTasksAdapter = AllTasksAdapter()
-        freelancersAdapter = FreelancersAdapter(requireContext())
+        val layoutManager = linearLayoutManager.get()
+        //viewModel.getData()
 
         binding.apply {
             allCardsRecycler.layoutManager = layoutManager

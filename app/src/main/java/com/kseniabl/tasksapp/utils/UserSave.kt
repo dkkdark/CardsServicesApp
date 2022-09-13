@@ -4,9 +4,14 @@ import android.content.Context
 import com.google.gson.Gson
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.models.UserModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class UserSave @Inject constructor(var context: Context): UserSaveInterface {
+@Singleton
+class UserSave @Inject constructor(
+    @ApplicationContext var context: Context
+): UserSaveInterface {
 
     override fun readSharedPref(): UserModel? {
         val sharedPref = context.getSharedPreferences("currentUserSave", Context.MODE_PRIVATE)

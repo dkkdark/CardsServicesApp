@@ -8,10 +8,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kseniabl.tasksapp.databinding.CardItemBinding
 import com.kseniabl.tasksapp.models.CardModel
+import dagger.hilt.android.scopes.FragmentScoped
 import java.util.*
 import javax.inject.Inject
 
-class AddTasksAdapter(private val listener: Listener): RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(), AllCardsAdapterInterface {
+class AddTasksAdapter: RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(), AllCardsAdapterInterface {
+
+    @Inject
+    lateinit var listener: Listener
 
     private val diffCallback = object : DiffUtil.ItemCallback<CardModel>() {
         override fun areItemsTheSame(oldItem: CardModel, newItem: CardModel): Boolean =
