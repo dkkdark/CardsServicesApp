@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kseniabl.tasksapp.databinding.CardItemBinding
 import com.kseniabl.tasksapp.models.CardModel
+import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.scopes.FragmentScoped
 import java.util.*
 import javax.inject.Inject
 
 class AddTasksAdapter: RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(), AllCardsAdapterInterface {
 
-    @Inject
-    lateinit var listener: Listener
+    private var listener: Listener? = null
 
     private val diffCallback = object : DiffUtil.ItemCallback<CardModel>() {
         override fun areItemsTheSame(oldItem: CardModel, newItem: CardModel): Boolean =
@@ -62,7 +62,13 @@ class AddTasksAdapter: RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(),
             else if (numOfDays != 0 && hours != 0 && minutes != 0)
                 cardTime.text = "$numOfDays days ago"
         }
-        holder.itemView.setOnClickListener { listener.onAddItemClick(item) }
+        holder.itemView.setOnClickListener {
+            listener?.onAddItemClick(item)
+        }
+    }
+
+    fun setOnClickListener(onClickListener: Listener) {
+       listener = onClickListener;
     }
 
     override fun getItemCount(): Int = differ.currentList.size

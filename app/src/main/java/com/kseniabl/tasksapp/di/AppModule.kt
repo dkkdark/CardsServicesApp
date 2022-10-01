@@ -4,12 +4,6 @@ import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.kseniabl.tasksapp.TasksApplication
-import com.kseniabl.tasksapp.adapters.AddTasksAdapter
-import com.kseniabl.tasksapp.db.TasksRepository
-import com.kseniabl.tasksapp.db.TasksRepositoryInterface
-import com.kseniabl.tasksapp.utils.UserSave
-import com.kseniabl.tasksapp.utils.UserSaveInterface
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

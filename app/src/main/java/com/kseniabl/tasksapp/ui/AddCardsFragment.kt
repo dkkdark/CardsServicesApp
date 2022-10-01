@@ -65,6 +65,8 @@ class AddCardsFragment: Fragment() {
             draftButton.setOnClickListener { viewModel.changeList(false) }
             addCardFab.setOnClickListener { showCreateTaskDialog(viewModel.adapterList.value) }
 
+            tasksAdapter.setOnClickListener(viewModel)
+
             viewLifecycleOwner.lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     launch {
@@ -89,7 +91,7 @@ class AddCardsFragment: Fragment() {
     }
 
     private fun setupTasksRecyclerView(active: Boolean, array: List<CardModel>) {
-        val list = array.filter { if (active) it.active else !it.active}
+        val list = array.filter { if (active) it.active else !it.active}.reversed()
         CoroutineScope(Dispatchers.Main).launch { tasksAdapter.submitList(list) }
     }
 

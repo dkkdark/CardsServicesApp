@@ -7,8 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
+import com.google.android.material.snackbar.Snackbar
 import com.kseniabl.tasksapp.adapters.AllTasksAdapter
 import com.kseniabl.tasksapp.adapters.FreelancersAdapter
 import com.kseniabl.tasksapp.databinding.FragmentAllCardsBinding
@@ -16,6 +23,7 @@ import com.kseniabl.tasksapp.di.AllCardsScope
 import com.kseniabl.tasksapp.models.*
 import com.kseniabl.tasksapp.viewmodels.AllCardsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -24,7 +32,7 @@ class AllCardsFragment: Fragment() {
 
     @Inject
     @AllCardsScope
-    lateinit var linearLayoutManager: Provider<LinearLayoutManager>
+    lateinit var linearLayoutManager: Provider<FlexboxLayoutManager>
     @Inject
     lateinit var allTasksAdapter: AllTasksAdapter
     @Inject
@@ -44,11 +52,18 @@ class AllCardsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val layoutManager = linearLayoutManager.get()
-        //viewModel.getData()
+        layoutManager.flexDirection = FlexDirection.ROW;
+        layoutManager.justifyContent = JustifyContent.SPACE_AROUND;
 
         binding.apply {
             allCardsRecycler.layoutManager = layoutManager
-            setupAllTasksRecyclerView(allCardsRecycler)
+            allCardsRecycler.setHasFixedSize(true)
+            allCardsRecycler.setItemViewCacheSize(20)
+        }
+
+        binding.apply {
+            allCardsRecycler.layoutManager = layoutManager
+            setupAllTasksRecyclerView(viewModel.adapterTasksList.value)
             allCardsRecycler.setItemViewCacheSize(20)
 
             activeTasksButton.setOnClickListener { viewModel.changeAdapter(allTasksAdapter) }
@@ -57,19 +72,40 @@ class AllCardsFragment: Fragment() {
 
         viewModel.adapterValue.observe(viewLifecycleOwner) {
             if (it is AllTasksAdapter)
-                setupAllTasksRecyclerView(binding.allCardsRecycler)
+                setupAllTasksRecyclerView(viewModel.adapterTasksList.value)
             if (it is FreelancersAdapter)
                 setupFreelancersRecyclerView(binding.allCardsRecycler)
         }
+
+        viewModel.getCardsData()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.dialogsTrigger.collect {
+                        callSnackbar(view, it)
+                    }
+                }
+                launch {
+                    viewModel.adapterTasksList.collect {
+                        setupAllTasksRecyclerView(it)
+                    }
+                }
+            }
+        }
     }
 
-    private fun setupAllTasksRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter = allTasksAdapter
-        allTasksAdapter.submitList(arrayListOf(CardModel("1", "qwer", "rwewqw", "10.10", 1000000000, 20, true, false, "qeq")))
+    private fun callSnackbar(view: View, text: String) {
+        Snackbar.make(view, text, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun setupAllTasksRecyclerView(list: List<CardModel>) {
+        binding.allCardsRecycler.adapter = allTasksAdapter
+        allTasksAdapter.submitList(list)
     }
 
     private fun setupFreelancersRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter = freelancersAdapter
+        binding.allCardsRecycler.adapter = freelancersAdapter
         freelancersAdapter.submitList(arrayListOf(FreelancerModel("werwe", "wewre", true),
             FreelancerModel("wergsdfwe", "wewre", true)))
     }

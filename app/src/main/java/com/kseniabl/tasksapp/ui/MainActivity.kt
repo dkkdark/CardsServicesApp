@@ -39,8 +39,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //userSave.saveCurrentUser(UserModel("1", "", "", "", false, "", "", AdditionalInfo("", "", "", ""), Profession("", "", arrayListOf())))
-
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, true)
     }
 

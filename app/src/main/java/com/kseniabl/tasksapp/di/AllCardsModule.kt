@@ -1,6 +1,7 @@
 package com.kseniabl.tasksapp.di
 
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.kseniabl.tasksapp.adapters.AllTasksAdapter
 import com.kseniabl.tasksapp.adapters.FreelancersAdapter
 import com.kseniabl.tasksapp.ui.AddCardsFragment
@@ -23,6 +24,11 @@ class AllCardsModule {
     @AllCardsScope
     fun provideLinearLayoutManager(fragment: AllCardsFragment): LinearLayoutManager
             = LinearLayoutManager(fragment.context)
+
+    @Provides
+    @AllCardsScope
+    fun provideFlexboxLayoutManager(fragment: AllCardsFragment): FlexboxLayoutManager
+            = FlexboxLayoutManager(fragment.context)
 
     @Provides
     @FragmentScoped

@@ -51,9 +51,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/allCardsRecycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/filterImage"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
