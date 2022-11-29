@@ -32,8 +32,6 @@ import javax.inject.Provider
 @AndroidEntryPoint
 class AddCardsFragment: Fragment() {
 
-    @Inject
-    lateinit var saveUser: UserSaveInterface
 
     private var _binding: FragmentAddCardsBinding? = null
     private val binding get() = _binding!!
@@ -122,14 +120,14 @@ class AddCardsFragment: Fragment() {
                 if (resCreateTime == 0L)
                     resCreateTime = Calendar.getInstance().time.time
 
-                saveUser.readSharedPref()?.id?.let { id ->
+                /*saveUser.readSharedPref()?.id?.let { id ->
                     if (resId == "") {
                         insertCard(resTitle, resDescription, resDate, resCreateTime, cost, resActive, resByAgreementValue, id)
                     }
                     else {
                         changeCard(CardModel(resId, resTitle, resDescription, resDate, resCreateTime, cost, resActive, resByAgreementValue, id))
                     }
-                }
+                }*/
 
             }
         }
@@ -142,14 +140,14 @@ class AddCardsFragment: Fragment() {
     private fun insertCard(resTitle: String, resDescription: String, resDate: String,
                            resCreateTime: Long, cost: Int, resActive: Boolean, resByAgreementValue: Boolean, id: String) {
         val cardId = generateRandomKey()
-        viewModel.insertCard(
+        /*viewModel.insertCard(
             CardModel(
                 cardId, resTitle,
                 resDescription, resDate,
                 resCreateTime, cost,
                 resActive, resByAgreementValue, id
             )
-        )
+        )*/
     }
 
     private fun showCreateTaskDialog(active: Boolean, item: CardModel? = null) {
@@ -157,10 +155,10 @@ class AddCardsFragment: Fragment() {
         args.putString("id", item?.id)
         args.putString("title", item?.title)
         args.putString("description", item?.description)
-        args.putInt("cost", item?.cost ?: 0)
+        //args.putInt("cost", item?.cost ?: 0)
         args.putString("date", item?.date)
         args.putBoolean("active", item?.active ?: active)
-        args.putBoolean("agreement", item?.agreement ?: false)
+        //args.putBoolean("agreement", item?.agreement ?: false)
         args.putLong("createTime", item?.createTime ?: 0)
         args.putString("userId", item?.user_id)
         val dialog = CreateNewTaskDialog()

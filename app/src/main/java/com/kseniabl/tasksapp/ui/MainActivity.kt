@@ -4,31 +4,33 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.ActivityMainBinding
-import com.kseniabl.tasksapp.models.AdditionalInfo
-import com.kseniabl.tasksapp.models.Profession
-import com.kseniabl.tasksapp.models.UserModel
 import com.kseniabl.tasksapp.utils.HelperFunctions
-import com.kseniabl.tasksapp.utils.UserSaveInterface
+import com.kseniabl.tasksapp.utils.Resource
+import com.kseniabl.tasksapp.viewmodels.RegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var userSave: UserSaveInterface
-    @Inject
     lateinit var auth: FirebaseAuth
+
+    private val viewModel: RegistrationViewModel by viewModels()
 
     private lateinit var binding: ActivityMainBinding
     private var navController: NavController? = null
@@ -40,16 +42,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, true)
-    }
 
-    override fun onStart() {
-        super.onStart()
-        val currentUser = auth.currentUser
-        val isUserLogin = currentUser != null
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.tokenFlowData.collect {
+                        if (it is Resource.Success<*>) {
+                            Log.e("qqq", "${it.data}")
+                            val isUserLogin = it.data?.isEmpty() == false
+                            val navController = getNavController()
+                            setupStartDestination(navController, isUserLogin)
+                            onNavControllerActivated(navController)
+                        }
+                    }
+                }
+            }
+        }
 
-        val navController = getNavController()
-        setupStartDestination(navController, isUserLogin)
-        onNavControllerActivated(navController)
     }
 
     private fun getNavController(): NavController {

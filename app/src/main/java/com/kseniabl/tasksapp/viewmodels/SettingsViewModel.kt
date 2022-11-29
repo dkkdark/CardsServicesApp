@@ -1,31 +1,21 @@
 package com.kseniabl.tasksapp.viewmodels
 
-import android.widget.CheckBox
-import android.widget.TextView
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.kseniabl.tasksapp.db.TasksRepositoryInterface
-import com.kseniabl.tasksapp.models.AdditionalInfo
-import com.kseniabl.tasksapp.models.Profession
-import com.kseniabl.tasksapp.models.UserModel
-import com.kseniabl.tasksapp.utils.UserSaveInterface
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val userSave: UserSaveInterface,
-    private val repository: TasksRepositoryInterface,
-    private val saveUser: UserSaveInterface,
+    //private val userSave: UserSaveInterface,
+    //private val repository: TasksRepositoryInterface,
+    //private val saveUser: UserSaveInterface,
     private val auth: FirebaseAuth,
     private val database: DatabaseReference
-    ) : ViewModel() {
+) : ViewModel() {
 
-    val liveUser = userSave.getLiveSharedPref()
+    /*val liveUser = userSave.getLiveSharedPref()
 
     fun setupUserInfo(userModel: UserModel?, name: TextView, checkBox: CheckBox, email: TextView, spec: TextView, descr: TextView,
                       descrAdd: TextView, country: TextView, city: TextView, type: TextView) {
@@ -106,5 +96,5 @@ class SettingsViewModel @Inject constructor(
             textView.text = value
         else
             textView.text = "—"
-    }
+    }*/
 }

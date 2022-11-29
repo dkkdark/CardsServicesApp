@@ -23,7 +23,7 @@ class FreelancersAdapter @Inject constructor() : RecyclerView.Adapter<Freelancer
 
     private val diffCallback = object : DiffUtil.ItemCallback<FreelancerModel>() {
         override fun areItemsTheSame(oldItem: FreelancerModel, newItem: FreelancerModel): Boolean =
-            oldItem.id == newItem.id
+            oldItem.userInfo?.id == newItem.userInfo?.id
 
         override fun areContentsTheSame(oldItem: FreelancerModel, newItem: FreelancerModel): Boolean =
             oldItem.hashCode() == newItem.hashCode()
@@ -44,8 +44,8 @@ class FreelancersAdapter @Inject constructor() : RecyclerView.Adapter<Freelancer
         val item = differ.currentList[position]
 
         holder.binding.apply {
-            itemExeName.text = item.username
-            itemExeDescr.text = item.profession?.description
+            itemExeName.text = item.userInfo?.username
+            itemExeDescr.text = item.specialization?.specialization
             //val bytes = Base64.decode(item.img?.img, Base64.DEFAULT)
             //Glide.with(context).load(bytes).placeholder(R.drawable.user).into(imageViewItemExe)
         }

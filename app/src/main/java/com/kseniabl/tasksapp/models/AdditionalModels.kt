@@ -1,6 +1,6 @@
 package com.kseniabl.tasksapp.models
 
-import java.io.Serializable
+import com.google.gson.annotations.SerializedName
 
 data class AdditionalInfo (
     var description: String = "",
@@ -9,10 +9,13 @@ data class AdditionalInfo (
     var typeOfWork: String = ""
 )
 
-data class Profession(
-    var description: String = "",
+data class Specialization(
+    @SerializedName("id")
+    var id: String = "",
+    @SerializedName("name")
     var specialization: String = "",
-    var tags: List<String> = listOf()
+    @SerializedName("description")
+    var description: String = "",
 )
 
 data class ImageModel (

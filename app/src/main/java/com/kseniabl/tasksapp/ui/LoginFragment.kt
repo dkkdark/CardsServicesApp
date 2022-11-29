@@ -11,6 +11,10 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -23,13 +27,13 @@ import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.FragmentAddCardsBinding
 import com.kseniabl.tasksapp.databinding.FragmentLoginBinding
 import com.kseniabl.tasksapp.db.TasksRepositoryInterface
-import com.kseniabl.tasksapp.models.AdditionalInfo
-import com.kseniabl.tasksapp.models.CardModel
-import com.kseniabl.tasksapp.models.Profession
-import com.kseniabl.tasksapp.models.UserModel
+import com.kseniabl.tasksapp.models.*
 import com.kseniabl.tasksapp.ui.RegistrationFragment.Companion.EMAIL_EXTRA
 import com.kseniabl.tasksapp.ui.RegistrationFragment.Companion.REQUEST_CODE
+import com.kseniabl.tasksapp.utils.Resource
 import com.kseniabl.tasksapp.utils.UserSaveInterface
+import com.kseniabl.tasksapp.utils.UserTokenDataStore
+import com.kseniabl.tasksapp.viewmodels.RegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,9 +49,12 @@ class LoginFragment: Fragment() {
     @Inject
     lateinit var database: DatabaseReference
     @Inject
-    lateinit var userSave: UserSaveInterface
-    @Inject
     lateinit var repository: TasksRepositoryInterface
+
+    @Inject
+    lateinit var userTokenDataStore: UserTokenDataStore
+
+    private val viewModel: RegistrationViewModel by viewModels()
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
@@ -64,7 +71,7 @@ class LoginFragment: Fragment() {
             findNavController().navigate(R.id.action_loginFragment_to_registrationFragment)
         }
         binding.enterButton.setOnClickListener {
-            signInWithEmail(view, binding.loginText.text.toString(), binding.passwordText.text.toString())
+            signIn(view, binding.loginText.text.toString(), binding.passwordText.text.toString())
         }
 
         parentFragmentManager.setFragmentResultListener(REQUEST_CODE, viewLifecycleOwner) { _, data ->
@@ -74,66 +81,52 @@ class LoginFragment: Fragment() {
     }
 
     private fun getUserCards(view: View) {
-        auth.currentUser?.uid?.let { id ->
-            database.child("cards").get()
-                .addOnSuccessListener { data ->
-                    val list = arrayListOf<CardModel>()
-                    data.children.forEach { child ->
-                        if (child.child("user_id").value == id) {
-                            val card = child.getValue(CardModel::class.java) as CardModel
-                            list.add(card)
+        /** load user's cards and save them **/
+        //CoroutineScope(Dispatchers.IO).launch { repository.insertAllCards(list) }
+    }
+
+    private fun guidToTabs() {
+        findNavController().navigate(R.id.action_loginFragment_to_tabsFragment)
+    }
+
+    private fun loadUserData(view: View, token: String) {
+        /** save user data, additional info, spec, tags, etc. **/
+
+        //userSave.saveCurrentUser(user)
+    }
+
+    private fun signIn(view: View, email: String, password: String) {
+        viewModel.signIn(UserLoginModel(email, password))
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.loginStatus.collect { state ->
+                        if (state is Resource.Loading<*>) {
+                            // TODO loading
+                        }
+                        if (state is Resource.Success<*>) {
+                            val token = state.data?.body()?.token
+                            if (token != null) {
+                                viewModel.saveToken(token)
+                                loadUserData(view, token)
+                                getUserCards(view)
+                                guidToTabs()
+
+                            }
+                            else {
+                                Snackbar.make(view, "${state.message}", Snackbar.LENGTH_SHORT).show()
+                                Log.e("qqq", "${state.message}")
+                            }
+                        }
+                        if (state is Resource.Error<*>) {
+                            Snackbar.make(view, "${state.message}", Snackbar.LENGTH_SHORT).show()
+                            Log.e("qqq", "${state.message}")
                         }
                     }
-                    CoroutineScope(Dispatchers.IO).launch { repository.insertAllCards(list) }
                 }
-                .addOnFailureListener {
-                    Snackbar.make(view, "We couldn't load your cards. Please check internet connection",
-                        Snackbar.LENGTH_SHORT).show()
-                }
+            }
         }
-    }
-
-    private fun loadUserData(view: View, fUser: FirebaseUser) {
-        database.child("users").child(fUser.uid).get()
-            .addOnSuccessListener {
-                val user = it.getValue(UserModel::class.java) as UserModel
-                userSave.saveCurrentUser(user)
-                findNavController().navigate(R.id.action_loginFragment_to_tabsFragment)
-            }
-            .addOnFailureListener {
-                Snackbar.make(view, "User can't be sign in. Please try again",
-                    Snackbar.LENGTH_SHORT).show()
-            }
-    }
-
-    private fun signIn(view: View, user: FirebaseUser) {
-        if (user.isEmailVerified) {
-            Snackbar.make(view, "Welcome!", Snackbar.LENGTH_SHORT).show()
-            loadUserData(view, user)
-            getUserCards(view)
-        } else {
-            Snackbar.make(view, "Please verify your email",
-                Snackbar.LENGTH_SHORT).show()
-            auth.signOut()
-        }
-    }
-
-    private fun signInWithEmail(view: View, email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    if (user == null) Snackbar.make(view, "User can't be sign in. Please try again",
-                        Snackbar.LENGTH_SHORT).show()
-                    else {
-                        signIn(view, user)
-                    }
-                }
-                else {
-                    Snackbar.make(view, "${task.exception}. Please try again",
-                        Snackbar.LENGTH_SHORT).show()
-                }
-            }
     }
 
     override fun onDestroyView() {

@@ -5,6 +5,8 @@ import com.kseniabl.tasksapp.db.TasksRepository
 import com.kseniabl.tasksapp.db.TasksRepositoryInterface
 import com.kseniabl.tasksapp.utils.UserSave
 import com.kseniabl.tasksapp.utils.UserSaveInterface
+import com.kseniabl.tasksapp.utils.UserTokenDataStore
+import com.kseniabl.tasksapp.utils.UserTokenDataStoreInterface
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,7 +19,11 @@ abstract class DataSaveModule {
 
     @Singleton
     @Binds
-    abstract fun bindSaveUser(userSave: UserSave): UserSaveInterface
+    abstract fun bindSaveUser(userSave: UserTokenDataStore): UserTokenDataStoreInterface
+
+    /*@Singleton
+    @Binds
+    abstract fun bindSaveUser(userSave: UserSave): UserSaveInterface*/
 
     @Singleton
     @Binds

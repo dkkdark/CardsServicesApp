@@ -1,17 +1,21 @@
 package com.kseniabl.tasksapp.models
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class UserModel(
+    @SerializedName("id")
     val id: String = "",
+    @SerializedName("username")
     var username: String = "",
-    var email: String = "",
-    var freelancer: Boolean = false,
-    var token: String = "",
-
+    @SerializedName("is_creator")
+    var creator: Boolean = false,
+    @SerializedName("image")
     var img: String = "",
-    var additionalInfo: AdditionalInfo = AdditionalInfo(),
-    var profession: Profession = Profession(),
-
-    var cards: CardsList = CardsList()
+    @SerializedName("role_name")
+    var rolename: String = "",
+    @SerializedName("specialization")
+    var specialization: String = "",
+    @SerializedName("add_inf")
+    var addInf: String = ""
 ): Serializable

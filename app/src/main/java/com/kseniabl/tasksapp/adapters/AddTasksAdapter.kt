@@ -43,10 +43,10 @@ class AddTasksAdapter: RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(),
             cardText.text = item.title
             cardDescr.text = item.description
             cardDate.text = item.date
-            if (item.agreement)
+            /*if (item.agreement)
                 cardCost.text = "By agreement"
             else
-                cardCost.text = "${item.cost} $"
+                cardCost.text = "${item.cost} $"*/
 
             val currentTime = Calendar.getInstance().time.time
             val distinction = currentTime - item.createTime

@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TasksApp"
         tools:targetApi="31"
-        android:name=".TasksApplication">
+        android:name=".TasksApplication"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">

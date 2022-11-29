@@ -1,35 +1,24 @@
 package com.kseniabl.tasksapp.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.FragmentSettingsBinding
 import com.kseniabl.tasksapp.dialogs.ChangeAdditionalInfoDialog
 import com.kseniabl.tasksapp.dialogs.ChangeNameDialogFragment
 import com.kseniabl.tasksapp.dialogs.ChangeProfessionDialogFragment
-import com.kseniabl.tasksapp.models.AdditionalInfo
-import com.kseniabl.tasksapp.models.Profession
 import com.kseniabl.tasksapp.models.UserModel
 import com.kseniabl.tasksapp.utils.HelperFunctions.getTextGradient
-import com.kseniabl.tasksapp.utils.UserSaveInterface
 import com.kseniabl.tasksapp.utils.findTopNavController
-import com.kseniabl.tasksapp.utils.stringLiveData
 import com.kseniabl.tasksapp.viewmodels.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment: Fragment() {
-
-    @Inject
-    lateinit var saveUser: UserSaveInterface
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
@@ -51,28 +40,28 @@ class SettingsFragment: Fragment() {
             editAdditionalInfoImage.setOnClickListener { showChangeAdditionalInfoDialog() }
 
             beFreelancerCheckBox.setOnCheckedChangeListener { _, value ->
-                viewModel.updateUserFreelanceState(value)
+                //viewModel.updateUserFreelanceState(value)
             }
             logoutButton.setOnClickListener {
-                viewModel.signOut()
+                //viewModel.signOut()
                 findTopNavController().navigate(R.id.action_tabsFragment_to_loginFragment)
             }
         }
 
-        viewModel.liveUser.observe(viewLifecycleOwner) {
+        /*viewModel.liveUser.observe(viewLifecycleOwner) {
             val user = saveUser.jsonToUserModel(it)
             setupUserInfo(user)
-        }
+        }*/
     }
 
     private fun setupUserInfo(user: UserModel?) {
         binding.apply {
-            viewModel.setupUserInfo(user,
+            /*viewModel.setupUserInfo(user,
                 profileNameText, beFreelancerCheckBox,
                 emailChangeText, specializationChangeText,
                 descriptionSpecializationChangeText, descriptionAddInfoChangeText,
                 countryChangeText, cityChangeText, typeOfWorkChangeText
-            )
+            )*/
         }
     }
 
@@ -87,7 +76,7 @@ class SettingsFragment: Fragment() {
         childFragmentManager.setFragmentResultListener("ChangeNameDialogFragment", this) { _, bundle ->
             val result = bundle.getString("resName")
             if (result != null) {
-                viewModel.updateUserName(result)
+                //viewModel.updateUserName(result)
             }
         }
 
@@ -95,7 +84,7 @@ class SettingsFragment: Fragment() {
             val resSpecialization = bundle.getString("resSpecialization")
             val resDescription = bundle.getString("resDescription")
             if (resSpecialization != null && resDescription != null) {
-                viewModel.updateUserProf(resSpecialization, resDescription)
+                //viewModel.updateUserProf(resSpecialization, resDescription)
             }
         }
 
@@ -105,7 +94,7 @@ class SettingsFragment: Fragment() {
             val resCity = bundle.getString("resCity")
             val resTypeOfWork = bundle.getString("resTypeOfWork")
             if (resDescription != null && resCountry != null && resCity != null && resTypeOfWork != null) {
-                viewModel.updateUserAdditionalInfo(resDescription, resCountry, resCity, resTypeOfWork)
+                //viewModel.updateUserAdditionalInfo(resDescription, resCountry, resCity, resTypeOfWork)
             }
         }
     }

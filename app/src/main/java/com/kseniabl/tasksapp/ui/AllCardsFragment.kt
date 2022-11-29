@@ -10,8 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -21,6 +19,7 @@ import com.kseniabl.tasksapp.adapters.FreelancersAdapter
 import com.kseniabl.tasksapp.databinding.FragmentAllCardsBinding
 import com.kseniabl.tasksapp.di.AllCardsScope
 import com.kseniabl.tasksapp.models.*
+import com.kseniabl.tasksapp.utils.Resource
 import com.kseniabl.tasksapp.viewmodels.AllCardsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -36,7 +35,7 @@ class AllCardsFragment: Fragment() {
     @Inject
     lateinit var allTasksAdapter: AllTasksAdapter
     @Inject
-    lateinit var freelancersAdapter: FreelancersAdapter
+    lateinit var creatorsAdapter: FreelancersAdapter
 
     private val viewModel: AllCardsViewModel by viewModels()
 
@@ -63,21 +62,23 @@ class AllCardsFragment: Fragment() {
 
         binding.apply {
             allCardsRecycler.layoutManager = layoutManager
-            setupAllTasksRecyclerView(viewModel.adapterTasksList.value)
+            setupAllTasksRecyclerView(viewModel.adapterTasksList.value?.data?.body() ?: arrayListOf())
             allCardsRecycler.setItemViewCacheSize(20)
 
             activeTasksButton.setOnClickListener { viewModel.changeAdapter(allTasksAdapter) }
-            freelancersButton.setOnClickListener { viewModel.changeAdapter(freelancersAdapter) }
+            freelancersButton.setOnClickListener { viewModel.changeAdapter(creatorsAdapter) }
         }
 
         viewModel.adapterValue.observe(viewLifecycleOwner) {
             if (it is AllTasksAdapter)
-                setupAllTasksRecyclerView(viewModel.adapterTasksList.value)
-            if (it is FreelancersAdapter)
-                setupFreelancersRecyclerView(binding.allCardsRecycler)
+                setupAllTasksRecyclerView(viewModel.adapterTasksList.value?.data?.body() ?: arrayListOf())
+            if (it is FreelancersAdapter) {
+                setupFreelancersRecyclerView(viewModel.creatorInfoHolder.value)
+            }
         }
 
-        viewModel.getCardsData()
+        viewModel.getCards()
+        viewModel.getUsers()
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -87,8 +88,25 @@ class AllCardsFragment: Fragment() {
                     }
                 }
                 launch {
-                    viewModel.adapterTasksList.collect {
-                        setupAllTasksRecyclerView(it)
+                    viewModel.adapterTasksList.collect { value ->
+                        if (viewModel.adapterValue.value is AllTasksAdapter) {
+                            if(value is Resource.Loading<*>) {
+                                // TODO
+                            }
+                            if (value is Resource.Success<*>) {
+                                setupAllTasksRecyclerView(value.data?.body() ?: arrayListOf())
+                            }
+                            if (value is Resource.Error<*>) {
+                                Log.e("qqq", "Error: ${value.message}")
+                            }
+                        }
+                    }
+                }
+                launch {
+                    viewModel.creatorInfoData.collect {
+                        if (viewModel.adapterValue.value is FreelancersAdapter) {
+                            setupFreelancersRecyclerView(it)
+                        }
                     }
                 }
             }
@@ -104,10 +122,9 @@ class AllCardsFragment: Fragment() {
         allTasksAdapter.submitList(list)
     }
 
-    private fun setupFreelancersRecyclerView(recyclerView: RecyclerView) {
-        binding.allCardsRecycler.adapter = freelancersAdapter
-        freelancersAdapter.submitList(arrayListOf(FreelancerModel("werwe", "wewre", true),
-            FreelancerModel("wergsdfwe", "wewre", true)))
+    private fun setupFreelancersRecyclerView(list: List<FreelancerModel>) {
+        binding.allCardsRecycler.adapter = creatorsAdapter
+        creatorsAdapter.submitList(list)
     }
 
     override fun onDestroyView() {
