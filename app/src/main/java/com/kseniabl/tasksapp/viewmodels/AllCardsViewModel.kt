@@ -10,6 +10,7 @@ import com.kseniabl.tasksapp.models.*
 import com.kseniabl.tasksapp.network.Repository
 import com.kseniabl.tasksapp.utils.Resource
 import com.kseniabl.tasksapp.utils.UserTokenDataStore
+import com.kseniabl.tasksapp.utils.UserTokenDataStoreInterface
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class AllCardsViewModel @Inject constructor(
     private val auth: FirebaseAuth,
     private val database: DatabaseReference,
     private val repository: Repository,
-    private val userTokenDataStore: UserTokenDataStore
+    private val userTokenDataStore: UserTokenDataStoreInterface
 ): ViewModel() {
 
     private val _adapterValue = MutableLiveData<AllCardsAdapterInterface>(AllTasksAdapter())
@@ -68,13 +69,13 @@ class AllCardsViewModel @Inject constructor(
                     val users = repository.getUsers(token).body() ?: arrayListOf()
                     val specList = arrayListOf<Specialization>()
                     for (u in users) {
-                        val spec = repository.getSpec(token, SpecBody(u.specialization)).body()
+                        val spec = repository.getSpec(token, IdBody(u.specialization)).body()
                         if (spec != null)
                             specList.add(spec)
                     }
 
                     if (users.size != specList.size) {
-                        _adapterCreatorsList.emit(Resource.Error("Size is not the same"))
+                        _adapterCreatorsList.emit(Resource.Error("Size is not the same $users $specList"))
                     }
                     else {
                         _adapterCreatorsList.emit(Resource.Success(users))

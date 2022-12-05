@@ -47,13 +47,11 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.tokenFlowData.collect {
-                        if (it is Resource.Success<*>) {
-                            Log.e("qqq", "${it.data}")
-                            val isUserLogin = it.data?.isEmpty() == false
-                            val navController = getNavController()
-                            setupStartDestination(navController, isUserLogin)
-                            onNavControllerActivated(navController)
-                        }
+                        Log.e("qqq", "token $it")
+                        val isUserLogin = it?.isNotEmpty() == true
+                        val navController = getNavController()
+                        setupStartDestination(navController, isUserLogin)
+                        onNavControllerActivated(navController)
                     }
                 }
             }

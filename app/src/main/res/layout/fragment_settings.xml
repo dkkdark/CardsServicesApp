@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/opensans_extrabold"
-                android:text="Profession"
+                android:text="Specialization"
                 android:textSize="20dp"
                 android:textColor="@color/purple"/>
 
@@ -95,7 +95,7 @@
                 android:id="@+id/specializationText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Specialization:"
+                android:text="Name:"
                 android:layout_below="@id/editProfessionImage"
                 android:fontFamily="@font/opensans_bold"
                 android:layout_marginTop="10dp"
@@ -295,67 +295,23 @@
                 android:textColor="@color/purple"
                 android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/emailText"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/beCreatorButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/otherInfoText"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/opensans_bold"
-                android:textColor="@color/black"
-                android:text="Email:"
-                android:textSize="14dp" />
-
-            <TextView
-                android:id="@+id/emailChangeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/emailText"
-                android:layout_alignBottom="@id/emailText"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/emailText"
-                android:text=""
-                android:textSize="14dp"/>
-
-            <TextView
-                android:id="@+id/beFreelancerText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/emailText"
                 android:layout_marginTop="10dp"
-                android:text="Be an Freelancer"
+                android:text="Become a creator"
                 android:textSize="14dp"
                 android:fontFamily="@font/opensans_bold"
-                android:textColor="@color/black"/>
-
-            <CheckBox
-                android:id="@+id/beFreelancerCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:layout_alignTop="@id/beFreelancerText"
-                android:layout_alignBottom="@id/beFreelancerText"
-                android:layout_marginStart="6dp"
-                android:layout_toEndOf="@id/beFreelancerText"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/changePasswordButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/beFreelancerText"
-                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/white"
-                android:text="Change password"
-                android:textColor="@color/purple"
-                android:textStyle="bold"
-                app:cornerRadius="16dp" />
+                android:textColor="@color/purple"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/logoutButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/changePasswordButton"
+                android:layout_below="@+id/beCreatorButton"
                 android:layout_marginTop="10dp"
                 android:backgroundTint="@color/white"
                 android:text="Logout"

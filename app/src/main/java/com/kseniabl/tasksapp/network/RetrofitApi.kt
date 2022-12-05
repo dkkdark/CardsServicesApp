@@ -21,6 +21,21 @@ interface RetrofitApi {
     @GET("users")
     suspend fun getUsers(@Header("Authorization") token: String): Response<ArrayList<UserModel>>
 
+    @GET("user")
+    suspend fun getUser(@Header("Authorization") token: String): Response<UserModel>
+
     @PATCH("spec")
-    suspend fun getSpec(@Header("Authorization") token: String, @Body id: SpecBody): Response<Specialization>
+    suspend fun getSpec(@Header("Authorization") token: String, @Body id: IdBody): Response<Specialization>
+
+    @PATCH("add-inf")
+    suspend fun getAddInf(@Header("Authorization") token: String, @Body id: IdBody): Response<AdditionalInfo>
+
+    @POST("update-spec")
+    suspend fun updateSpec(@Header("Authorization") token: String, @Body specialization: UpdateSpecModel): Response<Void>
+
+    @POST("update-add-inf")
+    suspend fun updateAddInf(@Header("Authorization") token: String, @Body additionalInfo: UpdateAddInfModel): Response<Void>
+
+    @POST("update-creator-status")
+    suspend fun updateCreatorStatus(@Header("Authorization") token: String, @Body updateCreatorStatus: UpdateCreatorStatus): Response<Void>
 }

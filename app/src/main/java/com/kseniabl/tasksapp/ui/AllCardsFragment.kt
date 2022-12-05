@@ -90,7 +90,7 @@ class AllCardsFragment: Fragment() {
                 launch {
                     viewModel.adapterTasksList.collect { value ->
                         if (viewModel.adapterValue.value is AllTasksAdapter) {
-                            if(value is Resource.Loading<*>) {
+                            if (value is Resource.Loading<*>) {
                                 // TODO
                             }
                             if (value is Resource.Success<*>) {

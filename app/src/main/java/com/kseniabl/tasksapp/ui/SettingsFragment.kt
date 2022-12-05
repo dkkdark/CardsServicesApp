@@ -1,11 +1,17 @@
 package com.kseniabl.tasksapp.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.snackbar.Snackbar
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.FragmentSettingsBinding
 import com.kseniabl.tasksapp.dialogs.ChangeAdditionalInfoDialog
@@ -13,12 +19,20 @@ import com.kseniabl.tasksapp.dialogs.ChangeNameDialogFragment
 import com.kseniabl.tasksapp.dialogs.ChangeProfessionDialogFragment
 import com.kseniabl.tasksapp.models.UserModel
 import com.kseniabl.tasksapp.utils.HelperFunctions.getTextGradient
+import com.kseniabl.tasksapp.utils.Resource
+import com.kseniabl.tasksapp.utils.UserDataStore
 import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.viewmodels.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import retrofit2.Response
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment: Fragment() {
+
+    @Inject
+    lateinit var userDataStore: UserDataStore
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
@@ -39,30 +53,66 @@ class SettingsFragment: Fragment() {
             editProfessionImage.setOnClickListener { showChangeProfessionDialog() }
             editAdditionalInfoImage.setOnClickListener { showChangeAdditionalInfoDialog() }
 
-            beFreelancerCheckBox.setOnCheckedChangeListener { _, value ->
-                //viewModel.updateUserFreelanceState(value)
-            }
             logoutButton.setOnClickListener {
-                //viewModel.signOut()
-                findTopNavController().navigate(R.id.action_tabsFragment_to_loginFragment)
+                viewModel.signOut()
+            }
+
+            beCreatorButton.setOnClickListener {
+                viewModel.becomeCreator()
             }
         }
 
-        /*viewModel.liveUser.observe(viewLifecycleOwner) {
-            val user = saveUser.jsonToUserModel(it)
-            setupUserInfo(user)
-        }*/
+        setLoadedInfo()
+        updateState(view)
     }
 
-    private fun setupUserInfo(user: UserModel?) {
-        binding.apply {
-            /*viewModel.setupUserInfo(user,
-                profileNameText, beFreelancerCheckBox,
-                emailChangeText, specializationChangeText,
-                descriptionSpecializationChangeText, descriptionAddInfoChangeText,
-                countryChangeText, cityChangeText, typeOfWorkChangeText
-            )*/
+    private fun updateState(view: View) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.stateChange.collect { data ->
+                        if (data is Resource.Loading<*>) {
+                            // TODO loading
+                        }
+                        if (data is Resource.Success<*>) {
+                            if (data.data?.isSuccessful == true) {
+                                Snackbar.make(view, "You became a creator!", Snackbar.LENGTH_SHORT).show()
+                            }
+                        }
+                        if (data is Resource.Error<*>) {
+                            Snackbar.make(view, data.message ?: "Some error. You cannot change state", Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    private fun setLoadedInfo() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    binding.apply {
+                        userDataStore.readUser.collect { user ->
+                            checkIsEmpty(profileNameText, user.userInfo?.username)
+                            checkIsEmpty(specializationChangeText, user.specialization?.specialization)
+                            checkIsEmpty(descriptionSpecializationChangeText, user.specialization?.description)
+                            checkIsEmpty(descriptionAddInfoChangeText, user.additionalInfo?.description)
+                            checkIsEmpty(countryChangeText, user.additionalInfo?.country)
+                            checkIsEmpty(cityChangeText, user.additionalInfo?.city)
+                            checkIsEmpty(typeOfWorkChangeText, user.additionalInfo?.typeOfWork)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun checkIsEmpty(textView: TextView, value: String?) {
+        if (value.isNullOrEmpty())
+            textView.text = "—"
+        else
+            textView.text = value
     }
 
     override fun onDestroyView() {
@@ -84,7 +134,7 @@ class SettingsFragment: Fragment() {
             val resSpecialization = bundle.getString("resSpecialization")
             val resDescription = bundle.getString("resDescription")
             if (resSpecialization != null && resDescription != null) {
-                //viewModel.updateUserProf(resSpecialization, resDescription)
+                viewModel.updateSpecialization(resSpecialization, resDescription)
             }
         }
 
@@ -94,7 +144,7 @@ class SettingsFragment: Fragment() {
             val resCity = bundle.getString("resCity")
             val resTypeOfWork = bundle.getString("resTypeOfWork")
             if (resDescription != null && resCountry != null && resCity != null && resTypeOfWork != null) {
-                //viewModel.updateUserAdditionalInfo(resDescription, resCountry, resCity, resTypeOfWork)
+                viewModel.updateAddInf(resDescription, resCountry, resCity, resTypeOfWork)
             }
         }
     }
@@ -136,7 +186,7 @@ class SettingsFragment: Fragment() {
                 professionText.paint.shader = shader
                 additionalInfoText.paint.shader = shader
                 otherInfoText.paint.shader = shader
-                changePasswordButton.paint.shader = shader
+                beCreatorButton.paint.shader = shader
                 logoutButton.paint.shader = shader
             }
         }

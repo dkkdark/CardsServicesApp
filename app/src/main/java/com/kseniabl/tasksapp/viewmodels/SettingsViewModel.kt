@@ -1,100 +1,118 @@
 package com.kseniabl.tasksapp.viewmodels
 
+import android.util.Log
+import android.widget.TextView
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
+import androidx.lifecycle.viewModelScope
+import com.kseniabl.tasksapp.models.*
+import com.kseniabl.tasksapp.network.Repository
+import com.kseniabl.tasksapp.utils.HelperFunctions
+import com.kseniabl.tasksapp.utils.Resource
+import com.kseniabl.tasksapp.utils.UserDataStore
+import com.kseniabl.tasksapp.utils.UserTokenDataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    //private val userSave: UserSaveInterface,
     //private val repository: TasksRepositoryInterface,
-    //private val saveUser: UserSaveInterface,
-    private val auth: FirebaseAuth,
-    private val database: DatabaseReference
+    private val repository: Repository,
+    private val userTokenDataStore: UserTokenDataStore,
+    private val userDataStore: UserDataStore
 ) : ViewModel() {
 
-    /*val liveUser = userSave.getLiveSharedPref()
+    private val _stateChange = MutableSharedFlow<Resource<Response<Void>>>()
+    val stateChange = _stateChange.asSharedFlow()
 
-    fun setupUserInfo(userModel: UserModel?, name: TextView, checkBox: CheckBox, email: TextView, spec: TextView, descr: TextView,
-                      descrAdd: TextView, country: TextView, city: TextView, type: TextView) {
-        userModel?.let {
-            name.text = it.username
-            checkBox.isChecked = it.freelancer
-            email.text = it.email
-            checkIsEmpty(spec, it.profession.specialization)
-            checkIsEmpty(descr, it.profession.description)
-            checkIsEmpty(descrAdd, it.additionalInfo.description)
-            checkIsEmpty(country, it.additionalInfo.country)
-            checkIsEmpty(city, it.additionalInfo.city)
-            checkIsEmpty(type, it.additionalInfo.typeOfWork)
+    private val _signOutState = MutableSharedFlow<Boolean>()
+    val signOutState = _signOutState.asSharedFlow()
+
+
+    fun updateSpecialization(spec: String, desc: String) {
+        viewModelScope.launch {
+            val token = userTokenDataStore.readToken.first()
+            val user = userDataStore.readUser.first()
+            val userId = user.userInfo?.id
+            if (userId.isNullOrEmpty()) {
+                Log.e("qqq", "User id is null")
+            }
+            else {
+                try {
+                    var specId = ""
+                    specId = if (user.specialization?.id.isNullOrEmpty()) {
+                        HelperFunctions.generateRandomKey()
+                    } else {
+                        user.specialization!!.id
+                    }
+                    repository.updateSpec(token, UpdateSpecModel(userId, specId, spec, desc))
+                    val newUser = FreelancerModel(UserModel(user.userInfo.id, user.userInfo.username, user.userInfo.creator, user.userInfo.img, user.userInfo.rolename, specId, user.userInfo.addInf),
+                        Specialization(specId, spec, desc), user.additionalInfo)
+                    userDataStore.writeUser(newUser)
+                } catch (exception: Exception) {
+                    Log.e("qqq", "Specialization wasn't upload. ${exception.message}")
+                }
+            }
         }
     }
 
-    fun updateUserName(name: String) {
-        val user = userSave.readSharedPref()
-        user?.username = name
-        user?.let { userSave.saveCurrentUser(it) }
-
-        auth.currentUser?.uid?.let {
-            database.child("users").child(it).child("username").setValue(name)
-        }
-    }
-
-    fun updateUserProf(spec: String, descr: String) {
-        val user = userSave.readSharedPref()
-        user?.profession?.description = descr
-        user?.profession?.specialization = spec
-        user?.let { userSave.saveCurrentUser(it) }
-
-        auth.currentUser?.uid?.let {
-            database.child("users").child(it).child("profession")
-                .child("specialization")
-                .setValue(spec)
-            database.child("users").child(it).child("profession")
-                .child("description")
-                .setValue(descr)
-        }
-    }
-
-    fun updateUserAdditionalInfo(descrAdd: String, country: String, city: String, type: String) {
-        val user = userSave.readSharedPref()
-        user?.additionalInfo?.description = descrAdd
-        user?.additionalInfo?.country = country
-        user?.additionalInfo?.city = city
-        user?.additionalInfo?.typeOfWork = type
-        user?.let { userSave.saveCurrentUser(it) }
-
-        auth.currentUser?.uid?.let {
-            database.child("users").child(it).child("additionalInfo")
-                .setValue(AdditionalInfo(descrAdd, country, city, type))
-        }
-    }
-
-    fun updateUserFreelanceState(state: Boolean) {
-        val user = userSave.readSharedPref()
-        user?.freelancer = state
-        user?.let { userSave.saveCurrentUser(it) }
-
-        auth.currentUser?.uid?.let {
-            database.child("users").child(it).child("freelancer").setValue(state)
+    fun updateAddInf(description: String, country: String, city: String, typeOfWork: String) {
+        viewModelScope.launch {
+            val token = userTokenDataStore.readToken.first()
+            val user = userDataStore.readUser.first()
+            val userId = user.userInfo?.id
+            if (userId.isNullOrEmpty()) {
+                Log.e("qqq", "User id is null")
+            }
+            else {
+                try {
+                    val addInfId = if (user.additionalInfo?.id.isNullOrEmpty()) {
+                        HelperFunctions.generateRandomKey()
+                    } else {
+                        user.additionalInfo!!.id
+                    }
+                    repository.updateAddInf(token, UpdateAddInfModel(userId, addInfId, description, country, city, typeOfWork))
+                    val newUser = FreelancerModel(
+                        UserModel(user.userInfo.id, user.userInfo.username, user.userInfo.creator, user.userInfo.img, user.userInfo.rolename, user.userInfo.specialization, addInfId),
+                        user.specialization, AdditionalInfo(addInfId, description, country, city, typeOfWork))
+                    userDataStore.writeUser(newUser)
+                } catch (exception: Exception) {
+                    Log.e("qqq", "Additional Info wasn't upload. ${exception.message}")
+                }
+            }
         }
     }
 
     fun signOut() {
-        auth.signOut()
-        val user = UserModel()
-        saveUser.saveCurrentUser(user)
         viewModelScope.launch {
-            repository.clearAddProdCards()
+            userTokenDataStore.saveToken("")
+            userDataStore.writeUser(FreelancerModel())
         }
     }
 
-    private fun checkIsEmpty(textView: TextView, value: String) {
-        if (value.isNotEmpty())
-            textView.text = value
-        else
-            textView.text = "—"
-    }*/
+    fun becomeCreator() {
+        viewModelScope.launch {
+            val token = userTokenDataStore.readToken.first()
+            val user = userDataStore.readUser.first()
+
+            if (!user.specialization?.specialization.isNullOrEmpty() && !user.specialization?.description.isNullOrEmpty() &&
+                !user.additionalInfo?.description.isNullOrEmpty() && !user.additionalInfo?.country.isNullOrEmpty() && !user.additionalInfo?.city.isNullOrEmpty()
+                && !user.additionalInfo?.typeOfWork.isNullOrEmpty() && !user.userInfo?.id.isNullOrEmpty() && !user.userInfo?.username.isNullOrEmpty()) {
+                _stateChange.emit(Resource.Loading())
+                try {
+                    _stateChange.emit(Resource.Success(repository.updateCreatorState(token, UpdateCreatorStatus(user.userInfo!!.id, user.userInfo.username))))
+                    val newUser = FreelancerModel(UserModel(user.userInfo.id, user.userInfo.username, true, user.userInfo.img, "creator", user.userInfo.specialization,
+                        user.userInfo.addInf), user.specialization, user.additionalInfo)
+                    userDataStore.writeUser(newUser)
+                } catch (exception: Exception) {
+                    _stateChange.emit(Resource.Error(errorMessage = "State cannot be update"))
+                }
+            }
+            else {
+                _stateChange.emit(Resource.Error("Fill all fields to become a creator"))
+            }
+        }
+    }
 }

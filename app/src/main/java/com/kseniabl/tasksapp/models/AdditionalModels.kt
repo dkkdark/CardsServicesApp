@@ -2,20 +2,28 @@ package com.kseniabl.tasksapp.models
 
 import com.google.gson.annotations.SerializedName
 
+@kotlinx.serialization.Serializable
 data class AdditionalInfo (
-    var description: String = "",
-    var country: String = "",
-    var city: String = "",
-    var typeOfWork: String = ""
+    @SerializedName("id")
+    val id: String = "",
+    @SerializedName("description")
+    val description: String = "",
+    @SerializedName("country")
+    val country: String = "",
+    @SerializedName("city")
+    val city: String = "",
+    @SerializedName("type_of_work")
+    val typeOfWork: String = ""
 )
 
+@kotlinx.serialization.Serializable
 data class Specialization(
     @SerializedName("id")
-    var id: String = "",
+    val id: String = "",
     @SerializedName("name")
-    var specialization: String = "",
+    val specialization: String = "",
     @SerializedName("description")
-    var description: String = "",
+    val description: String = "",
 )
 
 data class ImageModel (

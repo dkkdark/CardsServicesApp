@@ -1,6 +1,8 @@
 package com.kseniabl.tasksapp.models
 
+@kotlinx.serialization.Serializable
 data class FreelancerModel (
-    var userInfo: UserModel? = null,
-    var specialization: Specialization? = null,
+    val userInfo: UserModel? = null,
+    val specialization: Specialization? = null,
+    val additionalInfo: AdditionalInfo? = null
 )

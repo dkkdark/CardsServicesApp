@@ -37,6 +37,7 @@ import com.kseniabl.tasksapp.viewmodels.RegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.lang.NullPointerException
 import javax.inject.Inject
@@ -80,8 +81,8 @@ class LoginFragment: Fragment() {
         }
     }
 
+    /** load user's cards and save them **/
     private fun getUserCards(view: View) {
-        /** load user's cards and save them **/
         //CoroutineScope(Dispatchers.IO).launch { repository.insertAllCards(list) }
     }
 
@@ -89,10 +90,35 @@ class LoginFragment: Fragment() {
         findNavController().navigate(R.id.action_loginFragment_to_tabsFragment)
     }
 
+    /** save user data, additional info, spec, tags, etc. **/
     private fun loadUserData(view: View, token: String) {
-        /** save user data, additional info, spec, tags, etc. **/
+        viewModel.getUser(token)
 
-        //userSave.saveCurrentUser(user)
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.userAllData.collect { data ->
+                        Log.e("qqq", "uu ${data}")
+                        if (data != null) {
+                            if (data is Resource.Success<*>) {
+                                if (data.data != null) {
+                                    viewModel.saveUser(data.data)
+                                    Log.e("qqq", "User: ${data.data}")
+                                }
+                            }
+                            if (data is Resource.Error<*>) {
+                                Snackbar.make(view, "${data.message}", Snackbar.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+                launch {
+                    viewModel.saved.collect {
+                        if (it) viewModel.saveToken(token)
+                    }
+                }
+            }
+        }
     }
 
     private fun signIn(view: View, email: String, password: String) {
@@ -108,11 +134,8 @@ class LoginFragment: Fragment() {
                         if (state is Resource.Success<*>) {
                             val token = state.data?.body()?.token
                             if (token != null) {
-                                viewModel.saveToken(token)
                                 loadUserData(view, token)
                                 getUserCards(view)
-                                guidToTabs()
-
                             }
                             else {
                                 Snackbar.make(view, "${state.message}", Snackbar.LENGTH_SHORT).show()

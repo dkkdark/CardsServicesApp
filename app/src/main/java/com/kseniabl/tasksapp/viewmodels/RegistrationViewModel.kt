@@ -3,19 +3,15 @@ package com.kseniabl.tasksapp.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kseniabl.tasksapp.models.AddUserModel
-import com.kseniabl.tasksapp.models.TokenModel
-import com.kseniabl.tasksapp.models.UserLoginModel
+import com.kseniabl.tasksapp.models.*
 import com.kseniabl.tasksapp.network.Repository
 import com.kseniabl.tasksapp.utils.Resource
+import com.kseniabl.tasksapp.utils.UserDataStoreInterface
 import com.kseniabl.tasksapp.utils.UserTokenDataStore
 import com.kseniabl.tasksapp.utils.UserTokenDataStoreInterface
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -23,10 +19,11 @@ import javax.inject.Inject
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
     val repository: Repository,
-    val userTokenDataStore: UserTokenDataStoreInterface
+    val userTokenDataStore: UserTokenDataStoreInterface,
+    val userDataStore: UserDataStoreInterface
 ): ViewModel() {
 
-    private val _tokenFlowData = MutableStateFlow<Resource<String>>(Resource.Loading())
+    private val _tokenFlowData = MutableStateFlow<String?>(null)
     val tokenFlowData = _tokenFlowData.asStateFlow()
 
     private val _loginStatus = MutableSharedFlow<Resource<Response<TokenModel>>>()
@@ -35,11 +32,32 @@ class RegistrationViewModel @Inject constructor(
     private val _registrationStatus = MutableSharedFlow<Resource<Response<Void>>>()
     val registrationStatus = _registrationStatus.asSharedFlow()
 
+    private val _user = MutableStateFlow<Resource<UserModel>?>(null)
+    private val _specialization = MutableStateFlow<Resource<Specialization>?>(null)
+    private val _addInf = MutableStateFlow<Resource<AdditionalInfo>?>(null)
+
+    private val _saved = MutableStateFlow(false)
+    val saved = _saved.asStateFlow()
+
+    val userAllData = combine(
+        _user,
+        _specialization,
+        _addInf
+    ) { user, spec, addInf ->
+        var userDate: Resource<FreelancerModel>? = null
+        if (user is Resource.Success<*> && spec is Resource.Success<*> && addInf is Resource.Success<*>) {
+            userDate = Resource.Success(FreelancerModel(user.data, spec.data, addInf.data))
+        }
+        if (user is Resource.Error<*>) {
+            userDate = Resource.Error(user.message)
+        }
+        userDate
+    }
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            _tokenFlowData.emit(Resource.Loading())
             userTokenDataStore.readToken.collect { token ->
-                _tokenFlowData.emit(Resource.Success(data = token))
+                _tokenFlowData.emit(token)
             }
         }
     }
@@ -47,6 +65,13 @@ class RegistrationViewModel @Inject constructor(
     fun saveToken(token: String) {
         viewModelScope.launch(Dispatchers.IO) {
             userTokenDataStore.saveToken(token)
+        }
+    }
+
+    fun saveUser(user: FreelancerModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            userDataStore.writeUser(user)
+            _saved.emit(true)
         }
     }
 
@@ -71,4 +96,31 @@ class RegistrationViewModel @Inject constructor(
             }
         }
     }
+
+    fun getUser(token: String) {
+        viewModelScope.launch {
+            try {
+                val user = repository.getUser(token).body()
+                var spec: Specialization? = null
+                var addInf: AdditionalInfo? = null
+                if (user != null) {
+                    if (user.specialization.isNotEmpty())
+                        spec = repository.getSpec(token, IdBody(user.specialization)).body()
+                    if (user.addInf.isNotEmpty())
+                        addInf = repository.getAddInf(token, IdBody(user.addInf)).body()
+
+                    _user.emit(Resource.Success(user))
+                    _specialization.emit(Resource.Success(spec))
+                    _addInf.emit(Resource.Success(addInf))
+                }
+                else {
+                    _user.emit(Resource.Error("Some object is null"))
+                }
+
+            } catch (exception: Exception) {
+                _user.emit(Resource.Error(exception.message ?: "Some error occurred"))
+            }
+        }
+    }
+
 }
