@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/white"
-        android:text="Freelancers"
+        android:text="Creators"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="12dp"

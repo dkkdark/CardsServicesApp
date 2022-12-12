@@ -19,8 +19,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AllCardsViewModel @Inject constructor(
-    private val auth: FirebaseAuth,
-    private val database: DatabaseReference,
     private val repository: Repository,
     private val userTokenDataStore: UserTokenDataStoreInterface
 ): ViewModel() {
@@ -78,8 +76,8 @@ class AllCardsViewModel @Inject constructor(
                         _adapterCreatorsList.emit(Resource.Error("Size is not the same $users $specList"))
                     }
                     else {
-                        _adapterCreatorsList.emit(Resource.Success(users))
                         _specializationDate.emit(Resource.Success(specList))
+                        _adapterCreatorsList.emit(Resource.Success(users))
                     }
 
                 } catch (exception: Exception) {

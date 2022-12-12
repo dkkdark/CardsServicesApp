@@ -10,6 +10,7 @@ class Repository @Inject constructor(private val retrofitApi: RetrofitApi) {
 
     /** Get info **/
     suspend fun getTasks(token: String) = retrofitApi.getTasks(token)
+    suspend fun getUsersCards(token: String) = retrofitApi.getUsersCards(token)
     suspend fun getUsers(token: String) = retrofitApi.getUsers(token)
     suspend fun getUser(token: String) = retrofitApi.getUser(token)
     suspend fun getSpec(token: String, body: IdBody) = retrofitApi.getSpec(token, body)
@@ -19,4 +20,5 @@ class Repository @Inject constructor(private val retrofitApi: RetrofitApi) {
     suspend fun updateSpec(token: String, body: UpdateSpecModel) = retrofitApi.updateSpec(token, body)
     suspend fun updateAddInf(token: String, body: UpdateAddInfModel) = retrofitApi.updateAddInf(token, body)
     suspend fun updateCreatorState(token: String, body: UpdateCreatorStatus) = retrofitApi.updateCreatorStatus(token, body)
+    suspend fun updateCard(token: String, body: CardModel) = retrofitApi.updateCard(token, body)
 }

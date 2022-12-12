@@ -8,41 +8,50 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.kseniabl.tasksapp.adapters.AddTasksAdapter
 import com.kseniabl.tasksapp.databinding.FragmentAddCardsBinding
 import com.kseniabl.tasksapp.di.AddCardsScope
 import com.kseniabl.tasksapp.dialogs.CreateNewTaskDialog
 import com.kseniabl.tasksapp.models.CardModel
+import com.kseniabl.tasksapp.models.FreelancerModel
 import com.kseniabl.tasksapp.utils.HelperFunctions.generateRandomKey
-import com.kseniabl.tasksapp.utils.UserSaveInterface
+import com.kseniabl.tasksapp.utils.Resource
+import com.kseniabl.tasksapp.utils.UserDataStore
+import com.kseniabl.tasksapp.view.TagsModel
 import com.kseniabl.tasksapp.viewmodels.AddCardsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Provider
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class AddCardsFragment: Fragment() {
-
 
     private var _binding: FragmentAddCardsBinding? = null
     private val binding get() = _binding!!
 
     @Inject
     lateinit var tasksAdapter: AddTasksAdapter
+
     @Inject
     @AddCardsScope
     lateinit var linearLayoutManager: Provider<LinearLayoutManager>
 
     private val viewModel: AddCardsViewModel by viewModels()
+
+    @Inject
+    lateinit var userDataStore: UserDataStore
+
+    private var user: FreelancerModel? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAddCardsBinding.inflate(inflater, container, false)
@@ -61,36 +70,47 @@ class AddCardsFragment: Fragment() {
 
             activeButton.setOnClickListener { viewModel.changeList(true) }
             draftButton.setOnClickListener { viewModel.changeList(false) }
-            addCardFab.setOnClickListener { showCreateTaskDialog(viewModel.adapterList.value) }
-
-            tasksAdapter.setOnClickListener(viewModel)
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    launch {
-                        viewModel.dialogTrigger.collect {
-                            showCreateTaskDialog(it.active, it)
-                        }
-                    }
-                    CoroutineScope(Dispatchers.IO).launch {
-                        viewModel.adapterList.collect {
-                            setupTasksRecyclerView(it, viewModel.getList())
-                        }
-                    }
-                    launch {
-                        viewModel.cards.collect {
-                            setupTasksRecyclerView(viewModel.adapterList.value, it)
-                        }
-                    }
-                }
+            addCardFab.setOnClickListener {
+                viewModel.isUserCreator()
             }
 
+            viewModel.getCards()
+            tasksAdapter.setOnClickListener(viewModel)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.dialogTrigger.collect {
+                        if (it is Resource.Success<*>) {
+                            showCreateTaskDialog(it.data)
+                        }
+                        if (it is Resource.Error<*>)
+                            Snackbar.make(view, it.message ?: "You cannot add cards", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+                launch {
+                    viewModel.adapterList.collect {
+                        val cards = viewModel.cards.value
+                        if (!cards.isNullOrEmpty())
+                            setupTasksRecyclerView(it, cards)
+                    }
+                }
+                launch {
+                    viewModel.cards.collect {
+                        setupTasksRecyclerView(viewModel.adapterList.value, it)
+                    }
+                }
+                launch {
+                    user = userDataStore.readUser.first()
+                }
+            }
         }
     }
 
-    private fun setupTasksRecyclerView(active: Boolean, array: List<CardModel>) {
-        val list = array.filter { if (active) it.active else !it.active}.reversed()
-        CoroutineScope(Dispatchers.Main).launch { tasksAdapter.submitList(list) }
+    private fun setupTasksRecyclerView(active: Boolean, array: ArrayList<CardModel>?) {
+        val list = array?.filter { if (active) it.active else !it.active}
+        CoroutineScope(Dispatchers.Main).launch { tasksAdapter.submitList(list ?: arrayListOf()) }
     }
 
     override fun onDestroyView() {
@@ -102,63 +122,50 @@ class AddCardsFragment: Fragment() {
         super.onCreate(savedInstanceState)
 
         childFragmentManager.setFragmentResultListener("CreateNewTaskDialog", this) { _, bundle ->
-            val resId = bundle.getString("resId") ?: ""
+            var resId = bundle.getString("resId")
             val resTitle = bundle.getString("resTitle")
             val resDescription = bundle.getString("resDescription")
             val resActive = bundle.getBoolean("resActive")
-            val resDate = bundle.getString("resDate")
-            val resCost = bundle.getString("resCost")
+            val resCost = bundle.getFloat("resCost")
+            val resTagsList = bundle.getStringArrayList("resTagsList") ?: arrayListOf()
             val resByAgreementValue = bundle.getBoolean("resByAgreementValue")
+            val resPrepayment = bundle.getBoolean("resPrepayment")
             var resCreateTime = bundle.getLong("resCreateTime")
+            var resUserId = bundle.getString("resUserId")
 
-            if (resTitle != null && resDescription != null && resDate != null && resCost != null) {
-                val cost = try {
-                    resCost.toInt()
-                } catch (e: NumberFormatException) {
-                    0
-                }
+            if (resTitle != null && resDescription != null) {
                 if (resCreateTime == 0L)
                     resCreateTime = Calendar.getInstance().time.time
+                if (resId.isNullOrEmpty()) {
+                    resId = generateRandomKey()
+                }
+                if (resUserId.isNullOrEmpty() && user?.userInfo != null) {
+                    resUserId = user!!.userInfo!!.id
+                }
 
-                /*saveUser.readSharedPref()?.id?.let { id ->
-                    if (resId == "") {
-                        insertCard(resTitle, resDescription, resDate, resCreateTime, cost, resActive, resByAgreementValue, id)
-                    }
-                    else {
-                        changeCard(CardModel(resId, resTitle, resDescription, resDate, resCreateTime, cost, resActive, resByAgreementValue, id))
-                    }
-                }*/
-
+                resUserId?.let {
+                    viewModel.updateCard(
+                        CardModel(
+                            resId, resTitle, resDescription, resCost,
+                            resByAgreementValue, resPrepayment, resTagsList.map { name -> TagsModel(name = name) } as ArrayList<TagsModel>,
+                            resCreateTime, resActive, it
+                        )
+                    )
+                }
             }
         }
     }
 
-    private fun changeCard(card: CardModel) {
-        viewModel.changeCard(card)
-    }
-
-    private fun insertCard(resTitle: String, resDescription: String, resDate: String,
-                           resCreateTime: Long, cost: Int, resActive: Boolean, resByAgreementValue: Boolean, id: String) {
-        val cardId = generateRandomKey()
-        /*viewModel.insertCard(
-            CardModel(
-                cardId, resTitle,
-                resDescription, resDate,
-                resCreateTime, cost,
-                resActive, resByAgreementValue, id
-            )
-        )*/
-    }
-
-    private fun showCreateTaskDialog(active: Boolean, item: CardModel? = null) {
+    private fun showCreateTaskDialog(item: CardModel? = null) {
         val args = Bundle()
         args.putString("id", item?.id)
         args.putString("title", item?.title)
         args.putString("description", item?.description)
-        //args.putInt("cost", item?.cost ?: 0)
-        args.putString("date", item?.date)
-        args.putBoolean("active", item?.active ?: active)
-        //args.putBoolean("agreement", item?.agreement ?: false)
+        args.putFloat("cost", item?.cost ?: 0F)
+        args.putStringArrayList("tags", item?.tags?.map { it.name } as ArrayList<String>)
+        args.putBoolean("active", item?.active ?: false)
+        args.putBoolean("agreement", item?.agreement ?: false)
+        args.putBoolean("prepayment", item?.prepayment ?: false)
         args.putLong("createTime", item?.createTime ?: 0)
         args.putString("userId", item?.user_id)
         val dialog = CreateNewTaskDialog()

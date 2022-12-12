@@ -1,6 +1,7 @@
 package com.kseniabl.tasksapp.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -36,11 +37,20 @@ class AllTasksAdapter: RecyclerView.Adapter<AllTasksAdapter.ActiveTasksHolder>()
         holder.binding.apply {
             cardText.text = item.title
             cardDescr.text = item.description
-            cardDate.text = item.date
-            /*if (item.agreement)
+            if (item.agreement)
                 cardCost.text = "By agreement"
             else
-                cardCost.text = "${item.cost} $"*/
+                cardCost.text = "${item.cost} $"
+
+            if (item.tags.isEmpty()) {
+                tagView.visibility = View.GONE
+                tagText.visibility = View.GONE
+            }
+            else {
+                tagView.visibility = View.VISIBLE
+                tagText.visibility = View.VISIBLE
+                tagView.tags = item.tags
+            }
 
             val currentTime = Calendar.getInstance().time.time
             val distinction = currentTime - item.createTime

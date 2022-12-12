@@ -2,16 +2,19 @@ package com.kseniabl.tasksapp.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kseniabl.tasksapp.databinding.CardItemBinding
 import com.kseniabl.tasksapp.models.CardModel
+import com.kseniabl.tasksapp.view.TagsModel
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.scopes.FragmentScoped
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class AddTasksAdapter: RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(), AllCardsAdapterInterface {
 
@@ -42,11 +45,20 @@ class AddTasksAdapter: RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(),
         holder.binding.apply {
             cardText.text = item.title
             cardDescr.text = item.description
-            cardDate.text = item.date
-            /*if (item.agreement)
+            if (item.agreement)
                 cardCost.text = "By agreement"
             else
-                cardCost.text = "${item.cost} $"*/
+                cardCost.text = "${item.cost} $"
+
+            if (item.tags.isEmpty()) {
+                tagView.visibility = View.GONE
+                tagText.visibility = View.GONE
+            }
+            else {
+                tagView.visibility = View.VISIBLE
+                tagText.visibility = View.VISIBLE
+                tagView.tags = item.tags
+            }
 
             val currentTime = Calendar.getInstance().time.time
             val distinction = currentTime - item.createTime

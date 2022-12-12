@@ -49,8 +49,6 @@ class LoginFragment: Fragment() {
     lateinit var auth: FirebaseAuth
     @Inject
     lateinit var database: DatabaseReference
-    @Inject
-    lateinit var repository: TasksRepositoryInterface
 
     @Inject
     lateinit var userTokenDataStore: UserTokenDataStore
@@ -98,7 +96,6 @@ class LoginFragment: Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.userAllData.collect { data ->
-                        Log.e("qqq", "uu ${data}")
                         if (data != null) {
                             if (data is Resource.Success<*>) {
                                 if (data.data != null) {

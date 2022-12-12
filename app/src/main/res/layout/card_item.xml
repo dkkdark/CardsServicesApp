@@ -114,6 +114,30 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"/>
 
+            <TextView
+                android:id="@+id/tagText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/flowLayout"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/opensans_bold"
+                android:textColor="@color/black"
+                android:text="Tags"
+                android:visibility="gone"/>
+
+            <com.kseniabl.tasksapp.view.TagView
+                android:id="@+id/tagView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tagText"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="12dp"
+                android:visibility="gone"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

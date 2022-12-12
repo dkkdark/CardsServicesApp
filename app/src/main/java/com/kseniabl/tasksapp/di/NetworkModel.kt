@@ -16,8 +16,8 @@ class NetworkModule {
 
     // Set ip of this device (PC)
     @Provides
-    fun provideBaseUrl(): String = "http://192.168.1.64"
     //fun provideBaseUrl(): String = "http:///10.0.2.2"
+    fun provideBaseUrl(): String = "http://192.168.1.64"
 
     @Provides
     @Singleton

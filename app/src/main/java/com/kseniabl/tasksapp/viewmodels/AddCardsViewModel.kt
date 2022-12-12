@@ -1,70 +1,77 @@
 package com.kseniabl.tasksapp.viewmodels
 
 import android.util.Log
-import android.view.View
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import com.kseniabl.tasksapp.adapters.AddTasksAdapter
-import com.kseniabl.tasksapp.adapters.AllCardsAdapterInterface
-import com.kseniabl.tasksapp.db.TasksRepository
-import com.kseniabl.tasksapp.db.TasksRepositoryInterface
 import com.kseniabl.tasksapp.models.CardModel
-import com.kseniabl.tasksapp.models.UserModel
+import com.kseniabl.tasksapp.network.Repository
+import com.kseniabl.tasksapp.utils.Resource
+import com.kseniabl.tasksapp.utils.UserDataStore
+import com.kseniabl.tasksapp.utils.UserTokenDataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddCardsViewModel @Inject constructor(
-    private val repository: TasksRepositoryInterface,
-    private val auth: FirebaseAuth,
-    private val database: DatabaseReference
+    private val repository: Repository,
+    private val userDataStore: UserDataStore,
+    private val userTokenDataStore: UserTokenDataStore
     ): ViewModel(), AddTasksAdapter.Listener {
 
     private val _adapterList = MutableStateFlow(true)
     val adapterList: StateFlow<Boolean> = _adapterList
 
-    private val _dialogTrigger = MutableSharedFlow<CardModel>()
-    val dialogTrigger: SharedFlow<CardModel> = _dialogTrigger
+    private val _dialogTrigger = MutableSharedFlow<Resource<CardModel?>>()
+    val dialogTrigger = _dialogTrigger.asSharedFlow()
 
-    val cards = repository.getAddCards()
+    private val _cards = MutableStateFlow<ArrayList<CardModel>?>(null)
+    val cards = _cards.asStateFlow()
 
     fun changeList(active: Boolean) {
         _adapterList.value = active
     }
 
-    fun insertCard(card: CardModel) {
-        viewModelScope.launch { repository.insertAddCard(card) }
-        setCardToDatabase(card)
-    }
-
-    fun changeCard(card: CardModel) {
-        viewModelScope.launch { repository.changeAddProdCard(card) }
-        setCardToDatabase(card)
-    }
-
-    private fun setCardToDatabase(card: CardModel) {
-        auth.currentUser?.uid?.let {
-            database.child("cards").child(card.id).setValue(card)
+    fun isUserCreator() {
+        viewModelScope.launch {
+            val user = userDataStore.readUser.first()
+            Log.e("qqq", "user loaded $user")
+            if (user.userInfo?.creator == true)
+                _dialogTrigger.emit(Resource.Success(null))
+            else
+                _dialogTrigger.emit(Resource.Error("You must became a creator to add card"))
         }
     }
 
-    fun getList(): List<CardModel> {
-        return repository.allAddCards()
+    fun getCards() {
+        viewModelScope.launch {
+            val token = userTokenDataStore.readToken.first()
+            try {
+                val cards = repository.getUsersCards(token).body()
+                _cards.emit(cards)
+            } catch (exception: Exception) {
+                Log.e("qqq", "load users cards error: ${exception.message}")
+            }
+        }
+    }
+
+    fun updateCard(card: CardModel) {
+        viewModelScope.launch {
+            val token = userTokenDataStore.readToken.first()
+            try {
+                repository.updateCard(token, card)
+                getCards()
+            } catch (exception: Exception) {
+                Log.e("qqq", "Update card was unsuccessful: ${exception.message}")
+            }
+        }
     }
 
     override fun onAddItemClick(item: CardModel) {
         viewModelScope.launch {
-            _dialogTrigger.emit(item)
+            _dialogTrigger.emit(Resource.Success(item))
         }
     }
 }

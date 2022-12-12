@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.kseniabl.tasksapp.models.CardModel
 
-@Database(entities = [CardModel::class], version = 1)
+/*@Database(entities = [CardModel::class], version = 1)
 abstract class CardsTasksDatabase : RoomDatabase() {
     abstract fun addCardDao(): AddCardDao
 
@@ -25,4 +25,4 @@ abstract class CardsTasksDatabase : RoomDatabase() {
             return instance as CardsTasksDatabase
         }
     }
-}
+}*/

@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/*
 @Singleton
 class TasksRepository @Inject constructor(
     @ApplicationContext val context: Context
@@ -50,4 +51,4 @@ class TasksRepository @Inject constructor(
             addCardDao.deleteAllCards()
         }
     }
-}
+}*/
