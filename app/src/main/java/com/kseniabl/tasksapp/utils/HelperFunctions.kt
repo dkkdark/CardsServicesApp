@@ -4,8 +4,10 @@ import android.app.Activity
 import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.os.Bundle
+import android.util.Log
 import com.kseniabl.tasksapp.R
 import java.util.*
+import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 object HelperFunctions {
@@ -42,5 +44,12 @@ object HelperFunctions {
     fun generateRandomKey(): String {
         val uuid = UUID.randomUUID()
         return uuid.toString()
+    }
+
+    fun isValidPassword(password: String): Boolean {
+        val PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})"
+        val pattern = Pattern.compile(PASSWORD_PATTERN)
+        val matcher = pattern.matcher(password)
+        return matcher.matches()
     }
 }

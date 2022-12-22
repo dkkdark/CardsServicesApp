@@ -1,395 +1,416 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="20dp"
-        app:cardCornerRadius="30dp"
-        app:cardElevation="15dp">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="30dp">
-
-            <TextView
-                android:id="@+id/crateChangeTask"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Create/change task"
-                android:fontFamily="@font/opensans_extrabold"
-                android:textSize="20dp"
-                android:textColor="@color/purple"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/dialogDeleteButton"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="20dp"
-                android:ellipsize="end"/>
-
-            <ImageView
-                android:id="@+id/dialogDeleteButton"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/crateChangeTask"
-                app:layout_constraintBottom_toBottomOf="@id/crateChangeTask"
-                android:src="@drawable/delete"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/dialogTaskTitle"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="10dp"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/crateChangeTask">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/dialogTaskTitleText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="@font/opensans_bold"
-                    android:gravity="start"
-                    android:hint="Your title"
-                    android:inputType="textMultiLine|textCapSentences"
-                    android:textColor="@color/black" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/dialogTaskDescription"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="10dp"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialogTaskTitle">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/dialogTaskDescriptionText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:gravity="start"
-                    android:hint="Describe your task"
-                    android:inputType="textMultiLine|textCapSentences"
-                    android:textColor="@color/black" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/dialogTagAddField"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@id/dialogAddTagButton"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialogTaskDescription"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="10dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/dialogTagAddText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:inputType="textMultiLine|textCapSentences"
-                    android:maxLines="1"
-                    android:gravity="start"
-                    android:hint="New tag to add"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/dialogAddTagButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:text="Add"
-                android:textColor="@color/purple"
-                android:textStyle="bold"
-                app:cornerRadius="16dp"
-                android:layout_marginEnd="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/dialogTagAddField"
-                app:layout_constraintTop_toTopOf="@id/dialogTagAddField"
-                app:layout_constraintBottom_toBottomOf="@id/dialogTagAddField"/>
-
-            <com.kseniabl.tasksapp.view.TagView
-                android:id="@+id/tagView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialogTagAddField"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/dialogPayText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/opensans_bold"
-                android:text="Payment:"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tagView"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="8dp"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="15dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/dialogChangePriceLayout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                app:layout_constraintEnd_toStartOf="@id/dialogChangeAgreementLayout"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="parent">
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:id="@+id/crateChangeTask"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Create/change task"
+                    android:fontFamily="@font/opensans_extrabold"
+                    android:textSize="20dp"
+                    android:textColor="@color/purple"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/dialogDeleteButton"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="20dp"
+                    android:ellipsize="end"/>
+
+                <ImageView
+                    android:id="@+id/dialogDeleteButton"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/crateChangeTask"
+                    app:layout_constraintBottom_toBottomOf="@id/crateChangeTask"
+                    android:src="@drawable/delete"/>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/dialogTaskCostField"
+                    android:id="@+id/dialogTaskTitle"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    app:boxCornerRadiusBottomEnd="20dp"
+                    app:boxCornerRadiusBottomStart="20dp"
+                    app:boxCornerRadiusTopEnd="20dp"
+                    app:boxCornerRadiusTopStart="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/crateChangeTask">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/dialogTaskTitleText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/opensans_bold"
+                        android:gravity="start"
+                        android:hint="Your title"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/dialogTaskDescription"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="10dp"
+                    app:boxCornerRadiusBottomEnd="20dp"
+                    app:boxCornerRadiusBottomStart="20dp"
+                    app:boxCornerRadiusTopEnd="20dp"
+                    app:boxCornerRadiusTopStart="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dialogTaskTitle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/dialogTaskDescriptionText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:gravity="start"
+                        android:hint="Describe your task"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/dialogTagAddField"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toStartOf="@id/dialogAddTagButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dialogTaskDescription"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     app:boxCornerRadiusBottomEnd="20dp"
                     app:boxCornerRadiusBottomStart="20dp"
                     app:boxCornerRadiusTopEnd="20dp"
                     app:boxCornerRadiusTopStart="20dp"
                     android:layout_marginStart="6dp"
-                    app:layout_constraintEnd_toStartOf="@id/dollarText"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:minWidth="100dp">
+                    android:layout_marginEnd="10dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/dialogTaskCostText"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/dialogTagAddText"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:gravity="start"
-                        android:hint="Fix price"
-                        android:inputType="number"
+                        android:inputType="textMultiLine|textCapSentences"
                         android:maxLines="1"
-                        android:textColor="@color/black" />
+                        android:gravity="start"
+                        android:hint="New tag to add"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/dollarText"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/dialogAddTagButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@id/dialogTaskCostField"
-                    app:layout_constraintBottom_toBottomOf="@id/dialogTaskCostField"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="@color/black"
-                    android:text="$"
-                    android:textSize="16dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/activeConstraintLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                app:layout_constraintEnd_toStartOf="@id/prepaymentLayout"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/flowLayout">
-
-                <TextView
-                    android:id="@+id/dialogActiveText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="22dp"
-                    android:fontFamily="@font/opensans_bold"
-                    android:text="Active:"
-                    android:textColor="@color/black"
-                    app:layout_constraintEnd_toStartOf="@id/dialogCheckBox"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <CheckBox
-                    android:id="@+id/dialogCheckBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    app:layout_constraintBottom_toBottomOf="@id/dialogActiveText"
-                    app:layout_constraintStart_toEndOf="@id/dialogActiveText"
-                    app:layout_constraintTop_toTopOf="@id/dialogActiveText" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/dialogChangeAgreementLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@id/dialogChangePriceLayout"
-                app:layout_constraintStart_toEndOf="@id/dialogChangePriceLayout"
-                app:layout_constraintTop_toTopOf="@id/dialogChangePriceLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp">
-
-                <TextView
-                    android:id="@+id/dialogByAgreementText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/dialogChangeAgreementLayout"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:text="By agreement"
-                    android:fontFamily="@font/opensans_bold"
-                    android:textColor="@color/black"
+                    android:backgroundTint="@color/white"
+                    android:text="Add"
+                    android:textColor="@color/purple"
+                    android:textStyle="bold"
+                    app:cornerRadius="16dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginStart="22dp"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/dialogTagAddField"
+                    app:layout_constraintTop_toTopOf="@id/dialogTagAddField"
+                    app:layout_constraintBottom_toBottomOf="@id/dialogTagAddField"/>
 
-                <CheckBox
-                    android:id="@+id/dialogByAgreementCheckBox"
+                <com.kseniabl.tasksapp.view.TagView
+                    android:id="@+id/tagView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    app:layout_constraintBottom_toBottomOf="@id/dialogByAgreementText"
-                    app:layout_constraintStart_toEndOf="@id/dialogByAgreementText"
-                    app:layout_constraintTop_toTopOf="@id/dialogByAgreementText" />
+                    android:layout_marginStart="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dialogTagAddField"
+                    android:visibility="gone"/>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/prepaymentLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@id/activeConstraintLayout"
-                app:layout_constraintStart_toEndOf="@id/activeConstraintLayout"
-                app:layout_constraintTop_toTopOf="@id/activeConstraintLayout"
-                app:layout_constraintEnd_toEndOf="parent">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/dialogDeleteTags"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_toStartOf="@+id/dialogCreateChangeButton"
+                    android:backgroundTint="@color/white"
+                    android:text="Clear tags"
+                    android:textColor="@color/purple"
+                    android:textStyle="bold"
+                    app:cornerRadius="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tagView"
+                    android:visibility="gone"/>
 
                 <TextView
-                    android:id="@+id/prepaymentText"
+                    android:id="@+id/dialogPayText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="22dp"
                     android:fontFamily="@font/opensans_bold"
+                    android:text="Payment:"
                     android:textColor="@color/black"
-                    android:text="Prepayment:"
-                    app:layout_constraintEnd_toStartOf="@id/prepaymentCheckBox"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/dialogDeleteTags"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="8dp"/>
 
-                <CheckBox
-                    android:id="@+id/prepaymentCheckBox"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/dialogChangePriceLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    app:layout_constraintBottom_toBottomOf="@id/prepaymentText"
-                    app:layout_constraintStart_toEndOf="@id/prepaymentText"
-                    app:layout_constraintTop_toTopOf="@id/prepaymentText" />
+                    android:paddingBottom="8dp"
+                    app:layout_constraintEnd_toStartOf="@id/dialogChangeAgreementLayout"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/dialogTaskCostField"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:boxCornerRadiusBottomEnd="20dp"
+                        app:boxCornerRadiusBottomStart="20dp"
+                        app:boxCornerRadiusTopEnd="20dp"
+                        app:boxCornerRadiusTopStart="20dp"
+                        android:layout_marginStart="6dp"
+                        app:layout_constraintEnd_toStartOf="@id/dollarText"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:minWidth="100dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/dialogTaskCostText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:gravity="start"
+                            android:hint="Fix price"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:textColor="@color/black" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/dollarText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="@id/dialogTaskCostField"
+                        app:layout_constraintBottom_toBottomOf="@id/dialogTaskCostField"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:textColor="@color/black"
+                        android:text="$"
+                        android:textSize="16dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/activeConstraintLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintEnd_toStartOf="@id/prepaymentLayout"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/flowLayout">
+
+                    <TextView
+                        android:id="@+id/dialogActiveText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="22dp"
+                        android:fontFamily="@font/opensans_bold"
+                        android:text="Active:"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toStartOf="@id/dialogCheckBox"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/dialogCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        app:layout_constraintBottom_toBottomOf="@id/dialogActiveText"
+                        app:layout_constraintStart_toEndOf="@id/dialogActiveText"
+                        app:layout_constraintTop_toTopOf="@id/dialogActiveText" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/dialogChangeAgreementLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/dialogChangePriceLayout"
+                    app:layout_constraintStart_toEndOf="@id/dialogChangePriceLayout"
+                    app:layout_constraintTop_toTopOf="@id/dialogChangePriceLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/dialogByAgreementText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/dialogChangeAgreementLayout"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:text="By agreement"
+                        android:fontFamily="@font/opensans_bold"
+                        android:textColor="@color/black"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="22dp"/>
+
+                    <CheckBox
+                        android:id="@+id/dialogByAgreementCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        app:layout_constraintBottom_toBottomOf="@id/dialogByAgreementText"
+                        app:layout_constraintStart_toEndOf="@id/dialogByAgreementText"
+                        app:layout_constraintTop_toTopOf="@id/dialogByAgreementText" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/prepaymentLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/activeConstraintLayout"
+                    app:layout_constraintStart_toEndOf="@id/activeConstraintLayout"
+                    app:layout_constraintTop_toTopOf="@id/activeConstraintLayout"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/prepaymentText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="22dp"
+                        android:fontFamily="@font/opensans_bold"
+                        android:textColor="@color/black"
+                        android:text="Prepayment:"
+                        app:layout_constraintEnd_toStartOf="@id/prepaymentCheckBox"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/prepaymentCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        app:layout_constraintBottom_toBottomOf="@id/prepaymentText"
+                        app:layout_constraintStart_toEndOf="@id/prepaymentText"
+                        app:layout_constraintTop_toTopOf="@id/prepaymentText" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/dialogCreateCloseButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_toStartOf="@+id/dialogCreateChangeButton"
+                    android:backgroundTint="@color/white"
+                    android:text="Close"
+                    android:textColor="@color/purple"
+                    android:textStyle="bold"
+                    app:cornerRadius="16dp"
+                    app:layout_constraintEnd_toStartOf="@+id/dialogCreateChangeButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/flowLayout2" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/dialogCreateChangeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/flowLayout2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/dialogCreateCloseButton"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/white"
+                    android:text="Submit"
+                    android:textColor="@color/purple"
+                    android:textStyle="bold"
+                    app:cornerRadius="16dp" />
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flowLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="dialogChangePriceLayout, dialogChangeAgreementLayout"
+                    app:flow_horizontalBias="0"
+                    app:flow_horizontalGap="10dp"
+                    app:flow_horizontalStyle="spread_inside"
+                    app:flow_verticalBias="0"
+                    app:flow_wrapMode="chain"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dialogPayText"
+                    app:layout_constraintBottom_toTopOf="@id/activeConstraintLayout"/>
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flowLayout2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="activeConstraintLayout, prepaymentLayout"
+                    app:flow_horizontalBias="0"
+                    app:flow_horizontalGap="10dp"
+                    app:flow_horizontalStyle="spread_inside"
+                    app:flow_verticalBias="0"
+                    app:flow_wrapMode="chain"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/flowLayout"
+                    app:layout_constraintBottom_toTopOf="@id/dialogCreateCloseButton"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/dialogCreateCloseButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="20dp"
-                android:layout_toStartOf="@+id/dialogCreateChangeButton"
-                android:backgroundTint="@color/white"
-                android:text="Close"
-                android:textColor="@color/purple"
-                android:textStyle="bold"
-                app:cornerRadius="16dp"
-                app:layout_constraintEnd_toStartOf="@+id/dialogCreateChangeButton"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/flowLayout2" />
+        </androidx.cardview.widget.CardView>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/dialogCreateChangeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/flowLayout2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/dialogCreateCloseButton"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="@color/white"
-                android:text="Submit"
-                android:textColor="@color/purple"
-                android:textStyle="bold"
-                app:cornerRadius="16dp" />
-
-            <androidx.constraintlayout.helper.widget.Flow
-                android:id="@+id/flowLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="dialogChangePriceLayout, dialogChangeAgreementLayout"
-                app:flow_horizontalBias="0"
-                app:flow_horizontalGap="10dp"
-                app:flow_horizontalStyle="spread_inside"
-                app:flow_verticalBias="0"
-                app:flow_wrapMode="chain"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialogPayText"
-                app:layout_constraintBottom_toTopOf="@id/activeConstraintLayout"/>
-
-            <androidx.constraintlayout.helper.widget.Flow
-                android:id="@+id/flowLayout2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="activeConstraintLayout, prepaymentLayout"
-                app:flow_horizontalBias="0"
-                app:flow_horizontalGap="10dp"
-                app:flow_horizontalStyle="spread_inside"
-                app:flow_verticalBias="0"
-                app:flow_wrapMode="chain"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/flowLayout"
-                app:layout_constraintBottom_toTopOf="@id/dialogCreateCloseButton"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</ScrollView>

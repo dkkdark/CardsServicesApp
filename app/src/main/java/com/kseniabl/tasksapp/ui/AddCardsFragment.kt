@@ -162,7 +162,7 @@ class AddCardsFragment: Fragment() {
         args.putString("title", item?.title)
         args.putString("description", item?.description)
         args.putFloat("cost", item?.cost ?: 0F)
-        args.putStringArrayList("tags", item?.tags?.map { it.name } as ArrayList<String>)
+        args.putStringArrayList("tags", item?.tags?.map { it.name } as ArrayList<String>?)
         args.putBoolean("active", item?.active ?: false)
         args.putBoolean("agreement", item?.agreement ?: false)
         args.putBoolean("prepayment", item?.prepayment ?: false)

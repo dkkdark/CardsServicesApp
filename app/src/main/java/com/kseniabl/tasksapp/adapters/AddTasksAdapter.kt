@@ -80,7 +80,7 @@ class AddTasksAdapter: RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(),
     }
 
     fun setOnClickListener(onClickListener: Listener) {
-       listener = onClickListener;
+       listener = onClickListener
     }
 
     override fun getItemCount(): Int = differ.currentList.size

@@ -103,12 +103,17 @@
 
             <TextView
                 android:id="@+id/specializationChangeText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/specializationText"
                 android:layout_alignBottom="@id/specializationText"
                 android:layout_alignTop="@id/specializationText"
                 android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentEnd="true"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:maxLines="1"
                 android:text="—"
                 android:textSize="14dp"/>
 
@@ -124,12 +129,13 @@
 
             <TextView
                 android:id="@+id/descriptionSpecializationChangeText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/descriptionSpecializationText"
-                android:layout_alignBottom="@id/descriptionSpecializationText"
-                android:layout_alignTop="@id/descriptionSpecializationText"
-                android:layout_marginStart="10dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/descriptionSpecializationText"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="6dp"
+                android:layout_alignParentEnd="true"
                 android:text="—"
                 android:textSize="14dp" />
 
@@ -190,10 +196,8 @@
                 android:id="@+id/descriptionAddInfoChangeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/descriptionAddInfoText"
-                android:layout_alignBottom="@id/descriptionAddInfoText"
-                android:layout_alignTop="@id/descriptionAddInfoText"
-                android:layout_marginStart="10dp"
+                android:layout_below="@id/descriptionAddInfoText"
+                android:layout_marginTop="6dp"
                 android:text="—"
                 android:textSize="14dp" />
 
@@ -202,7 +206,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Country:"
-                android:layout_below="@id/descriptionAddInfoText"
+                android:layout_below="@id/descriptionAddInfoChangeText"
                 android:fontFamily="@font/opensans_bold"
                 android:layout_marginTop="10dp"
                 android:textSize="14dp"/>

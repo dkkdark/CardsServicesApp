@@ -11,15 +11,6 @@
         android:layout_height="wrap_content"
         android:paddingBottom="20dp">
 
-        <View
-            android:id="@+id/additionalSpace"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:orientation="vertical"
-            android:background="@drawable/circular_background"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/headerLayout"
             android:layout_width="match_parent"
@@ -33,7 +24,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="40dp"
                 android:text="Title"
                 android:textColor="@color/white"
@@ -49,7 +40,7 @@
                 android:layout_marginTop="20dp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="Fee: " />
+                android:text="Payment: " />
 
             <TextView
                 android:id="@+id/feeText"
@@ -64,7 +55,7 @@
                 android:fontFamily="@font/montserrat_bold"/>
 
             <TextView
-                android:id="@+id/untilTitle"
+                android:id="@+id/prepaymentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="@id/feeTitle"
@@ -72,15 +63,16 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="Until:" />
+                android:text="Prepayment:" />
 
             <TextView
-                android:id="@+id/untilText"
+                android:id="@+id/prepaymentText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10 Feb 2022"
-                app:layout_constraintTop_toTopOf="@id/untilTitle"
-                app:layout_constraintBottom_toBottomOf="@id/untilTitle"
+                android:text="No"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toTopOf="@id/prepaymentTitle"
+                app:layout_constraintBottom_toBottomOf="@id/prepaymentTitle"
                 app:layout_constraintStart_toStartOf="@id/feeText"
                 android:textColor="@color/white"
                 android:fontFamily="@font/montserrat_bold"/>
@@ -118,13 +110,22 @@
                     android:textSize="20dp"
                     android:textColor="@color/purple"/>
 
+                <com.kseniabl.tasksapp.view.TagView
+                    android:id="@+id/tagView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/descriptionTitle"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
+
                 <TextView
                     android:id="@+id/descriptionText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:layout_below="@id/descriptionTitle"
+                    android:layout_below="@id/tagView"
                     android:layout_marginTop="10dp"
+                    android:layout_marginStart="8dp"
                     android:textSize="12dp" />
 
             </RelativeLayout>
@@ -154,11 +155,11 @@
                 android:layout_marginBottom="30dp">
 
                 <TextView
-                    android:id="@+id/FreelancerTitle"
+                    android:id="@+id/creatorTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/opensans_extrabold"
-                    android:text="Freelancer"
+                    android:text="Creator"
                     android:textColor="@color/purple"
                     android:textSize="20dp" />
 
@@ -166,7 +167,7 @@
                     android:id="@+id/imageViewProfile"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_below="@id/FreelancerTitle"
+                    android:layout_below="@id/creatorTitle"
                     android:src="@drawable/user"
                     app:civ_border_width="0dp"
                     app:civ_shadow="true"
@@ -188,9 +189,10 @@
                         android:text=""
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toTopOf="@id/specializationText"
+                        android:layout_marginTop="8dp"
                         android:textColor="@color/black"
-                        android:textSize="12dp"/>
+                        android:textSize="14dp"
+                        android:fontFamily="@font/opensans_extrabold"/>
 
                     <TextView
                         android:id="@+id/specializationText"
@@ -198,9 +200,21 @@
                         android:layout_height="wrap_content"
                         android:text=""
                         app:layout_constraintTop_toBottomOf="@id/nameText"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/black"
+                        android:textSize="12dp"/>
+
+                    <TextView
+                        android:id="@+id/specializationDescrText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        app:layout_constraintTop_toBottomOf="@id/specializationText"
                         app:layout_constraintStart_toStartOf="parent"
                         android:textColor="@color/black"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
                         android:textSize="12dp"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -220,7 +234,7 @@
             android:layout_marginTop="20dp"
             android:textSize="12dp"
             android:backgroundTint="@color/white"
-            android:text="Respond to task"
+            android:text="Plan date"
             android:textColor="@color/purple"
             android:textStyle="bold"
             app:cornerRadius="16dp" />

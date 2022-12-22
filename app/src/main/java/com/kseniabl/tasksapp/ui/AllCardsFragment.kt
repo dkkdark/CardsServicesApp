@@ -5,21 +5,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.snackbar.Snackbar
+import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.adapters.AllTasksAdapter
 import com.kseniabl.tasksapp.adapters.FreelancersAdapter
 import com.kseniabl.tasksapp.databinding.FragmentAllCardsBinding
 import com.kseniabl.tasksapp.di.AllCardsScope
 import com.kseniabl.tasksapp.models.*
 import com.kseniabl.tasksapp.utils.Resource
+import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.viewmodels.AllCardsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -51,8 +55,8 @@ class AllCardsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val layoutManager = linearLayoutManager.get()
-        layoutManager.flexDirection = FlexDirection.ROW;
-        layoutManager.justifyContent = JustifyContent.SPACE_AROUND;
+        layoutManager.flexDirection = FlexDirection.ROW
+        layoutManager.justifyContent = JustifyContent.SPACE_AROUND
 
         binding.apply {
             allCardsRecycler.layoutManager = layoutManager
@@ -79,6 +83,7 @@ class AllCardsFragment: Fragment() {
 
         viewModel.getCards()
         viewModel.getUsers()
+        allTasksAdapter.setOnClickListener(viewModel)
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -107,6 +112,13 @@ class AllCardsFragment: Fragment() {
                         if (viewModel.adapterValue.value is FreelancersAdapter) {
                             setupFreelancersRecyclerView(it)
                         }
+                    }
+                }
+                launch {
+                    viewModel.openDetailsTrigger.collect {
+                        findTopNavController().navigate(
+                            TabsFragmentDirections.actionTabsFragmentToCardDetailsFragment(it)
+                        )
                     }
                 }
             }

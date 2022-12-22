@@ -44,7 +44,11 @@
     <fragment
         android:id="@+id/cardDetailsFragment"
         android:name="com.kseniabl.tasksapp.ui.CardDetailsFragment"
-        android:label="Card Info" />
+        android:label="Card Info" >
+        <argument
+            android:name="card"
+            app:argType="com.kseniabl.tasksapp.models.CardModel"/>
+    </fragment>
     <fragment
         android:id="@+id/freelancerDetailsFragment"
         android:name="com.kseniabl.tasksapp.ui.FreelancerDetailsFragment"

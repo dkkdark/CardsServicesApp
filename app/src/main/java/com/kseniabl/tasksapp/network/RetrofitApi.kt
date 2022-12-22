@@ -7,6 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface RetrofitApi {
     @POST("login")
@@ -24,8 +25,11 @@ interface RetrofitApi {
     @GET("users")
     suspend fun getUsers(@Header("Authorization") token: String): Response<ArrayList<UserModel>>
 
+    @GET("user/{id}")
+    suspend fun getUserById(@Header("Authorization") token: String, @Path("id") id: String): Response<UserModel>
+
     @GET("user")
-    suspend fun getUser(@Header("Authorization") token: String): Response<UserModel>
+    suspend fun getUserByToken(@Header("Authorization") token: String): Response<UserModel>
 
     @PATCH("spec")
     suspend fun getSpec(@Header("Authorization") token: String, @Body id: IdBody): Response<Specialization>

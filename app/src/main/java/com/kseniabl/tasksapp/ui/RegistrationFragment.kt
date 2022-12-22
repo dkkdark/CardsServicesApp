@@ -14,17 +14,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.kseniabl.tasksapp.databinding.FragmentRegistrationBinding
 import com.kseniabl.tasksapp.models.AddUserModel
-import com.kseniabl.tasksapp.models.AdditionalInfo
-import com.kseniabl.tasksapp.models.Specialization
-import com.kseniabl.tasksapp.models.UserModel
 import com.kseniabl.tasksapp.utils.Constants.masterPassword
 import com.kseniabl.tasksapp.utils.Constants.ordinary
+import com.kseniabl.tasksapp.utils.HelperFunctions.isValidPassword
 import com.kseniabl.tasksapp.utils.Resource
-import com.kseniabl.tasksapp.viewmodels.RegistrationViewModel
+import com.kseniabl.tasksapp.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,7 +35,7 @@ class RegistrationFragment: Fragment() {
     @Inject
     lateinit var database: DatabaseReference
 
-    private val viewModel: RegistrationViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     private var _binding: FragmentRegistrationBinding? = null
     private val binding get() = _binding!!
@@ -102,12 +99,8 @@ class RegistrationFragment: Fragment() {
                 emailRegisterText.error = "You didn't specify email"
                 noEmptyFields = true
             }
-            if (passwordRegText.text.isNullOrEmpty()) {
-                passwordRegText.error = "You didn't specify password"
-                noEmptyFields = true
-            }
-            if (repeatPasswordText.text.isNullOrEmpty()) {
-                repeatPasswordText.error = "You didn't specify password"
+            if (!isValidPassword(passwordRegText.text.toString().trim())) {
+                passwordRegText.error = "Your password is weak"
                 noEmptyFields = true
             }
             if (passwordRegText.text.toString() != repeatPasswordText.text.toString()

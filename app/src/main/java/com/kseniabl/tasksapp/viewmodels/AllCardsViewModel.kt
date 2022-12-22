@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
+import com.kseniabl.tasksapp.adapters.AddTasksAdapter
 import com.kseniabl.tasksapp.adapters.AllCardsAdapterInterface
 import com.kseniabl.tasksapp.adapters.AllTasksAdapter
 import com.kseniabl.tasksapp.models.*
@@ -21,7 +22,7 @@ import javax.inject.Inject
 class AllCardsViewModel @Inject constructor(
     private val repository: Repository,
     private val userTokenDataStore: UserTokenDataStoreInterface
-): ViewModel() {
+): ViewModel(), AddTasksAdapter.Listener {
 
     private val _adapterValue = MutableLiveData<AllCardsAdapterInterface>(AllTasksAdapter())
     val adapterValue: LiveData<AllCardsAdapterInterface> = _adapterValue
@@ -31,6 +32,9 @@ class AllCardsViewModel @Inject constructor(
 
     private val _adapterCreatorsList = MutableStateFlow<Resource<ArrayList<UserModel>>?>(null)
     private val _specializationDate = MutableStateFlow<Resource<ArrayList<Specialization>>?>(null)
+
+    private val _openDetailsTrigger = MutableSharedFlow<CardModel>()
+    val openDetailsTrigger = _openDetailsTrigger.asSharedFlow()
 
     val creatorInfoData = combine(
         _adapterCreatorsList,
@@ -102,6 +106,12 @@ class AllCardsViewModel @Inject constructor(
                     _adapterTasksList.emit(Resource.Error(errorMessage = exception.message ?: "Some error occurred"))
                 }
             }
+        }
+    }
+
+    override fun onAddItemClick(item: CardModel) {
+        viewModelScope.launch {
+            _openDetailsTrigger.emit(item)
         }
     }
 }

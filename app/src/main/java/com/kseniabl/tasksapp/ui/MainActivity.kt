@@ -18,8 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.ActivityMainBinding
 import com.kseniabl.tasksapp.utils.HelperFunctions
-import com.kseniabl.tasksapp.utils.Resource
-import com.kseniabl.tasksapp.viewmodels.RegistrationViewModel
+import com.kseniabl.tasksapp.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var auth: FirebaseAuth
 
-    private val viewModel: RegistrationViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     private lateinit var binding: ActivityMainBinding
     private var navController: NavController? = null

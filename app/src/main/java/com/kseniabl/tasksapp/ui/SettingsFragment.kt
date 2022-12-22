@@ -77,6 +77,8 @@ class SettingsFragment: Fragment() {
                         if (data is Resource.Success<*>) {
                             if (data.data?.isSuccessful == true) {
                                 Snackbar.make(view, "You became a creator!", Snackbar.LENGTH_SHORT).show()
+                                binding.beCreatorButton.isEnabled = false
+                                binding.beCreatorButton.text = "You are creator"
                             }
                         }
                         if (data is Resource.Error<*>) {
@@ -101,6 +103,11 @@ class SettingsFragment: Fragment() {
                             checkIsEmpty(countryChangeText, user.additionalInfo?.country)
                             checkIsEmpty(cityChangeText, user.additionalInfo?.city)
                             checkIsEmpty(typeOfWorkChangeText, user.additionalInfo?.typeOfWork)
+
+                            if (user.userInfo?.creator == true) {
+                                beCreatorButton.isEnabled = false
+                                beCreatorButton.text = "You are creator"
+                            }
                         }
                     }
                 }
@@ -161,7 +168,6 @@ class SettingsFragment: Fragment() {
         val args = Bundle()
         args.putString("specialization", binding.specializationChangeText.text.toString())
         args.putString("description", binding.descriptionSpecializationChangeText.text.toString())
-
         val dialog = ChangeProfessionDialogFragment()
         dialog.arguments = args
         dialog.show(childFragmentManager, "ChangeProfessionDialogFragment")

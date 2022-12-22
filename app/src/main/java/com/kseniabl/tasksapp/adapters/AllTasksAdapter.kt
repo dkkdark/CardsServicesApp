@@ -12,6 +12,8 @@ import java.util.*
 
 class AllTasksAdapter: RecyclerView.Adapter<AllTasksAdapter.ActiveTasksHolder>(), AllCardsAdapterInterface {
 
+    private var listener: AddTasksAdapter.Listener? = null
+
     private val diffCallback = object : DiffUtil.ItemCallback<CardModel>() {
         override fun areItemsTheSame(oldItem: CardModel, newItem: CardModel): Boolean =
             oldItem.id == newItem.id
@@ -66,7 +68,15 @@ class AllTasksAdapter: RecyclerView.Adapter<AllTasksAdapter.ActiveTasksHolder>()
             else if (numOfDays != 0 && hours != 0 && minutes != 0)
                 cardTime.text = "$numOfDays days ago"
         }
+
+        holder.itemView.setOnClickListener {
+            listener?.onAddItemClick(item)
+        }
     }
 
     override fun getItemCount(): Int = differ.currentList.size
+
+    fun setOnClickListener(onClickListener: AddTasksAdapter.Listener) {
+        listener = onClickListener
+    }
 }

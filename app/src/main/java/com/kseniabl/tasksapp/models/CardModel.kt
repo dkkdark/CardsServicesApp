@@ -1,11 +1,15 @@
 package com.kseniabl.tasksapp.models
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import com.kseniabl.tasksapp.view.TagsModel
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 @Entity
+@Parcelize
 data class CardModel(
     @PrimaryKey
     @SerializedName("card_id")
@@ -28,4 +32,4 @@ data class CardModel(
     var active: Boolean = true,
     @SerializedName("user_id")
     var user_id: String = ""
-)
+): Parcelable

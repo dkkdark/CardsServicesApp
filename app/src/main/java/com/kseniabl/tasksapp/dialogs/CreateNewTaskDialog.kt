@@ -87,10 +87,13 @@ class CreateNewTaskDialog: BaseDialog(){
             dialogByAgreementCheckBox.isChecked = agreement
             prepaymentCheckBox.isChecked = prepayment
 
-            if (tagsList.isEmpty())
+            if (tagsList.isEmpty()) {
                 tagView.visibility = View.GONE
+                dialogDeleteTags.visibility = View.GONE
+            }
             else {
                 tagView.visibility = View.VISIBLE
+                dialogDeleteTags.visibility = View.VISIBLE
                 tagView.tags = tagsList.map { TagsModel(name = it) } as ArrayList<TagsModel>
             }
         }
@@ -148,12 +151,19 @@ class CreateNewTaskDialog: BaseDialog(){
             dialogAddTagButton.setOnClickListener {
                 if (!dialogTagAddText.text.isNullOrEmpty()) {
                     tagView.visibility = View.VISIBLE
+                    dialogDeleteTags.visibility = View.VISIBLE
                     val tags = tagView.tags
                     tags.add(TagsModel(dialogTagAddText.text.toString()))
                     tagsList.add(dialogTagAddText.text.toString())
                     tagView.tags = tags
                     dialogTagAddText.setText("")
                 }
+            }
+            dialogDeleteTags.setOnClickListener {
+                tagsList.clear()
+                tagView.tags.clear()
+                tagView.visibility = View.GONE
+                dialogDeleteTags.visibility = View.GONE
             }
         }
     }
