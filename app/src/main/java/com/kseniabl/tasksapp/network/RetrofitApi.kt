@@ -22,6 +22,9 @@ interface RetrofitApi {
     @GET("cards-by-id")
     suspend fun getUsersCards(@Header("Authorization") token: String): Response<ArrayList<CardModel>>
 
+    @GET("booked-cards")
+    suspend fun getBookedCards(@Header("Authorization") token: String): Response<ArrayList<CardModel>>
+
     @GET("users")
     suspend fun getUsers(@Header("Authorization") token: String): Response<ArrayList<UserModel>>
 
@@ -45,6 +48,9 @@ interface RetrofitApi {
 
     @POST("update-creator-status")
     suspend fun updateCreatorStatus(@Header("Authorization") token: String, @Body updateCreatorStatus: UpdateCreatorStatus): Response<Void>
+
+    @POST("update-book-date-user")
+    suspend fun updateBookDateUser(@Header("Authorization") token: String, @Body updateBookDateUser: UpdateBookDateUser): Response<Void>
 
     @POST("update-card")
     suspend fun updateCard(@Header("Authorization") token: String, @Body updateCardModel: CardModel): Response<Void>

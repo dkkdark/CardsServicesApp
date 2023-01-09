@@ -1,16 +1,72 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.TasksApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.TasksApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/purple</item>
+        <item name="colorPrimaryVariant">@color/purple</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondary">@color/purple</item>
+        <item name="colorSecondaryVariant">@color/purple</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="BackgroundStyle">
+        <item name="android:backgroundTint">#242424</item>
+    </style>
+
+    <style name="CardsBackgroundStyle">
+        <item name="android:backgroundTint">#313131</item>
+    </style>
+
+    <style name="MainTextStyle">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="SmallTextStyle">
+        <item name="android:textColor">#F3F3F3</item>
+    </style>
+
+    <style name="SubTextStyle">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="ButtonStyle">
+        <item name="android:backgroundTint">#373737</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="SpinnerStyle">
+        <item name="android:background">@drawable/button_outline_night</item>
+        <item name="android:popupBackground">@drawable/button_outline_night</item>
+    </style>
+
+    <style name="ImageStyle">
+        <item name="android:src">@drawable/pencil</item>
+    </style>
+
+    <style name="OpenSansTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/opensans_medium</item>
+    </style>
+
+    <style name="OPSansBoldTextViewStyle" >
+        <item name="android:fontFamily">@font/opensans_extrabold</item>
+        <item name="android:textSize">24dp</item>
+    </style>
+
+    <style name="OpenSansButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/opensans_medium</item>
+    </style>
+
+    <style name="Theme.TasksApp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.CardTasks.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.CardTasks.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.kseniabl.tasksapp.adapters.AddTasksAdapter
@@ -21,6 +22,7 @@ import com.kseniabl.tasksapp.models.FreelancerModel
 import com.kseniabl.tasksapp.utils.HelperFunctions.generateRandomKey
 import com.kseniabl.tasksapp.utils.Resource
 import com.kseniabl.tasksapp.utils.UserDataStore
+import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.view.TagsModel
 import com.kseniabl.tasksapp.viewmodels.AddCardsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,10 +63,8 @@ class AddCardsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val layoutManager = linearLayoutManager.get()
-
         binding.apply {
-            addCardsRecycler.layoutManager = layoutManager
+            addCardsRecycler.layoutManager = linearLayoutManager.get()
             addCardsRecycler.adapter = tasksAdapter
             addCardsRecycler.setItemViewCacheSize(20)
 
@@ -106,6 +106,8 @@ class AddCardsFragment: Fragment() {
                 }
             }
         }
+
+        observeBackStackEntry()
     }
 
     private fun setupTasksRecyclerView(active: Boolean, array: ArrayList<CardModel>?) {
@@ -118,58 +120,34 @@ class AddCardsFragment: Fragment() {
         _binding = null
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        childFragmentManager.setFragmentResultListener("CreateNewTaskDialog", this) { _, bundle ->
-            var resId = bundle.getString("resId")
-            val resTitle = bundle.getString("resTitle")
-            val resDescription = bundle.getString("resDescription")
-            val resActive = bundle.getBoolean("resActive")
-            val resCost = bundle.getFloat("resCost")
-            val resTagsList = bundle.getStringArrayList("resTagsList") ?: arrayListOf()
-            val resByAgreementValue = bundle.getBoolean("resByAgreementValue")
-            val resPrepayment = bundle.getBoolean("resPrepayment")
-            var resCreateTime = bundle.getLong("resCreateTime")
-            var resUserId = bundle.getString("resUserId")
-
-            if (resTitle != null && resDescription != null) {
-                if (resCreateTime == 0L)
-                    resCreateTime = Calendar.getInstance().time.time
-                if (resId.isNullOrEmpty()) {
-                    resId = generateRandomKey()
+    private fun observeBackStackEntry() {
+        val liveDataRes = findTopNavController().currentBackStackEntry?.savedStateHandle
+            ?.getLiveData<CardModel?>("CARD_BACK")
+        liveDataRes?.observe(viewLifecycleOwner) { card ->
+            if (card?.title != null && card?.description != null) {
+                if (card.createTime == 0L)
+                    card.createTime = Calendar.getInstance().time.time
+                if (card.id.isEmpty()) {
+                    card.id = generateRandomKey()
                 }
-                if (resUserId.isNullOrEmpty() && user?.userInfo != null) {
-                    resUserId = user!!.userInfo!!.id
+                if (card.user_id.isEmpty() && user?.userInfo != null) {
+                    card.user_id = user!!.userInfo!!.id
                 }
 
-                resUserId?.let {
-                    viewModel.updateCard(
-                        CardModel(
-                            resId, resTitle, resDescription, resCost,
-                            resByAgreementValue, resPrepayment, resTagsList.map { name -> TagsModel(name = name) } as ArrayList<TagsModel>,
-                            resCreateTime, resActive, it
-                        )
+                viewModel.updateCard(
+                    CardModel(
+                        card.id, card.title, card.description, card.cost,
+                        card.agreement, card.prepayment, card.tags, card.bookDates,
+                        card.createTime, card.active, card.user_id
                     )
-                }
+                )
             }
         }
     }
 
     private fun showCreateTaskDialog(item: CardModel? = null) {
-        val args = Bundle()
-        args.putString("id", item?.id)
-        args.putString("title", item?.title)
-        args.putString("description", item?.description)
-        args.putFloat("cost", item?.cost ?: 0F)
-        args.putStringArrayList("tags", item?.tags?.map { it.name } as ArrayList<String>?)
-        args.putBoolean("active", item?.active ?: false)
-        args.putBoolean("agreement", item?.agreement ?: false)
-        args.putBoolean("prepayment", item?.prepayment ?: false)
-        args.putLong("createTime", item?.createTime ?: 0)
-        args.putString("userId", item?.user_id)
-        val dialog = CreateNewTaskDialog()
-        dialog.arguments = args
-        dialog.show(childFragmentManager, "CreateNewTaskDialog")
+        findTopNavController().navigate(
+            TabsFragmentDirections.actionTabsFragmentToCreateAndChangeTaskFragment(item)
+        )
     }
 }

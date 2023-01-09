@@ -11,22 +11,38 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavArgs
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.kseniabl.tasksapp.adapters.BookDateAdapter
+import com.kseniabl.tasksapp.adapters.DatesDetailAdapter
 import com.kseniabl.tasksapp.databinding.FragmentCardDetailsBinding
+import com.kseniabl.tasksapp.di.CardDetailsAnnotation
+import com.kseniabl.tasksapp.di.CreateAndChangeTaskAnnotation
 import com.kseniabl.tasksapp.models.CardModel
 import com.kseniabl.tasksapp.utils.Resource
+import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.viewmodels.AllCardsViewModel
 import com.kseniabl.tasksapp.viewmodels.CardDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Provider
 
 @AndroidEntryPoint
 class CardDetailsFragment: Fragment() {
 
     private var _binding: FragmentCardDetailsBinding? = null
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var adapter: DatesDetailAdapter
+
+    @Inject
+    @CardDetailsAnnotation
+    lateinit var linearLayoutManager: Provider<LinearLayoutManager>
 
     private val args: CardDetailsFragmentArgs by navArgs()
 
@@ -50,6 +66,24 @@ class CardDetailsFragment: Fragment() {
             tagView.visibility = if (card.tags.isEmpty()) View.GONE else View.VISIBLE
             tagView.tags = card.tags
             descriptionText.text = card.description
+
+            datesRecycler.layoutManager = linearLayoutManager.get()
+            datesRecycler.adapter = adapter
+            datesRecycler.setItemViewCacheSize(20)
+
+            if (card.bookDates.isEmpty())
+                datesCardView.visibility = View.GONE
+            else
+                adapter.submitList(card.bookDates)
+
+            respondToTask.setOnClickListener {
+                if (adapter.selected == -1)
+                    Snackbar.make(view, "Please choose date to book", Snackbar.LENGTH_SHORT)
+                        .show()
+                else {
+                    viewModel.updateBookDateUser(card.bookDates[adapter.selected].id)
+                }
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -67,6 +101,14 @@ class CardDetailsFragment: Fragment() {
                             if (data is Resource.Error<*>) {
                                 Snackbar.make(view, "${data.message}", Snackbar.LENGTH_SHORT).show()
                             }
+                        }
+                    }
+                }
+                launch {
+                    viewModel.stateChange.collect {
+                        if (it is Resource.Success<*>) {
+                            Snackbar.make(view, "You booked successfully", Snackbar.LENGTH_SHORT).show()
+                            findTopNavController().popBackStack()
                         }
                     }
                 }

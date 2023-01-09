@@ -13,7 +13,8 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="20dp"
         app:cardCornerRadius="30dp"
-        app:cardElevation="15dp">
+        app:cardElevation="15dp"
+        style="@style/CardsBackgroundStyle">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -95,7 +96,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="20dp"
                 android:layout_toStartOf="@+id/dialogProfChangeButton"
-                android:backgroundTint="@color/white"
+                style="@style/ButtonStyle"
                 android:text="Close"
                 android:textColor="@color/purple"
                 android:textStyle="bold"
@@ -113,7 +114,7 @@
                 app:layout_constraintStart_toEndOf="@id/dialogProfCloseButton"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="20dp"
-                android:backgroundTint="@color/white"
+                style="@style/ButtonStyle"
                 android:text="Change"
                 android:textColor="@color/purple"
                 android:textStyle="bold"

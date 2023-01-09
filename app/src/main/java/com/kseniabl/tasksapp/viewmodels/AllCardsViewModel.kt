@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseReference
 import com.kseniabl.tasksapp.adapters.AddTasksAdapter
 import com.kseniabl.tasksapp.adapters.AllCardsAdapterInterface
 import com.kseniabl.tasksapp.adapters.AllTasksAdapter
+import com.kseniabl.tasksapp.adapters.FreelancersAdapter
 import com.kseniabl.tasksapp.models.*
 import com.kseniabl.tasksapp.network.Repository
 import com.kseniabl.tasksapp.utils.Resource
@@ -22,7 +23,7 @@ import javax.inject.Inject
 class AllCardsViewModel @Inject constructor(
     private val repository: Repository,
     private val userTokenDataStore: UserTokenDataStoreInterface
-): ViewModel(), AddTasksAdapter.Listener {
+): ViewModel(), AddTasksAdapter.Listener, FreelancersAdapter.Listener {
 
     private val _adapterValue = MutableLiveData<AllCardsAdapterInterface>(AllTasksAdapter())
     val adapterValue: LiveData<AllCardsAdapterInterface> = _adapterValue
@@ -35,6 +36,9 @@ class AllCardsViewModel @Inject constructor(
 
     private val _openDetailsTrigger = MutableSharedFlow<CardModel>()
     val openDetailsTrigger = _openDetailsTrigger.asSharedFlow()
+
+    private val _openDetailsFreelancer = MutableSharedFlow<FreelancerModel>()
+    val openDetailsFreelancer = _openDetailsFreelancer.asSharedFlow()
 
     val creatorInfoData = combine(
         _adapterCreatorsList,
@@ -77,7 +81,7 @@ class AllCardsViewModel @Inject constructor(
                     }
 
                     if (users.size != specList.size) {
-                        _adapterCreatorsList.emit(Resource.Error("Size is not the same $users $specList"))
+                        _adapterCreatorsList.emit(Resource.Error("Size is not the same ${users.size} ${specList.size}"))
                     }
                     else {
                         _specializationDate.emit(Resource.Success(specList))
@@ -112,6 +116,12 @@ class AllCardsViewModel @Inject constructor(
     override fun onAddItemClick(item: CardModel) {
         viewModelScope.launch {
             _openDetailsTrigger.emit(item)
+        }
+    }
+
+    override fun onAddItemClick(item: FreelancerModel) {
+        viewModelScope.launch {
+            _openDetailsFreelancer.emit(item)
         }
     }
 }

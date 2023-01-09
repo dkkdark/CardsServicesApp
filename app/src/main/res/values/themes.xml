@@ -21,6 +21,40 @@
 
     </style>
 
+    <style name="BackgroundStyle">
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
+    <style name="CardsBackgroundStyle">
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
+    <style name="MainTextStyle">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="SmallTextStyle">
+        <item name="android:textColor">#474747</item>
+    </style>
+
+    <style name="SubTextStyle">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ButtonStyle">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="SpinnerStyle">
+        <item name="android:background">@drawable/button_outline</item>
+        <item name="android:popupBackground">@drawable/button_outline</item>
+    </style>
+
+    <style name="ImageStyle">
+        <item name="android:src">@drawable/edit</item>
+    </style>
+
     <style name="FullScreenDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>

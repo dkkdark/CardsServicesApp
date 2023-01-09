@@ -28,7 +28,6 @@ class AddCardsModule {
     fun provideAddTasksAdapter(): AddTasksAdapter = AddTasksAdapter()
 
     @Provides
-    @FragmentScoped
     @AddCardsScope
     fun provideLinearLayoutManager(fragment: AddCardsFragment): LinearLayoutManager
             = LinearLayoutManager(fragment.context)

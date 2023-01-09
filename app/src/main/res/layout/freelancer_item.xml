@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:cardElevation="10dp"
-        app:cardBackgroundColor="@color/white"
+        style="@style/CardsBackgroundStyle"
         app:cardCornerRadius="20dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +47,7 @@
                 app:layout_constraintTop_toBottomOf="@id/imageViewItemExe"
                 android:text="Name Surname"
                 android:fontFamily="@font/opensans_bold"
-                android:textColor="@color/black"/>
+                style="@style/MainTextStyle"/>
 
             <TextView
                 android:id="@+id/itemExeDescr"
@@ -57,7 +57,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/itemExeName"
                 android:text="Math teacher"
-                android:textColor="@color/black"
+                style="@style/MainTextStyle"
                 android:layout_marginTop="10dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

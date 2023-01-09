@@ -16,4 +16,8 @@
         android:id="@+id/settingsFragment"
         android:name="com.kseniabl.tasksapp.ui.SettingsFragment"
         android:label="Settings" />
+    <fragment
+        android:id="@+id/bookedCardsFragment"
+        android:name="com.kseniabl.tasksapp.ui.BookedCardsFragment"
+        android:label="Your Booked Cards" />
 </navigation>

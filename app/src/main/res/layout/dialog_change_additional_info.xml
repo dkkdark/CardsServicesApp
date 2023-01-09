@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/professionCardView"
+        style="@style/CardsBackgroundStyle"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
@@ -130,8 +131,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/button_outline"
-                android:popupBackground="@drawable/button_outline" />
+                style="@style/SpinnerStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/dialogAdditionalCloseButton"
@@ -140,7 +140,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="20dp"
                 android:layout_toStartOf="@+id/dialogAdditionalChangeButton"
-                android:backgroundTint="@color/white"
+                style="@style/ButtonStyle"
                 android:text="Close"
                 android:textColor="@color/purple"
                 android:textStyle="bold"
@@ -158,7 +158,7 @@
                 app:layout_constraintStart_toEndOf="@id/dialogAdditionalCloseButton"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="20dp"
-                android:backgroundTint="@color/white"
+                style="@style/ButtonStyle"
                 android:text="Change"
                 android:textColor="@color/purple"
                 android:textStyle="bold"

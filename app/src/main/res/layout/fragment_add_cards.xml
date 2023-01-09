@@ -10,9 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/white"
         android:text="@string/active"
-        android:textColor="@color/black"
         android:textStyle="bold"
         app:cornerRadius="16dp"
         android:textSize="12dp"
@@ -20,23 +18,21 @@
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+        style="@style/ButtonStyle"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/draftButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/white"
         android:text="@string/draft"
         android:textSize="12dp"
-        android:textColor="@color/black"
         android:textStyle="bold"
         app:cornerRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/activeButton"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+        style="@style/ButtonStyle"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addCardFab"

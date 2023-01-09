@@ -36,7 +36,7 @@
             android:textSize="14dp"
             android:layout_below="@id/imageViewProfile"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/white"
+            style="@style/SmallTextStyle"
             android:fontFamily="@font/opensans_bold"/>
 
         <ImageView
@@ -61,6 +61,7 @@
         android:layout_marginEnd="10dp"
         app:cardCornerRadius="30dp"
         app:cardElevation="15dp"
+        style="@style/CardsBackgroundStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nameAndEditIcon">
 
@@ -88,7 +89,7 @@
                 android:layout_alignTop="@id/professionText"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="20dp"
-                android:src="@drawable/edit"/>
+                style="@style/ImageStyle"/>
 
 
             <TextView
@@ -99,6 +100,7 @@
                 android:layout_below="@id/editProfessionImage"
                 android:fontFamily="@font/opensans_bold"
                 android:layout_marginTop="10dp"
+                style="@style/MainTextStyle"
                 android:textSize="14dp"/>
 
             <TextView
@@ -113,6 +115,7 @@
                 android:layout_alignParentEnd="true"
                 android:ellipsize="end"
                 android:singleLine="true"
+                style="@style/SmallTextStyle"
                 android:maxLines="1"
                 android:text="—"
                 android:textSize="14dp"/>
@@ -125,6 +128,7 @@
                 android:layout_below="@id/specializationText"
                 android:fontFamily="@font/opensans_bold"
                 android:layout_marginTop="10dp"
+                style="@style/MainTextStyle"
                 android:textSize="14dp"/>
 
             <TextView
@@ -135,6 +139,7 @@
                 android:layout_below="@id/descriptionSpecializationText"
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="6dp"
+                style="@style/SmallTextStyle"
                 android:layout_alignParentEnd="true"
                 android:text="—"
                 android:textSize="14dp" />
@@ -150,6 +155,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/professionCardView"
         android:layout_centerHorizontal="true"
+        style="@style/CardsBackgroundStyle"
         android:layout_marginTop="40dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
@@ -180,7 +186,7 @@
                 android:layout_alignTop="@id/additionalInfoText"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="20dp"
-                android:src="@drawable/edit"/>
+                style="@style/ImageStyle"/>
 
             <TextView
                 android:id="@+id/descriptionAddInfoText"
@@ -189,6 +195,7 @@
                 android:text="Description:"
                 android:layout_below="@id/editAdditionalInfoImage"
                 android:fontFamily="@font/opensans_bold"
+                style="@style/MainTextStyle"
                 android:layout_marginTop="20dp"
                 android:textSize="14dp"/>
 
@@ -198,6 +205,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/descriptionAddInfoText"
                 android:layout_marginTop="6dp"
+                style="@style/SmallTextStyle"
                 android:text="—"
                 android:textSize="14dp" />
 
@@ -208,6 +216,7 @@
                 android:text="Country:"
                 android:layout_below="@id/descriptionAddInfoChangeText"
                 android:fontFamily="@font/opensans_bold"
+                style="@style/MainTextStyle"
                 android:layout_marginTop="10dp"
                 android:textSize="14dp"/>
 
@@ -219,6 +228,7 @@
                 android:layout_alignBottom="@id/countryText"
                 android:layout_alignTop="@id/countryText"
                 android:layout_marginStart="10dp"
+                style="@style/SmallTextStyle"
                 android:text="—"
                 android:textSize="14dp" />
 
@@ -229,6 +239,7 @@
                 android:text="City:"
                 android:layout_below="@id/countryText"
                 android:fontFamily="@font/opensans_bold"
+                style="@style/MainTextStyle"
                 android:layout_marginTop="10dp"
                 android:textSize="14dp"/>
 
@@ -240,6 +251,7 @@
                 android:layout_alignBottom="@id/cityText"
                 android:layout_alignTop="@id/cityText"
                 android:layout_marginStart="10dp"
+                style="@style/SmallTextStyle"
                 android:text="—"
                 android:textSize="14dp" />
 
@@ -250,6 +262,7 @@
                 android:text="Type of work:"
                 android:layout_below="@id/cityText"
                 android:fontFamily="@font/opensans_bold"
+                style="@style/MainTextStyle"
                 android:layout_marginTop="10dp"
                 android:textSize="14dp"/>
 
@@ -261,6 +274,7 @@
                 android:layout_alignBottom="@id/typeOfWorkText"
                 android:layout_alignTop="@id/typeOfWorkText"
                 android:layout_marginStart="10dp"
+                style="@style/SmallTextStyle"
                 android:text="—"
                 android:textSize="14dp" />
 
@@ -275,6 +289,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/additionalInfoCardView"
         app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/CardsBackgroundStyle"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="40dp"
@@ -308,7 +323,7 @@
                 android:text="Become a creator"
                 android:textSize="14dp"
                 android:fontFamily="@font/opensans_bold"
-                android:backgroundTint="@color/white"
+                style="@style/ButtonStyle"
                 android:textColor="@color/purple"/>
 
             <com.google.android.material.button.MaterialButton
@@ -317,7 +332,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/beCreatorButton"
                 android:layout_marginTop="10dp"
-                android:backgroundTint="@color/white"
+                style="@style/ButtonStyle"
                 android:text="Logout"
                 android:textColor="@color/purple"
                 android:textStyle="bold"

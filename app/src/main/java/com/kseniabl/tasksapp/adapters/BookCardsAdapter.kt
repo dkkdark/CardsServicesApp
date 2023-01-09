@@ -1,6 +1,5 @@
 package com.kseniabl.tasksapp.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kseniabl.tasksapp.databinding.CardItemBinding
 import com.kseniabl.tasksapp.models.CardModel
 import com.kseniabl.tasksapp.view.TagsModel
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.scopes.FragmentScoped
 import java.util.*
-import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-class AddTasksAdapter: RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(), AllCardsAdapterInterface {
-
-    private var listener: Listener? = null
+class BookCardsAdapter: RecyclerView.Adapter<BookCardsAdapter.BookCardsHolder>() {
 
     private val diffCallback = object : DiffUtil.ItemCallback<CardModel>() {
         override fun areItemsTheSame(oldItem: CardModel, newItem: CardModel): Boolean =
@@ -32,14 +26,14 @@ class AddTasksAdapter: RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(),
 
     fun submitList(list: List<CardModel>) = differ.submitList(list)
 
-    inner class DraftTasksHolder(val binding: CardItemBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class BookCardsHolder(val binding: CardItemBinding) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DraftTasksHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookCardsHolder {
         val binding = CardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return DraftTasksHolder(binding)
+        return BookCardsHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: DraftTasksHolder, position: Int) {
+    override fun onBindViewHolder(holder: BookCardsHolder, position: Int) {
         val item = differ.currentList[position]
 
         holder.binding.apply {
@@ -60,14 +54,10 @@ class AddTasksAdapter: RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(),
                 tagView.tags = item.tags
             }
 
-
-            val tagsList =
-                item.bookDates.filter { it.userId.isNotEmpty() }.map { TagsModel(it.date) }
-            if (tagsList.isNotEmpty()) {
-                dateTitle.visibility = View.VISIBLE
-                bookedTags.visibility = View.VISIBLE
-                bookedTags.tags = tagsList as ArrayList
-            }
+            dateTitle.visibility = View.VISIBLE
+            bookedTags.visibility = View.VISIBLE
+            val tagsList = item.bookDates.filter { it.userId.isNotEmpty() }.map { TagsModel(it.date) }
+            bookedTags.tags = tagsList as ArrayList
 
             val currentTime = Calendar.getInstance().time.time
             val distinction = currentTime - item.createTime
@@ -83,18 +73,7 @@ class AddTasksAdapter: RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(),
             else if (numOfDays != 0 && hours != 0 && minutes != 0)
                 cardTime.text = "$numOfDays days ago"
         }
-        holder.itemView.setOnClickListener {
-            listener?.onAddItemClick(item)
-        }
-    }
-
-    fun setOnClickListener(onClickListener: Listener) {
-       listener = onClickListener
     }
 
     override fun getItemCount(): Int = differ.currentList.size
-
-    interface Listener {
-        fun onAddItemClick(item: CardModel)
-    }
 }

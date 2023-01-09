@@ -28,7 +28,7 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="16dp"
                 android:text="Title"
-                android:textColor="@color/white"
+                style="@style/SmallTextStyle"
                 android:fontFamily="@font/montserrat_bold"
                 android:textSize="22dp"/>
 
@@ -39,7 +39,7 @@
                 app:layout_constraintStart_toStartOf="@id/detailTitle"
                 app:layout_constraintTop_toBottomOf="@id/detailTitle"
                 android:layout_marginTop="20dp"
-                android:textColor="@color/white"
+                style="@style/SmallTextStyle"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="Payment: " />
 
@@ -52,7 +52,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/feeTitle"
                 app:layout_constraintStart_toEndOf="@id/feeTitle"
                 android:layout_marginStart="20dp"
-                android:textColor="@color/white"
+                style="@style/SmallTextStyle"
                 android:fontFamily="@font/montserrat_bold"/>
 
             <TextView
@@ -62,7 +62,7 @@
                 app:layout_constraintStart_toStartOf="@id/feeTitle"
                 app:layout_constraintTop_toBottomOf="@id/feeTitle"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/white"
+                style="@style/SmallTextStyle"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="Prepayment:" />
 
@@ -75,7 +75,7 @@
                 app:layout_constraintTop_toTopOf="@id/prepaymentTitle"
                 app:layout_constraintBottom_toBottomOf="@id/prepaymentTitle"
                 app:layout_constraintStart_toStartOf="@id/feeText"
-                android:textColor="@color/white"
+                style="@style/SmallTextStyle"
                 android:fontFamily="@font/montserrat_bold"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -90,6 +90,7 @@
             android:layout_marginEnd="10dp"
             app:cardCornerRadius="30dp"
             app:cardElevation="15dp"
+            style="@style/CardsBackgroundStyle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/headerLayout">
@@ -117,13 +118,16 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/descriptionTitle"
                     android:layout_marginTop="10dp"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    app:firstGradientColor="@color/purple"
+                    app:secondGradientColor="@color/blue"
+                    app:textColor="@color/white"/>
 
                 <TextView
                     android:id="@+id/descriptionText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
+                    style="@style/MainTextStyle"
                     android:layout_below="@id/tagView"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="8dp"
@@ -143,6 +147,7 @@
             android:layout_marginEnd="10dp"
             app:cardCornerRadius="30dp"
             app:cardElevation="15dp"
+            style="@style/CardsBackgroundStyle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionCardView">
@@ -191,7 +196,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginTop="8dp"
-                        android:textColor="@color/black"
+                        style="@style/MainTextStyle"
                         android:textSize="14dp"
                         android:fontFamily="@font/opensans_extrabold"/>
 
@@ -203,7 +208,7 @@
                         app:layout_constraintTop_toBottomOf="@id/nameText"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginTop="8dp"
-                        android:textColor="@color/black"
+                        style="@style/MainTextStyle"
                         android:textSize="12dp"/>
 
                     <TextView
@@ -213,7 +218,7 @@
                         android:text=""
                         app:layout_constraintTop_toBottomOf="@id/specializationText"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:textColor="@color/black"
+                        style="@style/MainTextStyle"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:textSize="12dp"/>
@@ -224,18 +229,61 @@
 
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/datesCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="15dp"
+            style="@style/CardsBackgroundStyle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/FreelancerCardView">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:id="@+id/datesTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans_extrabold"
+                    android:text="Dates"
+                    android:textColor="@color/purple"
+                    android:textSize="20dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/datesRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/datesTitle"
+                    android:layout_alignParentStart="true"/>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/respondToTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/FreelancerCardView"
+            app:layout_constraintTop_toBottomOf="@id/datesCardView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:textSize="12dp"
-            android:backgroundTint="@color/white"
-            android:text="Plan date"
+            style="@style/ButtonStyle"
+            android:text="Book date"
             android:textColor="@color/purple"
             android:textStyle="bold"
             app:cornerRadius="16dp" />

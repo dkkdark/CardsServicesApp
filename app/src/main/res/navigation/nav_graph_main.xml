@@ -40,6 +40,9 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/tabsFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_tabsFragment_to_createAndChangeTaskFragment"
+            app:destination="@id/createAndChangeTaskFragment" />
     </fragment>
     <fragment
         android:id="@+id/cardDetailsFragment"
@@ -47,10 +50,23 @@
         android:label="Card Info" >
         <argument
             android:name="card"
-            app:argType="com.kseniabl.tasksapp.models.CardModel"/>
+            app:argType="com.kseniabl.tasksapp.models.CardModel" />
     </fragment>
     <fragment
         android:id="@+id/freelancerDetailsFragment"
         android:name="com.kseniabl.tasksapp.ui.FreelancerDetailsFragment"
-        android:label="Freelancer Info" />
+        android:label="Freelancer Info" >
+        <argument
+            android:name="freelancer"
+            app:argType="com.kseniabl.tasksapp.models.FreelancerModel" />
+    </fragment>
+    <fragment
+        android:id="@+id/createAndChangeTaskFragment"
+        android:name="com.kseniabl.tasksapp.ui.CreateAndChangeTaskFragment"
+        android:label="Change Card" >
+        <argument
+            android:name="card"
+            app:argType="com.kseniabl.tasksapp.models.CardModel"
+            app:nullable="true" />
+    </fragment>
 </navigation>

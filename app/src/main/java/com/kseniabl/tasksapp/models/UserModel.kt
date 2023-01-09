@@ -1,8 +1,11 @@
 package com.kseniabl.tasksapp.models
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
+@Parcelize
 @kotlinx.serialization.Serializable
 data class UserModel(
     @SerializedName("id")
@@ -19,4 +22,4 @@ data class UserModel(
     val specialization: String = "",
     @SerializedName("add_inf")
     val addInf: String = ""
-)
+): Parcelable

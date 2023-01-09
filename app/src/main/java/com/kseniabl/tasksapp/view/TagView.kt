@@ -18,13 +18,15 @@ class TagView @JvmOverloads constructor(
 
     // Paints
 
+    private var textColor = Color.BLACK
+
     private val tagPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
     }
 
     private val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         textSize = resources.getDimension(R.dimen.text_size)
-        color = Color.WHITE
+        color = textColor
         typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
     }
 
@@ -37,8 +39,8 @@ class TagView @JvmOverloads constructor(
 
     // Colors
 
-    private val gradientStartColor = ContextCompat.getColor(context, R.color.purple)
-    private val gradientEndColor = ContextCompat.getColor(context, R.color.blue)
+    private var gradientStartColor = ContextCompat.getColor(context, R.color.purple)
+    private var gradientEndColor = ContextCompat.getColor(context, R.color.blue)
 
     private var tagsRectList: ArrayList<Rect> = arrayListOf()
     private var textRectList: ArrayList<TextSize> = arrayListOf()
@@ -58,6 +60,19 @@ class TagView @JvmOverloads constructor(
         if (isInEditMode) {
             tags = arrayListOf(TagsModel("Tag123"), TagsModel("Tdfgdfg"), TagsModel("More123"), TagsModel("More123"), TagsModel("More123"), TagsModel("T"), TagsModel("MoreMore123"))
         }
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.TagView, 0, 0
+        ).apply {
+            try {
+                gradientStartColor = getColor(R.styleable.TagView_firstGradientColor, Color.WHITE)
+                gradientEndColor = getColor(R.styleable.TagView_secondGradientColor, Color.WHITE)
+                textColor = getColor(R.styleable.TagView_textColor, Color.BLACK)
+            } finally {
+                recycle()
+            }
+        }
+        textPaint.color = textColor
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

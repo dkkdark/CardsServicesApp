@@ -84,6 +84,7 @@ class AllCardsFragment: Fragment() {
         viewModel.getCards()
         viewModel.getUsers()
         allTasksAdapter.setOnClickListener(viewModel)
+        creatorsAdapter.setOnClickListener(viewModel)
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -118,6 +119,13 @@ class AllCardsFragment: Fragment() {
                     viewModel.openDetailsTrigger.collect {
                         findTopNavController().navigate(
                             TabsFragmentDirections.actionTabsFragmentToCardDetailsFragment(it)
+                        )
+                    }
+                }
+                launch {
+                    viewModel.openDetailsFreelancer.collect {
+                        findTopNavController().navigate(
+                            TabsFragmentDirections.actionTabsFragmentToFreelancerDetailsFragment(it)
                         )
                     }
                 }

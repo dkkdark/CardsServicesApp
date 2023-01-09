@@ -17,7 +17,8 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="20dp"
             app:cardCornerRadius="30dp"
-            app:cardElevation="15dp">
+            app:cardElevation="15dp"
+            style="@style/CardsBackgroundStyle">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -75,7 +76,7 @@
                         android:gravity="start"
                         android:hint="Your title"
                         android:inputType="textMultiLine|textCapSentences"
-                        android:textColor="@color/black" />
+                        style="@style/MainTextStyle" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,7 +103,7 @@
                         android:gravity="start"
                         android:hint="Describe your task"
                         android:inputType="textMultiLine|textCapSentences"
-                        android:textColor="@color/black" />
+                        style="@style/MainTextStyle" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,6 +130,7 @@
                         android:inputType="textMultiLine|textCapSentences"
                         android:maxLines="1"
                         android:gravity="start"
+                        style="@style/MainTextStyle"
                         android:hint="New tag to add"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -137,7 +139,7 @@
                     android:id="@+id/dialogAddTagButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/white"
+                    style="@style/ButtonStyle"
                     android:text="Add"
                     android:textColor="@color/purple"
                     android:textStyle="bold"
@@ -156,7 +158,10 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/dialogTagAddField"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    app:firstGradientColor="@color/purple"
+                    app:secondGradientColor="@color/blue"
+                    app:textColor="@color/white"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/dialogDeleteTags"
@@ -166,7 +171,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="12dp"
                     android:layout_toStartOf="@+id/dialogCreateChangeButton"
-                    android:backgroundTint="@color/white"
+                    style="@style/CardsBackgroundStyle"
                     android:text="Clear tags"
                     android:textColor="@color/purple"
                     android:textStyle="bold"
@@ -181,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/opensans_bold"
                     android:text="Payment:"
-                    android:textColor="@color/black"
+                    style="@style/MainTextStyle"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/dialogDeleteTags"
                     android:layout_marginStart="22dp"
@@ -221,7 +226,7 @@
                             android:hint="Fix price"
                             android:inputType="number"
                             android:maxLines="1"
-                            android:textColor="@color/black" />
+                            style="@style/MainTextStyle" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -232,7 +237,7 @@
                         app:layout_constraintTop_toTopOf="@id/dialogTaskCostField"
                         app:layout_constraintBottom_toBottomOf="@id/dialogTaskCostField"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:textColor="@color/black"
+                        style="@style/MainTextStyle"
                         android:text="$"
                         android:textSize="16dp"
                         android:layout_marginStart="10dp"
@@ -258,7 +263,7 @@
                         android:layout_marginStart="22dp"
                         android:fontFamily="@font/opensans_bold"
                         android:text="Active:"
-                        android:textColor="@color/black"
+                        style="@style/MainTextStyle"
                         app:layout_constraintEnd_toStartOf="@id/dialogCheckBox"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -296,7 +301,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:text="By agreement"
                         android:fontFamily="@font/opensans_bold"
-                        android:textColor="@color/black"
+                        style="@style/MainTextStyle"
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="22dp"/>
 
@@ -328,7 +333,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="22dp"
                         android:fontFamily="@font/opensans_bold"
-                        android:textColor="@color/black"
+                        style="@style/MainTextStyle"
                         android:text="Prepayment:"
                         app:layout_constraintEnd_toStartOf="@id/prepaymentCheckBox"
                         app:layout_constraintStart_toStartOf="parent"
@@ -347,32 +352,60 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/planDateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/flowLayout2"
+                app:layout_constraintBottom_toTopOf="@id/dialogCreateChangeButton">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/addBookDateButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add book date +"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="16dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/newDateRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/addBookDateButton" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/dialogCreateCloseButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="16dp"
                     android:layout_toStartOf="@+id/dialogCreateChangeButton"
-                    android:backgroundTint="@color/white"
+                    style="@style/ButtonStyle"
                     android:text="Close"
                     android:textColor="@color/purple"
                     android:textStyle="bold"
                     app:cornerRadius="16dp"
                     app:layout_constraintEnd_toStartOf="@+id/dialogCreateChangeButton"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/flowLayout2" />
+                    app:layout_constraintTop_toBottomOf="@id/planDateLayout" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/dialogCreateChangeButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/flowLayout2"
+                    app:layout_constraintTop_toBottomOf="@id/planDateLayout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/dialogCreateCloseButton"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="20dp"
-                    android:backgroundTint="@color/white"
+                    android:layout_marginTop="16dp"
+                    style="@style/ButtonStyle"
                     android:text="Submit"
                     android:textColor="@color/purple"
                     android:textStyle="bold"
@@ -406,7 +439,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/flowLayout"
-                    app:layout_constraintBottom_toTopOf="@id/dialogCreateCloseButton"/>
+                    app:layout_constraintBottom_toTopOf="@id/planDateLayout"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

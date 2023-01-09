@@ -1,10 +1,12 @@
 package com.kseniabl.tasksapp.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -91,8 +93,8 @@ class RegistrationFragment: Fragment() {
     private fun checkEmptyFields(view: View): Boolean {
         var noEmptyFields = false
         binding.apply {
-            if (nicknameText.text.isNullOrEmpty()) {
-                nicknameText.error = "You didn't specify name"
+            if (nicknameText.text.toString().length < 6) {
+                nicknameText.error = "Your name is too small"
                 noEmptyFields = true
             }
             if (emailRegisterText.text.isNullOrEmpty()) {
@@ -100,7 +102,7 @@ class RegistrationFragment: Fragment() {
                 noEmptyFields = true
             }
             if (!isValidPassword(passwordRegText.text.toString().trim())) {
-                passwordRegText.error = "Your password is weak"
+                passwordRegText.error = "Your password is weak. Use capital letters, numbers, special characters"
                 noEmptyFields = true
             }
             if (passwordRegText.text.toString() != repeatPasswordText.text.toString()

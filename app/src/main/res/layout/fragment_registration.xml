@@ -18,6 +18,7 @@
             app:cardCornerRadius="40dp"
             android:layout_margin="30dp"
             app:cardElevation="15dp"
+            style="@style/CardsBackgroundStyle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -32,11 +33,11 @@
                     android:id="@+id/textRegistration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sing up"
+                    android:text="Sign up"
                     android:textSize="20dp"
                     android:layout_marginTop="30dp"
                     android:fontFamily="@font/opensans_extrabold"
-                    android:textColor="@color/black"
+                    style="@style/MainTextStyle"
                     android:layout_centerHorizontal="true"/>
 
                 <TextView
@@ -45,10 +46,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textRegistration"
                     android:text="Name"
-                    android:textColor="@color/black"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
-                    android:fontFamily="@font/montserrat_bold"/>
+                    android:fontFamily="@font/montserrat_bold"
+                    style="@style/MainTextStyle"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/nicknameField"
@@ -78,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/nicknameField"
                     android:text="Email"
-                    android:textColor="@color/black"
+                    style="@style/MainTextStyle"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/montserrat_bold"/>
@@ -111,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/emailRegisterField"
                     android:text="Password"
-                    android:textColor="@color/black"
+                    style="@style/MainTextStyle"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/montserrat_bold"/>
@@ -145,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/passwordRegField"
                     android:text="Repeat password"
-                    android:textColor="@color/black"
+                    style="@style/MainTextStyle"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/montserrat_bold"/>
@@ -175,7 +176,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/regButton"
-                    android:backgroundTint="@color/white"
+                    style="@style/ButtonStyle"
                     app:cornerRadius="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -183,7 +184,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
                     android:textColor="@color/purple"
-                    android:text=" Sing up "
+                    android:text=" Sign up "
                     android:textStyle="bold"/>
 
                 <TextView
@@ -195,7 +196,7 @@
                     android:layout_centerHorizontal="true"
                     android:textSize="14dp"
                     android:layout_marginTop="20dp"
-                    android:textColor="@color/black"
+                    style="@style/MainTextStyle"
                     android:layout_marginStart="10dp"/>
 
                 <TextView

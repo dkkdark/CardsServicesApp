@@ -9,15 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <View
-            android:id="@+id/additionalSpace"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/circular_background"/>
-
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/imageViewFreelancer"
             android:layout_width="150dp"
@@ -40,7 +31,7 @@
             app:layout_constraintTop_toBottomOf="@id/imageViewFreelancer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="@color/white"
+            style="@style/SubTextStyle"
             android:fontFamily="@font/opensans_bold"/>
 
         <com.google.android.material.button.MaterialButton
@@ -48,9 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:backgroundTint="@color/white"
             android:text="Info"
-            android:textColor="@color/black"
             android:textStyle="bold"
             app:cornerRadius="16dp"
             android:textSize="12dp"
@@ -58,23 +47,21 @@
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/freelancerNameText"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+            style="@style/ButtonStyle"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cardsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:backgroundTint="@color/white"
             android:text="Cards"
-            android:textColor="@color/black"
             android:textStyle="bold"
             app:cornerRadius="16dp"
             android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/infoButton"
             app:layout_constraintTop_toBottomOf="@id/freelancerNameText"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+            style="@style/ButtonStyle"/>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_details_activity"

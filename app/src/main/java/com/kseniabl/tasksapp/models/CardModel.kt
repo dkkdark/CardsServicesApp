@@ -26,6 +26,8 @@ data class CardModel(
     var prepayment: Boolean = false,
     @SerializedName("tags_list")
     var tags: ArrayList<TagsModel> = arrayListOf(),
+    @SerializedName("book_date_list")
+    var bookDates: ArrayList<BookDate> = arrayListOf(),
     @SerializedName("create_time")
     var createTime: Long = 0,
     @SerializedName("is_active")

@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:cardElevation="14dp"
-        app:cardBackgroundColor="@color/white"
+        style="@style/CardsBackgroundStyle"
         app:cardCornerRadius="20dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +34,7 @@
                 android:layout_marginEnd="10dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="Card text"
-                android:textColor="@color/black"
+                style="@style/MainTextStyle"
                 android:textSize="14dp"
                 app:layout_constraintEnd_toStartOf="@id/cardTime"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -67,6 +67,7 @@
                 android:layout_marginEnd="16dp"
                 android:text="Card description пвапв выап ывп вапыв пыв ывапаыв ывапы"
                 android:textSize="12dp"
+                style="@style/SmallTextStyle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cardText"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -81,7 +82,7 @@
                 android:fontFamily="@font/opensans_bold"
                 android:text="6 p.m Monday"
                 android:textSize="12dp"
-                android:textColor="@color/black"
+                style="@style/MainTextStyle"
                 app:layout_constraintEnd_toStartOf="@id/cardCost"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +97,7 @@
                 android:fontFamily="@font/opensans_bold"
                 android:text="10$ per hour"
                 android:textSize="12dp"
-                android:textColor="@color/black"
+                style="@style/MainTextStyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/cardDate"
                 app:layout_constraintTop_toBottomOf="@id/cardDescr" />
@@ -127,7 +128,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="14dp"
                 android:fontFamily="@font/opensans_bold"
-                android:textColor="@color/black"
+                style="@style/MainTextStyle"
                 android:text="Tags"
                 android:visibility="gone"/>
 
@@ -136,8 +137,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tagText"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="12dp"
+                app:firstGradientColor="@color/purple"
+                app:secondGradientColor="@color/blue"
+                app:textColor="@color/white"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/dateTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tagView"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/opensans_bold"
+                style="@style/MainTextStyle"
+                android:text="Booked on"
+                android:visibility="gone"/>
+
+            <com.kseniabl.tasksapp.view.TagView
+                android:id="@+id/bookedTags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dateTitle"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="12dp"
                 android:visibility="gone"/>
