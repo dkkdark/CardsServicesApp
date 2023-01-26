@@ -57,6 +57,11 @@ class BookedCardsFragment: Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    viewModel.id.collect {
+                        adapter.userId = it
+                    }
+                }
+                launch {
                     viewModel.cards.collect {
                         if (it != null) {
                             val list = arrayListOf<CardModel>()

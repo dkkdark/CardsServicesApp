@@ -24,6 +24,16 @@ class BookedCardsViewModel @Inject constructor(
     private val _cards = MutableStateFlow<ArrayList<CardModel>?>(null)
     val cards = _cards.asStateFlow()
 
+    private val _id = MutableStateFlow<String?>(null)
+    val id = _id.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            val userId = userDataStore.readUser.first().userInfo?.id
+            _id.emit(userId)
+        }
+    }
+
     fun getCards() {
         viewModelScope.launch {
             val token = userTokenDataStore.readToken.first()

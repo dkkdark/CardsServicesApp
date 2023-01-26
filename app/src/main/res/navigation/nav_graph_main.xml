@@ -55,7 +55,7 @@
     <fragment
         android:id="@+id/freelancerDetailsFragment"
         android:name="com.kseniabl.tasksapp.ui.FreelancerDetailsFragment"
-        android:label="Freelancer Info" >
+        android:label="Info" >
         <argument
             android:name="freelancer"
             app:argType="com.kseniabl.tasksapp.models.FreelancerModel" />

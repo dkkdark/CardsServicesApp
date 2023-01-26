@@ -19,8 +19,11 @@ interface RetrofitApi {
     @GET("cards")
     suspend fun getTasks(@Header("Authorization") token: String): Response<ArrayList<CardModel>>
 
-    @GET("cards-by-id")
+    @GET("cards-by-token")
     suspend fun getUsersCards(@Header("Authorization") token: String): Response<ArrayList<CardModel>>
+
+    @GET("cards-by-id/{id}")
+    suspend fun getUsersCardsById(@Header("Authorization") token: String, @Path("id") id: String): Response<ArrayList<CardModel>>
 
     @GET("booked-cards")
     suspend fun getBookedCards(@Header("Authorization") token: String): Response<ArrayList<CardModel>>

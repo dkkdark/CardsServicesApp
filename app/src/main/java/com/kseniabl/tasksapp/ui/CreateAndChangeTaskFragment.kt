@@ -75,7 +75,7 @@ class CreateAndChangeTaskFragment: Fragment(), DatePickerDialog.OnDateSetListene
         binding.apply {
             dialogTaskTitleText.setText(card.title)
             dialogTaskDescriptionText.setText(card.description)
-            if (card.cost != null || card.cost != 0F) {
+            if (card.active) {
                 dialogTaskCostText.visibility = View.VISIBLE
                 dialogTaskCostText.setText(card.cost.toString())
             }
@@ -214,10 +214,8 @@ class CreateAndChangeTaskFragment: Fragment(), DatePickerDialog.OnDateSetListene
         val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
         val time = sdf.format(calendar.time.time)
 
-        val list = arrayListOf<BookDate>()
         bookList.add(BookDate(id = HelperFunctions.generateRandomKey(), date = "$date $time"))
-        list.addAll(bookList)
-        adapter.submitList(list)
+        adapter.submitList(bookList)
     }
 
     override fun onDestroyView() {

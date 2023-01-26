@@ -8,16 +8,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kseniabl.tasksapp.databinding.CardItemBinding
 import com.kseniabl.tasksapp.models.CardModel
-import com.kseniabl.tasksapp.utils.UserDataStore
-import com.kseniabl.tasksapp.view.TagsModel
-import kotlinx.coroutines.flow.first
 import java.util.*
-import javax.inject.Inject
-import kotlin.collections.ArrayList
 
-class BookCardsAdapter: RecyclerView.Adapter<BookCardsAdapter.BookCardsHolder>() {
+class CreatorsCardsAdapter: RecyclerView.Adapter<CreatorsCardsAdapter.CreatorCardsHolder>(), AllCardsAdapterInterface {
 
-    var userId: String? = null
+    private var listener: AddTasksAdapter.Listener? = null
 
     private val diffCallback = object : DiffUtil.ItemCallback<CardModel>() {
         override fun areItemsTheSame(oldItem: CardModel, newItem: CardModel): Boolean =
@@ -31,14 +26,14 @@ class BookCardsAdapter: RecyclerView.Adapter<BookCardsAdapter.BookCardsHolder>()
 
     fun submitList(list: List<CardModel>) = differ.submitList(list)
 
-    inner class BookCardsHolder(val binding: CardItemBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class CreatorCardsHolder(val binding: CardItemBinding) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookCardsHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CreatorCardsHolder {
         val binding = CardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return BookCardsHolder(binding)
+        return CreatorCardsHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: BookCardsHolder, position: Int) {
+    override fun onBindViewHolder(holder: CreatorCardsHolder, position: Int) {
         val item = differ.currentList[position]
 
         holder.binding.apply {
@@ -59,13 +54,6 @@ class BookCardsAdapter: RecyclerView.Adapter<BookCardsAdapter.BookCardsHolder>()
                 tagView.tags = item.tags
             }
 
-            dateTitle.visibility = View.VISIBLE
-            bookedTags.visibility = View.VISIBLE
-            if (!userId.isNullOrEmpty()) {
-                val tagsList = item.bookDates.filter { it.userId == userId }.map { TagsModel(it.date) }
-                bookedTags.tags = tagsList as ArrayList
-            }
-
             val currentTime = Calendar.getInstance().time.time
             val distinction = currentTime - item.createTime
             val numOfDays = (distinction / (1000 * 60 * 60 * 24)).toInt()
@@ -80,7 +68,15 @@ class BookCardsAdapter: RecyclerView.Adapter<BookCardsAdapter.BookCardsHolder>()
             else if (numOfDays != 0 && hours != 0 && minutes != 0)
                 cardTime.text = "$numOfDays days ago"
         }
+
+        holder.itemView.setOnClickListener {
+            listener?.onAddItemClick(item)
+        }
     }
 
     override fun getItemCount(): Int = differ.currentList.size
+
+    fun setOnClickListener(onClickListener: AddTasksAdapter.Listener) {
+        listener = onClickListener
+    }
 }

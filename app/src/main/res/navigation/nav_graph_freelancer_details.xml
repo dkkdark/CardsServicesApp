@@ -7,9 +7,14 @@
     <fragment
         android:id="@+id/freelancerInfoFragment"
         android:name="com.kseniabl.tasksapp.ui.FreelancerInfoFragment"
-        android:label="FreelancerInfoFragment" />
+        android:label="Info">
+    <argument
+        android:name="card"
+        app:argType="com.kseniabl.tasksapp.models.CardModel"
+        app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/freelancerCardsFragment"
         android:name="com.kseniabl.tasksapp.ui.FreelancerCardsFragment"
-        android:label="FreelancerCardsFragment" />
+        android:label="Cards" />
 </navigation>

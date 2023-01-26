@@ -13,6 +13,7 @@ import com.kseniabl.tasksapp.network.Repository
 import com.kseniabl.tasksapp.utils.Resource
 import com.kseniabl.tasksapp.utils.UserTokenDataStore
 import com.kseniabl.tasksapp.utils.UserTokenDataStoreInterface
+import com.kseniabl.tasksapp.view.TagsModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -33,6 +34,7 @@ class AllCardsViewModel @Inject constructor(
 
     private val _adapterCreatorsList = MutableStateFlow<Resource<ArrayList<UserModel>>?>(null)
     private val _specializationDate = MutableStateFlow<Resource<ArrayList<Specialization>>?>(null)
+    private val _addInf = MutableStateFlow<Resource<ArrayList<AdditionalInfo>>?>(null)
 
     private val _openDetailsTrigger = MutableSharedFlow<CardModel>()
     val openDetailsTrigger = _openDetailsTrigger.asSharedFlow()
@@ -40,14 +42,22 @@ class AllCardsViewModel @Inject constructor(
     private val _openDetailsFreelancer = MutableSharedFlow<FreelancerModel>()
     val openDetailsFreelancer = _openDetailsFreelancer.asSharedFlow()
 
+    private val _creatorCards = MutableStateFlow<ArrayList<CardModel>?>(null)
+    val creatorCards = _creatorCards.asStateFlow()
+
+    private var _allCards: ArrayList<CardModel>? = arrayListOf()
+    private val _matchedCards = MutableStateFlow<ArrayList<CardModel>?>(null)
+    var matchedCards = _matchedCards.asStateFlow()
+
     val creatorInfoData = combine(
         _adapterCreatorsList,
-        _specializationDate
-    ) { list, spec ->
+        _specializationDate,
+        _addInf
+    ) { list, spec, addInf ->
         var arrayList = arrayListOf<FreelancerModel>()
-        if (list is Resource.Success<*> && spec is Resource.Success<*>) {
-            if (!list.data.isNullOrEmpty() && !spec.data.isNullOrEmpty()) {
-                arrayList = list.data.mapIndexed { idx, el -> FreelancerModel(el, spec.data[idx]) } as ArrayList<FreelancerModel>
+        if (list is Resource.Success<*> && spec is Resource.Success<*> && addInf is Resource.Success<*>) {
+            if (!list.data.isNullOrEmpty() && !spec.data.isNullOrEmpty() && !addInf.data.isNullOrEmpty()) {
+                arrayList = list.data.mapIndexed { idx, el -> FreelancerModel(el, spec.data[idx], addInf.data[idx]) } as ArrayList<FreelancerModel>
                 _creatorInfoHolder.emit(arrayList)
             }
         }
@@ -57,7 +67,8 @@ class AllCardsViewModel @Inject constructor(
         arrayList
     }
 
-    private val _creatorInfoHolder = MutableStateFlow<ArrayList<FreelancerModel>>(arrayListOf())
+    private var _allCreatorInfo: ArrayList<FreelancerModel>? = arrayListOf()
+    private val _creatorInfoHolder = MutableStateFlow<ArrayList<FreelancerModel>?>(arrayListOf())
     val creatorInfoHolder = _creatorInfoHolder.asStateFlow()
 
     private val _dialogsTrigger = MutableSharedFlow<String>()
@@ -74,10 +85,14 @@ class AllCardsViewModel @Inject constructor(
                 try {
                     val users = repository.getUsers(token).body() ?: arrayListOf()
                     val specList = arrayListOf<Specialization>()
+                    val addInfList = arrayListOf<AdditionalInfo>()
                     for (u in users) {
                         val spec = repository.getSpec(token, IdBody(u.specialization)).body()
+                        val addInf = repository.getAddInf(token, IdBody(u.addInf)).body()
                         if (spec != null)
                             specList.add(spec)
+                        if (addInf != null)
+                            addInfList.add(addInf)
                     }
 
                     if (users.size != specList.size) {
@@ -85,6 +100,7 @@ class AllCardsViewModel @Inject constructor(
                     }
                     else {
                         _specializationDate.emit(Resource.Success(specList))
+                        _addInf.emit(Resource.Success(addInfList))
                         _adapterCreatorsList.emit(Resource.Success(users))
                     }
 
@@ -100,6 +116,18 @@ class AllCardsViewModel @Inject constructor(
         }
     }
 
+    fun getCardsById(id: String) {
+        viewModelScope.launch {
+            val token = userTokenDataStore.readToken.first()
+            try {
+                val cards = repository.getCardsById(token, id).body()
+                _creatorCards.emit(cards)
+            } catch (exception: Exception) {
+                Log.e("qqq", "load users cards error: ${exception.message}")
+            }
+        }
+    }
+
     fun getCards() {
         viewModelScope.launch {
             userTokenDataStore.readToken.collect { token ->
@@ -110,6 +138,46 @@ class AllCardsViewModel @Inject constructor(
                     _adapterTasksList.emit(Resource.Error(errorMessage = exception.message ?: "Some error occurred"))
                 }
             }
+        }
+    }
+
+    fun setCreatorsList(list: ArrayList<FreelancerModel>?) {
+        _allCreatorInfo = list
+        viewModelScope.launch {
+            _creatorInfoHolder.emit(_allCreatorInfo)
+        }
+    }
+
+    fun setCardsList(list: ArrayList<CardModel>?) {
+        _allCards = list
+        viewModelScope.launch {
+            _matchedCards.emit(_allCards)
+        }
+    }
+
+    fun onSearchQueryChanged(search: String) {
+        viewModelScope.launch {
+            if (search.isEmpty()) {
+                _matchedCards.emit(_allCards)
+                return@launch
+            }
+            val filterList = _allCards?.filter { el ->
+                el.tags.contains(TagsModel(search)) || el.title.lowercase().contains(search)
+            } as ArrayList<CardModel>
+            _matchedCards.emit(filterList)
+        }
+    }
+
+    fun onSearchQueryChangedCreators(search: String) {
+        viewModelScope.launch {
+            if (search.isEmpty()) {
+                _creatorInfoHolder.emit(_allCreatorInfo)
+                return@launch
+            }
+            val filterList = _allCreatorInfo?.filter { el ->
+                el.userInfo?.username?.lowercase()?.contains(search) == true || el.specialization?.specialization?.lowercase()?.contains(search) == true
+            } as ArrayList<FreelancerModel>
+            _creatorInfoHolder.emit(filterList)
         }
     }
 

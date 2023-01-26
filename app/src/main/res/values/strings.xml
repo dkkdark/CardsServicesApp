@@ -20,4 +20,7 @@
     <string name="draft">Draft</string>
     <string name="current_user_shared_pref">current_user_shared_pref</string>
     <string name="Booked">Booked</string>
+    <string name="search">Search</string>
+    <string name="active_tasks">Active Tasks</string>
+    <string name="creators">Creators</string>
 </resources>

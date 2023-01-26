@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -71,13 +72,20 @@ class AllCardsFragment: Fragment() {
 
             activeTasksButton.setOnClickListener { viewModel.changeAdapter(allTasksAdapter) }
             freelancersButton.setOnClickListener { viewModel.changeAdapter(creatorsAdapter) }
+
+            searchText.addTextChangedListener {
+                if (viewModel.adapterValue.value is AllTasksAdapter)
+                    viewModel.onSearchQueryChanged(searchText.text.toString().lowercase())
+                else
+                    viewModel.onSearchQueryChangedCreators(searchText.text.toString().lowercase())
+            }
         }
 
         viewModel.adapterValue.observe(viewLifecycleOwner) {
             if (it is AllTasksAdapter)
                 setupAllTasksRecyclerView(viewModel.adapterTasksList.value?.data?.body() ?: arrayListOf())
             if (it is FreelancersAdapter) {
-                setupFreelancersRecyclerView(viewModel.creatorInfoHolder.value)
+                setupFreelancersRecyclerView(viewModel.creatorInfoHolder.value ?: arrayListOf())
             }
         }
 
@@ -101,6 +109,7 @@ class AllCardsFragment: Fragment() {
                             }
                             if (value is Resource.Success<*>) {
                                 setupAllTasksRecyclerView(value.data?.body() ?: arrayListOf())
+                                viewModel.setCardsList(value.data?.body())
                             }
                             if (value is Resource.Error<*>) {
                                 Log.e("qqq", "Error: ${value.message}")
@@ -109,9 +118,23 @@ class AllCardsFragment: Fragment() {
                     }
                 }
                 launch {
+                    viewModel.matchedCards.collect {
+                        if (viewModel.adapterValue.value is AllTasksAdapter)
+                            setupAllTasksRecyclerView(it ?: arrayListOf())
+                    }
+                }
+                launch {
                     viewModel.creatorInfoData.collect {
+                        viewModel.setCreatorsList(it)
                         if (viewModel.adapterValue.value is FreelancersAdapter) {
                             setupFreelancersRecyclerView(it)
+                        }
+                    }
+                }
+                launch {
+                    viewModel.creatorInfoHolder.collect {
+                        if (viewModel.adapterValue.value is FreelancersAdapter) {
+                            setupFreelancersRecyclerView(it ?: arrayListOf())
                         }
                     }
                 }

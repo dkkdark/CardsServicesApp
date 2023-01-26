@@ -1,5 +1,6 @@
 package com.kseniabl.tasksapp.adapters
 
+import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -40,6 +41,11 @@ class DatesDetailAdapter @Inject constructor() : RecyclerView.Adapter<DatesDetai
 
         holder.binding.apply {
             dateText.text = item.date
+            if (item.userId.isNotEmpty()) {
+                dateText.apply { paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG }
+                checkbox.isChecked = true
+                checkbox.isClickable = false
+            }
 
             checkbox.setOnCheckedChangeListener { _, state ->
                 if (state)

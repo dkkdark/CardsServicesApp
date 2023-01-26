@@ -25,7 +25,7 @@ class BookDateAdapter @Inject constructor() : RecyclerView.Adapter<BookDateAdapt
     private val differ = AsyncListDiffer(this, diffCallback)
 
     fun submitList(list: List<BookDate>) {
-        differ.submitList(list)
+        differ.submitList(list.toMutableList())
     }
 
     inner class BookDateHolder(val binding: BookDateItemBinding) : RecyclerView.ViewHolder(binding.root)
