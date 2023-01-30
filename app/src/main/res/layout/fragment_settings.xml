@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:layout_below="@id/imageViewProfile"
             android:layout_centerHorizontal="true"
             style="@style/SmallTextStyle"
@@ -47,7 +47,8 @@
             android:layout_alignBottom="@id/profileNameText"
             android:layout_alignTop="@id/profileNameText"
             android:layout_marginStart="10dp"
-            android:src="@drawable/pencil"/>
+            android:src="@drawable/pencil"
+            android:contentDescription="@null"/>
 
     </RelativeLayout>
 
@@ -77,8 +78,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/opensans_extrabold"
-                android:text="Specialization"
-                android:textSize="20dp"
+                android:text="@string/specialization"
+                android:textSize="20sp"
                 android:textColor="@color/purple"/>
 
             <ImageView
@@ -89,19 +90,20 @@
                 android:layout_alignTop="@id/professionText"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="20dp"
-                style="@style/ImageStyle"/>
+                style="@style/ImageStyle"
+                android:contentDescription="@null"/>
 
 
             <TextView
                 android:id="@+id/specializationText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name:"
+                android:text="@string/name"
                 android:layout_below="@id/editProfessionImage"
                 android:fontFamily="@font/opensans_bold"
                 android:layout_marginTop="10dp"
                 style="@style/MainTextStyle"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/specializationChangeText"
@@ -117,19 +119,19 @@
                 android:singleLine="true"
                 style="@style/SmallTextStyle"
                 android:maxLines="1"
-                android:text="—"
-                android:textSize="14dp"/>
+                android:text="@string/miss"
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/descriptionSpecializationText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description:"
+                android:text="@string/description_with_colon"
                 android:layout_below="@id/specializationText"
                 android:fontFamily="@font/opensans_bold"
                 android:layout_marginTop="10dp"
                 style="@style/MainTextStyle"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/descriptionSpecializationChangeText"
@@ -141,8 +143,8 @@
                 android:layout_marginTop="6dp"
                 style="@style/SmallTextStyle"
                 android:layout_alignParentEnd="true"
-                android:text="—"
-                android:textSize="14dp" />
+                android:text="@string/miss"
+                android:textSize="14sp" />
 
         </RelativeLayout>
 
@@ -173,9 +175,9 @@
                 android:id="@+id/additionalInfoText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Additional Information"
+                android:text="@string/additional_information"
                 android:fontFamily="@font/opensans_extrabold"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textColor="@color/purple"/>
 
             <ImageView
@@ -186,18 +188,19 @@
                 android:layout_alignTop="@id/additionalInfoText"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="20dp"
-                style="@style/ImageStyle"/>
+                style="@style/ImageStyle"
+                android:contentDescription="@null"/>
 
             <TextView
                 android:id="@+id/descriptionAddInfoText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description:"
+                android:text="@string/description_with_colon"
                 android:layout_below="@id/editAdditionalInfoImage"
                 android:fontFamily="@font/opensans_bold"
                 style="@style/MainTextStyle"
                 android:layout_marginTop="20dp"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/descriptionAddInfoChangeText"
@@ -206,19 +209,19 @@
                 android:layout_below="@id/descriptionAddInfoText"
                 android:layout_marginTop="6dp"
                 style="@style/SmallTextStyle"
-                android:text="—"
-                android:textSize="14dp" />
+                android:text="@string/miss"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/countryText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Country:"
+                android:text="@string/country"
                 android:layout_below="@id/descriptionAddInfoChangeText"
                 android:fontFamily="@font/opensans_bold"
                 style="@style/MainTextStyle"
                 android:layout_marginTop="10dp"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/countryChangeText"
@@ -229,19 +232,19 @@
                 android:layout_alignTop="@id/countryText"
                 android:layout_marginStart="10dp"
                 style="@style/SmallTextStyle"
-                android:text="—"
-                android:textSize="14dp" />
+                android:text="@string/miss"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/cityText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="City:"
+                android:text="@string/city"
                 android:layout_below="@id/countryText"
                 android:fontFamily="@font/opensans_bold"
                 style="@style/MainTextStyle"
                 android:layout_marginTop="10dp"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/cityChangeText"
@@ -252,19 +255,19 @@
                 android:layout_alignTop="@id/cityText"
                 android:layout_marginStart="10dp"
                 style="@style/SmallTextStyle"
-                android:text="—"
-                android:textSize="14dp" />
+                android:text="@string/miss"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/typeOfWorkText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Type of work:"
+                android:text="@string/type_of_work"
                 android:layout_below="@id/cityText"
                 android:fontFamily="@font/opensans_bold"
                 style="@style/MainTextStyle"
                 android:layout_marginTop="10dp"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/typeOfWorkChangeText"
@@ -275,8 +278,8 @@
                 android:layout_alignTop="@id/typeOfWorkText"
                 android:layout_marginStart="10dp"
                 style="@style/SmallTextStyle"
-                android:text="—"
-                android:textSize="14dp" />
+                android:text="@string/miss"
+                android:textSize="14sp" />
 
         </RelativeLayout>
 
@@ -310,9 +313,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/opensans_extrabold"
-                android:text="Other"
+                android:text="@string/other"
                 android:textColor="@color/purple"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/beCreatorButton"
@@ -320,8 +323,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/otherInfoText"
                 android:layout_marginTop="10dp"
-                android:text="Become a creator"
-                android:textSize="14dp"
+                android:text="@string/become_a_creator"
+                android:textSize="14sp"
                 android:fontFamily="@font/opensans_bold"
                 style="@style/ButtonStyle"
                 android:textColor="@color/purple"/>
@@ -333,7 +336,7 @@
                 android:layout_below="@+id/beCreatorButton"
                 android:layout_marginTop="10dp"
                 style="@style/ButtonStyle"
-                android:text="Logout"
+                android:text="@string/logout"
                 android:textColor="@color/purple"
                 android:textStyle="bold"
                 app:cornerRadius="16dp" />

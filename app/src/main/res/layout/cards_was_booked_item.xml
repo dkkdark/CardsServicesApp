@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/prodItemCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardElevation="14dp"
+        style="@style/CardsBackgroundStyle"
+        app:cardCornerRadius="20dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/imageViewItemExe"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/user"
+                app:civ_border_width="0dp"
+                app:civ_shadow="true"
+                app:civ_shadow_color="#323232"
+                app:civ_shadow_radius="6dp"
+                android:layout_centerHorizontal="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/nameText"/>
+
+            <TextView
+                android:id="@+id/nameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/imageViewItemExe"
+                app:layout_constraintBottom_toBottomOf="@id/imageViewItemExe"
+                app:layout_constraintStart_toEndOf="@id/imageViewItemExe"
+                android:fontFamily="@font/montserrat_bold"
+                style="@style/MainTextStyle"
+                android:layout_marginStart="10dp"
+                android:text=""/>
+
+            <TextView
+                android:id="@+id/bookedCardText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageViewItemExe"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/opensans_bold"
+                style="@style/MainTextStyle"
+                android:text="@string/booked_card" />
+
+            <TextView
+                android:id="@+id/cardTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/card_title"
+                style="@style/MainTextStyle"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bookedCardText" />
+
+            <TextView
+                android:id="@+id/onDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardTitle"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/opensans_bold"
+                style="@style/MainTextStyle"
+                android:text="@string/on_date" />
+
+            <com.kseniabl.tasksapp.view.TagView
+                android:id="@+id/bookedTags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/onDateText"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="12dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,8 +14,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.FragmentFreelancerDetailsBinding
+import com.kseniabl.tasksapp.utils.Resource
 import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.viewmodels.AllCardsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +31,8 @@ class FreelancerDetailsFragment: Fragment() {
 
     private val args: FreelancerDetailsFragmentArgs by navArgs()
 
+    private val viewModel: AllCardsViewModel by viewModels()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFreelancerDetailsBinding.inflate(inflater, container, false)
         return binding.root
@@ -37,15 +41,43 @@ class FreelancerDetailsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val user = args.freelancer
+        var user = args.freelancer
 
         val navHost = childFragmentManager.findFragmentById(R.id.fragmentCont) as NavHostFragment
         val navController = navHost.navController
+
+        if (user.userInfo?.username == "" && user.userInfo?.id != null) {
+            viewModel.getCreator(user.userInfo!!.id)
+            viewLifecycleOwner.lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    launch {
+                        viewModel.userAllData.collect { data ->
+                            if (data != null) {
+                                if (data is Resource.Success<*>) {
+                                    if (data.data != null) {
+                                        user = data.data
+                                        navController.navigate(
+                                            R.id.freelancerInfoFragment,
+                                            bundleOf("user" to user)
+                                        )
+                                        binding.freelancerNameText.text = user.userInfo?.username
+                                    }
+                                }
+                                if (data is Resource.Error<*>) {
+                                    Snackbar.make(view, "${data.message}", Snackbar.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         navController.navigate(
             R.id.freelancerInfoFragment,
             bundleOf("user" to user)
         )
+        binding.freelancerNameText.text = user.userInfo?.username
 
         binding.apply {
             infoButton.setOnClickListener {

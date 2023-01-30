@@ -13,6 +13,7 @@ class Repository @Inject constructor(private val retrofitApi: RetrofitApi) {
     suspend fun getUsersCards(token: String) = retrofitApi.getUsersCards(token)
     suspend fun getCardsById(token: String, id: String) = retrofitApi.getUsersCardsById(token, id)
     suspend fun getBookedCards(token: String) = retrofitApi.getBookedCards(token)
+    suspend fun getBookedInfoCards(token: String) = retrofitApi.getBookedInfoCards(token)
     suspend fun getUsers(token: String) = retrofitApi.getUsers(token)
     suspend fun getUserById(token: String, id: String) = retrofitApi.getUserById(token, id)
     suspend fun getUserByToken(token: String) = retrofitApi.getUserByToken(token)

@@ -1,16 +1,24 @@
 package com.kseniabl.tasksapp.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.CardItemBinding
 import com.kseniabl.tasksapp.models.CardModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
+import javax.inject.Inject
 
 class CreatorsCardsAdapter: RecyclerView.Adapter<CreatorsCardsAdapter.CreatorCardsHolder>(), AllCardsAdapterInterface {
+
+    @Inject
+    @ApplicationContext
+    lateinit var context: Context
 
     private var listener: AddTasksAdapter.Listener? = null
 
@@ -40,9 +48,9 @@ class CreatorsCardsAdapter: RecyclerView.Adapter<CreatorsCardsAdapter.CreatorCar
             cardText.text = item.title
             cardDescr.text = item.description
             if (item.agreement)
-                cardCost.text = "By agreement"
+                cardCost.text = context.resources.getString(R.string.by_agreement)
             else
-                cardCost.text = "${item.cost} $"
+                cardCost.text = context.resources.getString(R.string.cost_num, item.cost)
 
             if (item.tags.isEmpty()) {
                 tagView.visibility = View.GONE
@@ -60,13 +68,13 @@ class CreatorsCardsAdapter: RecyclerView.Adapter<CreatorsCardsAdapter.CreatorCar
             val hours = (distinction / (1000 * 60 * 60)).toInt()
             val minutes = (distinction / (1000 * 60)).toInt()
             if (numOfDays == 0 && hours == 0 && minutes == 0)
-                cardTime.text = "seconds ago"
+                cardTime.text =  context.resources.getString(R.string.seconds_ago)
             else if (numOfDays == 0 && hours == 0 && minutes != 0)
-                cardTime.text = "$minutes minutes ago"
+                cardTime.text = context.resources.getString(R.string.minutes_ago, minutes)
             else if (numOfDays == 0 && hours != 0 && minutes != 0)
-                cardTime.text = "$hours hours ago"
+                cardTime.text = context.resources.getString(R.string.hours_ago, hours)
             else if (numOfDays != 0 && hours != 0 && minutes != 0)
-                cardTime.text = "$numOfDays days ago"
+                cardTime.text = context.resources.getString(R.string.days_ago, numOfDays)
         }
 
         holder.itemView.setOnClickListener {

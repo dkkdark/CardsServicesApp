@@ -1,6 +1,7 @@
 package com.kseniabl.tasksapp.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +11,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kseniabl.tasksapp.adapters.AddTasksAdapter
-import com.kseniabl.tasksapp.adapters.BookCardsAdapter
-import com.kseniabl.tasksapp.databinding.FragmentAddCardsBinding
+import com.kseniabl.tasksapp.adapters.*
 import com.kseniabl.tasksapp.databinding.FragmentBookedCardsBinding
-import com.kseniabl.tasksapp.di.AddCardsScope
 import com.kseniabl.tasksapp.di.BookCardsAnnotation
+import com.kseniabl.tasksapp.models.BookInfoModel
 import com.kseniabl.tasksapp.models.CardModel
-import com.kseniabl.tasksapp.viewmodels.AddCardsViewModel
+import com.kseniabl.tasksapp.models.FreelancerModel
+import com.kseniabl.tasksapp.models.UserModel
+import com.kseniabl.tasksapp.utils.Resource
+import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.viewmodels.BookedCardsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -31,7 +33,10 @@ class BookedCardsFragment: Fragment() {
     private val binding get() = _binding!!
 
     @Inject
-    lateinit var adapter: BookCardsAdapter
+    lateinit var bookCardsAdapter: BookCardsAdapter
+
+    @Inject
+    lateinit var bookedUsersCardsAdapter: BookedUsersCardsAdapter
 
     @Inject
     @BookCardsAnnotation
@@ -49,29 +54,86 @@ class BookedCardsFragment: Fragment() {
 
         binding.apply {
             bookedCardsRecycler.layoutManager = linearLayoutManager.get()
-            bookedCardsRecycler.adapter = adapter
+            bookedCardsRecycler.setHasFixedSize(true)
             bookedCardsRecycler.setItemViewCacheSize(20)
+
+            bookedByYouButton.setOnClickListener { viewModel.changeAdapter(bookCardsAdapter) }
+            bookedYourCardsButton.setOnClickListener { viewModel.changeAdapter(bookedUsersCardsAdapter) }
         }
         viewModel.getCards()
+        viewModel.getBookedInfo()
+        bookCardsAdapter.setOnClickListener(viewModel)
+        bookedUsersCardsAdapter.setOnClickListener(viewModel)
+
+        setupBookCardsAdapterRecyclerView(viewModel.cards.value ?: arrayListOf())
+
+        viewModel.adapterValue.observe(viewLifecycleOwner) {
+            if (it is BookCardsAdapter)
+                setupBookCardsAdapterRecyclerView(viewModel.cards.value ?: arrayListOf())
+            if (it is BookedUsersCardsAdapter) {
+                setupBookedUsersCardsRecyclerView(viewModel.bookedInfo.value?.data?.body() ?: arrayListOf())
+            }
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.id.collect {
-                        adapter.userId = it
+                        bookCardsAdapter.userId = it
                     }
                 }
                 launch {
                     viewModel.cards.collect {
-                        if (it != null) {
+                        if (it != null && viewModel.adapterValue.value is BookCardsAdapter) {
                             val list = arrayListOf<CardModel>()
                             list.addAll(it)
-                            adapter.submitList(list)
+                            setupBookCardsAdapterRecyclerView(list)
                         }
+                    }
+                }
+                launch {
+                    viewModel.bookedInfo.collect { value ->
+                        if (viewModel.adapterValue.value is BookedUsersCardsAdapter) {
+                            if (value is Resource.Loading<*>) {
+                                // TODO
+                            }
+                            if (value is Resource.Success<*>) {
+                                setupBookedUsersCardsRecyclerView(value.data?.body() ?: arrayListOf())
+                            }
+                            if (value is Resource.Error<*>) {
+                                Log.e("qqq", "Error: ${value.message}")
+                            }
+                        }
+                    }
+                }
+                launch {
+                    viewModel.openDetailsCardsTrigger.collect {
+                        findTopNavController().navigate(
+                            TabsFragmentDirections.actionTabsFragmentToCardDetailsFragment(it)
+                        )
+                    }
+                }
+                launch {
+                    viewModel.openDetailsBookInfo.collect {
+                        findTopNavController().navigate(
+                            TabsFragmentDirections.actionTabsFragmentToFreelancerDetailsFragment(
+                                FreelancerModel(UserModel(it.userId))
+                            )
+                        )
                     }
                 }
             }
         }
+    }
+
+    private fun setupBookCardsAdapterRecyclerView(list: List<CardModel>) {
+        binding.bookedCardsRecycler.adapter = bookCardsAdapter
+        bookCardsAdapter.submitList(list)
+    }
+
+    private fun setupBookedUsersCardsRecyclerView(list: List<BookInfoModel>) {
+        binding.bookedCardsRecycler.adapter = bookedUsersCardsAdapter
+        bookedUsersCardsAdapter.submitList(list)
     }
 
     override fun onDestroyView() {

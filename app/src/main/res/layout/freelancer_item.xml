@@ -45,7 +45,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/imageViewItemExe"
-                android:text="Name Surname"
+                android:text="@string/name_surname"
                 android:fontFamily="@font/opensans_bold"
                 style="@style/MainTextStyle"/>
 
@@ -56,7 +56,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/itemExeName"
-                android:text="Math teacher"
+                android:text="@string/math_teacher"
                 style="@style/MainTextStyle"
                 android:layout_marginTop="10dp" />
 

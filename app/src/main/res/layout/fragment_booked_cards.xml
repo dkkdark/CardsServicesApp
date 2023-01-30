@@ -5,6 +5,35 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bookedByYouButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/your_booking"
+        android:textStyle="bold"
+        app:cornerRadius="16dp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/bookedYourCardsButton"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/ButtonStyle" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bookedYourCardsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/was_booked"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        app:cornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/bookedByYouButton"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/ButtonStyle"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bookedCardsRecycler"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -12,7 +41,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bookedByYouButton"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

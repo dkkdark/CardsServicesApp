@@ -28,6 +28,9 @@ interface RetrofitApi {
     @GET("booked-cards")
     suspend fun getBookedCards(@Header("Authorization") token: String): Response<ArrayList<CardModel>>
 
+    @GET("cards-was-booked")
+    suspend fun getBookedInfoCards(@Header("Authorization") token: String): Response<ArrayList<BookInfoModel>>
+
     @GET("users")
     suspend fun getUsers(@Header("Authorization") token: String): Response<ArrayList<UserModel>>
 

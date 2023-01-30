@@ -28,9 +28,9 @@
                 android:id="@+id/additionalInfoText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Additional Information"
+                android:text="@string/additional_information"
                 android:fontFamily="@font/opensans_extrabold"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textColor="@color/purple"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -62,7 +62,7 @@
                     android:background="@android:color/transparent"
                     android:inputType="textMultiLine|textCapSentences"
                     android:gravity="start"
-                    android:hint="Additional information"/>
+                    android:hint="@string/additional_information"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,7 +89,7 @@
                     android:background="@android:color/transparent"
                     android:inputType="textMultiLine|textCapSentences"
                     android:gravity="start"
-                    android:hint="Your country"/>
+                    android:hint="@string/your_country"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,7 +116,7 @@
                     android:background="@android:color/transparent"
                     android:inputType="textMultiLine|textCapSentences"
                     android:gravity="start"
-                    android:hint="Your city"/>
+                    android:hint="@string/your_city"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -141,7 +141,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_toStartOf="@+id/dialogAdditionalChangeButton"
                 style="@style/ButtonStyle"
-                android:text="Close"
+                android:text="@string/close"
                 android:textColor="@color/purple"
                 android:textStyle="bold"
                 app:cornerRadius="16dp"
@@ -159,7 +159,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="20dp"
                 style="@style/ButtonStyle"
-                android:text="Change"
+                android:text="@string/change"
                 android:textColor="@color/purple"
                 android:textStyle="bold"
                 app:cornerRadius="16dp" />

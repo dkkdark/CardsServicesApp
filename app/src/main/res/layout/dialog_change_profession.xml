@@ -28,8 +28,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/opensans_extrabold"
-                android:text="Profession"
-                android:textSize="20dp"
+                android:text="@string/profession"
+                android:textSize="20sp"
                 android:textColor="@color/purple"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -60,7 +60,7 @@
                     android:background="@android:color/transparent"
                     android:inputType="textMultiLine|textCapSentences"
                     android:gravity="start"
-                    android:hint="Your specialization"/>
+                    android:hint="@string/your_specialization"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:inputType="textMultiLine|textCapSentences"
-                    android:hint="Description" />
+                    android:hint="@string/description" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,7 +97,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_toStartOf="@+id/dialogProfChangeButton"
                 style="@style/ButtonStyle"
-                android:text="Close"
+                android:text="@string/close"
                 android:textColor="@color/purple"
                 android:textStyle="bold"
                 app:cornerRadius="16dp"
@@ -115,7 +115,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="20dp"
                 style="@style/ButtonStyle"
-                android:text="Change"
+                android:text="@string/change"
                 android:textColor="@color/purple"
                 android:textStyle="bold"
                 app:cornerRadius="16dp" />

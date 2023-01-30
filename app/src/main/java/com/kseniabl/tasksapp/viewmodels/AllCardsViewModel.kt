@@ -11,6 +11,7 @@ import com.kseniabl.tasksapp.adapters.FreelancersAdapter
 import com.kseniabl.tasksapp.models.*
 import com.kseniabl.tasksapp.network.Repository
 import com.kseniabl.tasksapp.utils.Resource
+import com.kseniabl.tasksapp.utils.UserDataStore
 import com.kseniabl.tasksapp.utils.UserTokenDataStore
 import com.kseniabl.tasksapp.utils.UserTokenDataStoreInterface
 import com.kseniabl.tasksapp.view.TagsModel
@@ -23,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AllCardsViewModel @Inject constructor(
     private val repository: Repository,
-    private val userTokenDataStore: UserTokenDataStoreInterface
+    private val userTokenDataStore: UserTokenDataStoreInterface,
+    val userDataStore: UserDataStore
 ): ViewModel(), AddTasksAdapter.Listener, FreelancersAdapter.Listener {
 
     private val _adapterValue = MutableLiveData<AllCardsAdapterInterface>(AllTasksAdapter())
@@ -120,7 +122,8 @@ class AllCardsViewModel @Inject constructor(
         viewModelScope.launch {
             val token = userTokenDataStore.readToken.first()
             try {
-                val cards = repository.getCardsById(token, id).body()
+                var cards = repository.getCardsById(token, id).body()
+                cards = cards?.filter { it.active } as ArrayList<CardModel>?
                 _creatorCards.emit(cards)
             } catch (exception: Exception) {
                 Log.e("qqq", "load users cards error: ${exception.message}")
@@ -190,6 +193,80 @@ class AllCardsViewModel @Inject constructor(
     override fun onAddItemClick(item: FreelancerModel) {
         viewModelScope.launch {
             _openDetailsFreelancer.emit(item)
+        }
+    }
+
+
+    /**
+     Card Details
+      **/
+
+    private val _user = MutableStateFlow<Resource<UserModel>?>(null)
+    private val _specializationOneUser = MutableStateFlow<Resource<Specialization>?>(null)
+    private val _addInfOneUser = MutableStateFlow<Resource<AdditionalInfo>?>(null)
+
+    private val _stateChange = MutableSharedFlow<Resource<Response<Void>>>()
+    val stateChange = _stateChange.asSharedFlow()
+
+    val userAllData = combine(
+        _user,
+        _specializationOneUser,
+        _addInfOneUser
+    ) { user, spec, addInfOneUser ->
+        var userDate: Resource<FreelancerModel>? = null
+        if (user is Resource.Success<*> && spec is Resource.Success<*> && addInfOneUser is Resource.Success<*>) {
+            userDate = Resource.Success(FreelancerModel(user.data, spec.data, addInfOneUser.data))
+        }
+        if (user is Resource.Error<*>) {
+            userDate = Resource.Error(user.message)
+        }
+        userDate
+    }
+
+    fun updateBookDateUser(bookDateId: String) {
+        viewModelScope.launch {
+            val token = userTokenDataStore.readToken.first()
+            val user = userDataStore.readUser.first()
+            val userId = user.userInfo?.id
+            if (userId.isNullOrEmpty()) {
+                Log.e("qqq", "User id is null")
+            }
+            else {
+                try {
+                    _stateChange.emit(Resource.Success(repository.updateBookDateUser(
+                        token,
+                        UpdateBookDateUser(userId, bookDateId)
+                    )))
+                } catch (e: Exception) {
+                    Log.e("qqq", "Error updateBookDateUser: ${e.message}")
+                }
+            }
+        }
+    }
+
+    fun getCreator(id: String) {
+        viewModelScope.launch {
+            val token = userTokenDataStore.readToken.first()
+            try {
+                val user = repository.getUserById(token, id).body()
+                var spec: Specialization? = null
+                var addInf: AdditionalInfo? = null
+                if (user != null) {
+                    if (user.specialization.isNotEmpty())
+                        spec = repository.getSpec(token, IdBody(user.specialization)).body()
+                    if (user.addInf.isNotEmpty())
+                        addInf = repository.getAddInf(token, IdBody(user.addInf)).body()
+                    _user.emit(Resource.Success(user))
+                    _specializationOneUser.emit(Resource.Success(spec))
+                    _addInfOneUser.emit(Resource.Success(addInf))
+                }
+                else {
+                    _user.emit(Resource.Error("Some object is null"))
+                }
+
+            } catch (exception: Exception) {
+                _user.emit(Resource.Error(exception.message ?: "Some error occurred"))
+            }
         }
     }
 }

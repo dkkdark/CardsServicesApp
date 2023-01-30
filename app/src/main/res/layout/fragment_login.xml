@@ -36,9 +36,9 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="30dp"
                         android:fontFamily="@font/opensans_extrabold"
-                        android:text="Sign in"
+                        android:text="@string/sign_in"
                         style="@style/MainTextStyle"
-                        android:textSize="24dp" />
+                        android:textSize="24sp" />
 
                     <TextView
                         android:id="@+id/textEmail"
@@ -48,7 +48,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/montserrat_bold"
-                        android:text="Email"
+                        android:text="@string/email"
                         style="@style/MainTextStyle" />
 
 
@@ -82,7 +82,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/montserrat_bold"
-                        android:text="Password"
+                        android:text="@string/password"
                         style="@style/MainTextStyle" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -116,7 +116,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="20dp"
                         style="@style/ButtonStyle"
-                        android:text=" Sign in "
+                        android:text="@string/sign_in_with_gap"
                         android:textColor="@color/purple"
                         android:textStyle="bold"
                         app:cornerRadius="16dp" />
@@ -129,9 +129,9 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="20dp"
-                        android:text="Don’t have an account?"
+                        android:text="@string/don_t_have_an_account"
                         style="@style/MainTextStyle"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/registerButton"
@@ -142,7 +142,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="30dp"
-                        android:text="@string/register"
+                        android:text="@string/sign_up"
                         android:textColor="@color/purple"
                         android:textStyle="bold" />
 

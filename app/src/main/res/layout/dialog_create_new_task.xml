@@ -31,9 +31,9 @@
                     android:id="@+id/crateChangeTask"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Create/change task"
+                    android:text="@string/create_change_task"
                     android:fontFamily="@font/opensans_extrabold"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textColor="@color/purple"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -49,7 +49,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/crateChangeTask"
                     app:layout_constraintBottom_toBottomOf="@id/crateChangeTask"
-                    android:src="@drawable/delete"/>
+                    android:src="@drawable/delete"
+                    android:contentDescription="@null"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/dialogTaskTitle"
@@ -74,7 +75,7 @@
                         android:background="@android:color/transparent"
                         android:fontFamily="@font/opensans_bold"
                         android:gravity="start"
-                        android:hint="Your title"
+                        android:hint="@string/your_title"
                         android:inputType="textMultiLine|textCapSentences"
                         style="@style/MainTextStyle" />
 
@@ -101,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:gravity="start"
-                        android:hint="Describe your task"
+                        android:hint="@string/describe_your_task"
                         android:inputType="textMultiLine|textCapSentences"
                         style="@style/MainTextStyle" />
 
@@ -131,7 +132,7 @@
                         android:maxLines="1"
                         android:gravity="start"
                         style="@style/MainTextStyle"
-                        android:hint="New tag to add"/>
+                        android:hint="@string/new_tag_to_add"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,7 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/ButtonStyle"
-                    android:text="Add"
+                    android:text="@string/add"
                     android:textColor="@color/purple"
                     android:textStyle="bold"
                     app:cornerRadius="16dp"
@@ -172,7 +173,7 @@
                     android:layout_marginStart="12dp"
                     android:layout_toStartOf="@+id/dialogCreateChangeButton"
                     style="@style/CardsBackgroundStyle"
-                    android:text="Clear tags"
+                    android:text="@string/clear_tags"
                     android:textColor="@color/purple"
                     android:textStyle="bold"
                     app:cornerRadius="16dp"
@@ -185,7 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/opensans_bold"
-                    android:text="Payment:"
+                    android:text="@string/payment"
                     style="@style/MainTextStyle"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/dialogDeleteTags"
@@ -223,7 +224,7 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:gravity="start"
-                            android:hint="Fix price"
+                            android:hint="@string/fix_price"
                             android:inputType="number"
                             android:maxLines="1"
                             style="@style/MainTextStyle" />
@@ -238,8 +239,8 @@
                         app:layout_constraintBottom_toBottomOf="@id/dialogTaskCostField"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/MainTextStyle"
-                        android:text="$"
-                        android:textSize="16dp"
+                        android:text="@string/dollar"
+                        android:textSize="16sp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp" />
 
@@ -262,7 +263,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="22dp"
                         android:fontFamily="@font/opensans_bold"
-                        android:text="Active:"
+                        android:text="@string/active"
                         style="@style/MainTextStyle"
                         app:layout_constraintEnd_toStartOf="@id/dialogCheckBox"
                         app:layout_constraintStart_toStartOf="parent"
@@ -299,7 +300,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="@id/dialogChangeAgreementLayout"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:text="By agreement"
+                        android:text="@string/by_agreement"
                         android:fontFamily="@font/opensans_bold"
                         style="@style/MainTextStyle"
                         android:layout_marginEnd="10dp"
@@ -334,7 +335,7 @@
                         android:layout_marginStart="22dp"
                         android:fontFamily="@font/opensans_bold"
                         style="@style/MainTextStyle"
-                        android:text="Prepayment:"
+                        android:text="@string/prepayment"
                         app:layout_constraintEnd_toStartOf="@id/prepaymentCheckBox"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -365,7 +366,7 @@
                     android:id="@+id/addBookDateButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add book date +"
+                    android:text="@string/add_book_date"
                     style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -388,7 +389,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_toStartOf="@+id/dialogCreateChangeButton"
                     style="@style/ButtonStyle"
-                    android:text="Close"
+                    android:text="@string/close"
                     android:textColor="@color/purple"
                     android:textStyle="bold"
                     app:cornerRadius="16dp"
@@ -406,7 +407,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="16dp"
                     style="@style/ButtonStyle"
-                    android:text="Submit"
+                    android:text="@string/submit"
                     android:textColor="@color/purple"
                     android:textStyle="bold"
                     app:cornerRadius="16dp" />

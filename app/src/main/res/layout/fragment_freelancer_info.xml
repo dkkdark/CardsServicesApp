@@ -31,20 +31,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/opensans_extrabold"
-                android:text="Profession"
-                android:textSize="20dp"
+                android:text="@string/profession"
+                android:textSize="20sp"
                 android:textColor="@color/purple"/>
 
             <TextView
                 android:id="@+id/specializationTextFreelancerDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Specialization:"
+                android:text="@string/specialization_with_colon"
                 android:layout_below="@id/professionTextFreelancerDetails"
                 android:fontFamily="@font/opensans_bold"
                 android:layout_marginTop="10dp"
                 style="@style/MainTextStyle"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/specializationChangeTextFreelancerDetails"
@@ -55,19 +55,19 @@
                 android:layout_alignTop="@id/specializationTextFreelancerDetails"
                 android:layout_marginStart="10dp"
                 style="@style/SmallTextStyle"
-                android:text="—"
-                android:textSize="14dp"/>
+                android:text="@string/miss"
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/descriptionSpecializationTextFreelancerDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description:"
+                android:text="@string/description_with_colon"
                 android:layout_below="@id/specializationChangeTextFreelancerDetails"
                 android:fontFamily="@font/opensans_bold"
                 style="@style/MainTextStyle"
                 android:layout_marginTop="10dp"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/descriptionSpecializationChangeTextFreelancerDetails"
@@ -78,8 +78,8 @@
                 android:layout_alignTop="@id/descriptionSpecializationTextFreelancerDetails"
                 android:layout_marginStart="10dp"
                 style="@style/SmallTextStyle"
-                android:text="—"
-                android:textSize="14dp" />
+                android:text="@string/miss"
+                android:textSize="14sp" />
 
         </RelativeLayout>
 
@@ -111,21 +111,21 @@
                 android:id="@+id/additionalInfoTextFreelancerDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Additional Information"
+                android:text="@string/additional_information"
                 android:fontFamily="@font/opensans_extrabold"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textColor="@color/purple"/>
 
             <TextView
                 android:id="@+id/descriptionAddInfoTextFreelancerDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description:"
+                android:text="@string/description_with_colon"
                 android:layout_below="@id/additionalInfoTextFreelancerDetails"
                 android:fontFamily="@font/opensans_bold"
                 style="@style/MainTextStyle"
                 android:layout_marginTop="20dp"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/descriptionAddInfoChangeTextFreelancerDetails"
@@ -136,19 +136,19 @@
                 android:layout_alignTop="@id/descriptionAddInfoTextFreelancerDetails"
                 android:layout_marginStart="10dp"
                 style="@style/SmallTextStyle"
-                android:text="—"
-                android:textSize="14dp" />
+                android:text="@string/miss"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/countryTextFreelancerDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Country:"
+                android:text="@string/country"
                 style="@style/MainTextStyle"
                 android:layout_below="@id/descriptionAddInfoTextFreelancerDetails"
                 android:fontFamily="@font/opensans_bold"
                 android:layout_marginTop="10dp"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/countryChangeTextFreelancerDetails"
@@ -159,19 +159,19 @@
                 android:layout_alignTop="@id/countryTextFreelancerDetails"
                 android:layout_marginStart="10dp"
                 style="@style/SmallTextStyle"
-                android:text="—"
-                android:textSize="14dp" />
+                android:text="@string/miss"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/cityTextFreelancerDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="City:"
+                android:text="@string/city"
                 style="@style/MainTextStyle"
                 android:layout_below="@id/countryTextFreelancerDetails"
                 android:fontFamily="@font/opensans_bold"
                 android:layout_marginTop="10dp"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/cityChangeTextFreelancerDetails"
@@ -182,19 +182,19 @@
                 android:layout_alignTop="@id/cityTextFreelancerDetails"
                 android:layout_marginStart="10dp"
                 style="@style/SmallTextStyle"
-                android:text="—"
-                android:textSize="14dp" />
+                android:text="@string/miss"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/typeOfWorkTextFreelancerDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Type of work:"
+                android:text="@string/type_of_work"
                 style="@style/MainTextStyle"
                 android:layout_below="@id/cityTextFreelancerDetails"
                 android:fontFamily="@font/opensans_bold"
                 android:layout_marginTop="10dp"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/typeOfWorkChangeTextFreelancerDetails"
@@ -205,8 +205,8 @@
                 android:layout_alignTop="@id/typeOfWorkTextFreelancerDetails"
                 android:layout_marginStart="10dp"
                 style="@style/SmallTextStyle"
-                android:text="—"
-                android:textSize="14dp" />
+                android:text="@string/miss"
+                android:textSize="14sp" />
 
         </RelativeLayout>
 

@@ -1,7 +1,6 @@
 package com.kseniabl.tasksapp.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,23 +9,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavArgs
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.kseniabl.tasksapp.adapters.BookDateAdapter
 import com.kseniabl.tasksapp.adapters.DatesDetailAdapter
 import com.kseniabl.tasksapp.databinding.FragmentCardDetailsBinding
 import com.kseniabl.tasksapp.di.CardDetailsAnnotation
-import com.kseniabl.tasksapp.di.CreateAndChangeTaskAnnotation
-import com.kseniabl.tasksapp.models.CardModel
 import com.kseniabl.tasksapp.utils.Resource
 import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.viewmodels.AllCardsViewModel
-import com.kseniabl.tasksapp.viewmodels.CardDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Provider
@@ -46,7 +38,7 @@ class CardDetailsFragment: Fragment() {
 
     private val args: CardDetailsFragmentArgs by navArgs()
 
-    private val viewModel: CardDetailsViewModel by viewModels()
+    private val viewModel: AllCardsViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentCardDetailsBinding.inflate(inflater, container, false)
