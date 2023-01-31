@@ -59,6 +59,8 @@ class AllCardsFragment: Fragment() {
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.SPACE_AROUND
 
+        viewModel.changeAdapter(allTasksAdapter)
+
         binding.apply {
             allCardsRecycler.layoutManager = layoutManager
             allCardsRecycler.setHasFixedSize(true)
@@ -67,7 +69,7 @@ class AllCardsFragment: Fragment() {
 
         binding.apply {
             allCardsRecycler.layoutManager = layoutManager
-            setupAllTasksRecyclerView(viewModel.adapterTasksList.value?.data?.body() ?: arrayListOf())
+            setupAllTasksRecyclerView(viewModel.adapterTasksList.value ?: arrayListOf())
             allCardsRecycler.setItemViewCacheSize(20)
 
             activeTasksButton.setOnClickListener { viewModel.changeAdapter(allTasksAdapter) }
@@ -83,7 +85,7 @@ class AllCardsFragment: Fragment() {
 
         viewModel.adapterValue.observe(viewLifecycleOwner) {
             if (it is AllTasksAdapter)
-                setupAllTasksRecyclerView(viewModel.adapterTasksList.value?.data?.body() ?: arrayListOf())
+                setupAllTasksRecyclerView(viewModel.adapterTasksList.value ?: arrayListOf())
             if (it is FreelancersAdapter) {
                 setupFreelancersRecyclerView(viewModel.creatorInfoHolder.value ?: arrayListOf())
             }
@@ -104,16 +106,8 @@ class AllCardsFragment: Fragment() {
                 launch {
                     viewModel.adapterTasksList.collect { value ->
                         if (viewModel.adapterValue.value is AllTasksAdapter) {
-                            if (value is Resource.Loading<*>) {
-                                // TODO
-                            }
-                            if (value is Resource.Success<*>) {
-                                setupAllTasksRecyclerView(value.data?.body() ?: arrayListOf())
-                                viewModel.setCardsList(value.data?.body())
-                            }
-                            if (value is Resource.Error<*>) {
-                                Log.e("qqq", "Error: ${value.message}")
-                            }
+                            setupAllTasksRecyclerView(value ?: arrayListOf())
+                            viewModel.setCardsList(value)
                         }
                     }
                 }

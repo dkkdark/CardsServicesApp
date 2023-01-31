@@ -17,13 +17,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.FragmentScoped
 import javax.inject.Inject
 
-class FreelancersAdapter @Inject constructor() : RecyclerView.Adapter<FreelancersAdapter.FreelancersHolder>(), AllCardsAdapterInterface {
+class FreelancersAdapter @Inject constructor(private val context: Context) : RecyclerView.Adapter<FreelancersAdapter.FreelancersHolder>(), AllCardsAdapterInterface {
 
     private var listener: Listener? = null
-
-    @Inject
-    @ApplicationContext
-    lateinit var context: Context
 
     private val diffCallback = object : DiffUtil.ItemCallback<FreelancerModel>() {
         override fun areItemsTheSame(oldItem: FreelancerModel, newItem: FreelancerModel): Boolean =

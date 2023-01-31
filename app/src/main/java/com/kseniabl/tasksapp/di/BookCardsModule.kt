@@ -1,5 +1,6 @@
 package com.kseniabl.tasksapp.di
 
+import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kseniabl.tasksapp.adapters.BookCardsAdapter
 import com.kseniabl.tasksapp.adapters.BookedUsersCardsAdapter
@@ -8,6 +9,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.FragmentComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.FragmentScoped
 
 @Module
@@ -20,7 +22,8 @@ class BookCardsModule {
 
     @Provides
     @FragmentScoped
-    fun provideBookCardsAdapter(): BookCardsAdapter = BookCardsAdapter()
+    fun provideBookCardsAdapter(@ApplicationContext context: Context)
+    : BookCardsAdapter = BookCardsAdapter(context)
 
     @Provides
     @FragmentScoped

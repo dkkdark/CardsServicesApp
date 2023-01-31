@@ -36,19 +36,23 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, true)
 
+        val navController = getNavController()
+        navController.navigate(R.id.loadingScreen)
+
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 launch {
                     viewModel.tokenFlowData.collect {
                         Log.e("qqq", "token $it")
-                        val isUserLogin = it?.isNotEmpty() == true
-                        val navController = getNavController()
+                        val isUserLogin =
+                            if (it == null) 2
+                            else if (it.isEmpty()) 1
+                            else 0
                         setupStartDestination(navController, isUserLogin)
                         onNavControllerActivated(navController)
                     }
@@ -64,13 +68,14 @@ class MainActivity : AppCompatActivity() {
         return navHostFragment.navController
     }
 
-    private fun setupStartDestination(navController: NavController, isUserLogin: Boolean) {
+    private fun setupStartDestination(navController: NavController, isUserLogin: Int) {
         val graph = navController.navInflater.inflate(R.navigation.nav_graph_main)
         graph.setStartDestination(
-            if (isUserLogin)
-                R.id.tabsFragment
-            else
-                R.id.loginFragment
+            when (isUserLogin) {
+                0 -> R.id.tabsFragment
+                1 -> R.id.loginFragment
+                else -> R.id.loadingScreen
+            }
         )
         navController.graph = graph
     }
@@ -84,14 +89,20 @@ class MainActivity : AppCompatActivity() {
 
     private val destinationListener = NavController.OnDestinationChangedListener { _, destination, arguments ->
         if (destination.id == R.id.loginFragment || destination.id == R.id.registrationFragment) {
-            binding.mainConstraintLayout.setBackgroundResource(R.drawable.app_gradient)
+            //binding.mainConstraintLayout.setBackgroundResource(R.drawable.app_gradient)
             binding.additionalSpace.visibility = View.GONE
         }
         else {
-            binding.mainConstraintLayout.setBackgroundColor(getColor(R.color.white))
+            //binding.mainConstraintLayout.setBackgroundColor(getColor(R.color.white))
             binding.additionalSpace.visibility = View.VISIBLE
         }
         binding.toolbar.title = HelperFunctions.setTitle(destination.label, arguments)
+
+        if (destination.id == R.id.loadingScreen || destination.id == R.id.tabsFragment ||
+            destination.id == R.id.loginFragment || destination.id == R.id.registrationFragment)
+            binding.appBar.visibility = View.GONE
+        else
+            binding.appBar.visibility = View.VISIBLE
     }
 
     override fun onDestroy() {

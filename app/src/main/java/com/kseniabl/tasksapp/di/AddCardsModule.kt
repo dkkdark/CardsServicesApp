@@ -1,7 +1,7 @@
 package com.kseniabl.tasksapp.di
 
+import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.database.core.Context
 import com.kseniabl.tasksapp.adapters.AddTasksAdapter
 import com.kseniabl.tasksapp.adapters.AllCardsAdapterInterface
 import com.kseniabl.tasksapp.ui.AddCardsFragment
@@ -25,7 +25,8 @@ class AddCardsModule {
 
     @Provides
     @FragmentScoped
-    fun provideAddTasksAdapter(): AddTasksAdapter = AddTasksAdapter()
+    fun provideAddTasksAdapter(@ApplicationContext context: Context)
+    : AddTasksAdapter = AddTasksAdapter(context)
 
     @Provides
     @AddCardsScope

@@ -52,6 +52,8 @@ class BookedCardsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.changeAdapter(bookCardsAdapter)
+
         binding.apply {
             bookedCardsRecycler.layoutManager = linearLayoutManager.get()
             bookedCardsRecycler.setHasFixedSize(true)

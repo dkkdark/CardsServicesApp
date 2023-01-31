@@ -1,5 +1,6 @@
 package com.kseniabl.tasksapp.di
 
+import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.kseniabl.tasksapp.adapters.AllTasksAdapter
@@ -10,6 +11,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.FragmentComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.FragmentScoped
 
 @Module
@@ -32,9 +34,11 @@ class AllCardsModule {
 
     @Provides
     @FragmentScoped
-    fun provideAllTasksAdapter(): AllTasksAdapter = AllTasksAdapter()
+    fun provideAllTasksAdapter(@ApplicationContext context: Context)
+    : AllTasksAdapter = AllTasksAdapter(context)
 
     @Provides
     @FragmentScoped
-    fun provideFreelancersAdapter(): FreelancersAdapter = FreelancersAdapter()
+    fun provideFreelancersAdapter(@ApplicationContext context: Context)
+    : FreelancersAdapter = FreelancersAdapter(context)
 }

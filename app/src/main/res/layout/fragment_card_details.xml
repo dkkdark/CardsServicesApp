@@ -28,7 +28,7 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/title"
-                style="@style/SmallTextStyle"
+                android:textColor="@color/white"
                 android:fontFamily="@font/montserrat_bold"
                 android:textSize="22sp"/>
 
@@ -39,7 +39,7 @@
                 app:layout_constraintStart_toStartOf="@id/detailTitle"
                 app:layout_constraintTop_toBottomOf="@id/detailTitle"
                 android:layout_marginTop="20dp"
-                style="@style/SmallTextStyle"
+                android:textColor="@color/white"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="@string/payment" />
 
@@ -52,7 +52,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/feeTitle"
                 app:layout_constraintStart_toEndOf="@id/feeTitle"
                 android:layout_marginStart="20dp"
-                style="@style/SmallTextStyle"
+                android:textColor="@color/white"
                 android:fontFamily="@font/montserrat_bold"/>
 
             <TextView
@@ -62,7 +62,7 @@
                 app:layout_constraintStart_toStartOf="@id/feeTitle"
                 app:layout_constraintTop_toBottomOf="@id/feeTitle"
                 android:layout_marginTop="10dp"
-                style="@style/SmallTextStyle"
+                android:textColor="@color/white"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="@string/prepayment" />
 
@@ -75,7 +75,7 @@
                 app:layout_constraintTop_toTopOf="@id/prepaymentTitle"
                 app:layout_constraintBottom_toBottomOf="@id/prepaymentTitle"
                 app:layout_constraintStart_toStartOf="@id/feeText"
-                style="@style/SmallTextStyle"
+                android:textColor="@color/white"
                 android:fontFamily="@font/montserrat_bold"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

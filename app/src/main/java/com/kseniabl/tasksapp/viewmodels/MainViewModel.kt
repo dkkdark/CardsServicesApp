@@ -56,7 +56,7 @@ class MainViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             userTokenDataStore.readToken.collect { token ->
-                _tokenFlowData.emit(token)
+                _tokenFlowData.value = token
             }
         }
     }
@@ -70,7 +70,7 @@ class MainViewModel @Inject constructor(
     fun saveUser(user: FreelancerModel) {
         viewModelScope.launch(Dispatchers.IO) {
             userDataStore.writeUser(user)
-            _saved.emit(true)
+            _saved.value = true
         }
     }
 
@@ -109,16 +109,16 @@ class MainViewModel @Inject constructor(
                     if (user.addInf.isNotEmpty())
                         addInf = repository.getAddInf(token, IdBody(user.addInf)).body()
 
-                    _user.emit(Resource.Success(user))
-                    _specialization.emit(Resource.Success(spec))
-                    _addInf.emit(Resource.Success(addInf))
+                    _user.value = Resource.Success(user)
+                    _specialization.value= Resource.Success(spec)
+                    _addInf.value = Resource.Success(addInf)
                 }
                 else {
-                    _user.emit(Resource.Error("Some object is null"))
+                    _user.value = Resource.Error("Some object is null")
                 }
 
             } catch (exception: Exception) {
-                _user.emit(Resource.Error(exception.message ?: "Some error occurred"))
+                _user.value = Resource.Error(exception.message ?: "Some error occurred")
             }
         }
     }

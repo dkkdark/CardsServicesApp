@@ -9,8 +9,9 @@ import com.kseniabl.tasksapp.databinding.CardsWasBookedItemBinding
 import com.kseniabl.tasksapp.models.BookInfoModel
 import com.kseniabl.tasksapp.models.CardModel
 import com.kseniabl.tasksapp.view.TagsModel
+import javax.inject.Inject
 
-class BookedUsersCardsAdapter: RecyclerView.Adapter<BookedUsersCardsAdapter.BookedUsersCardsHolder>(), AllCardsAdapterInterface {
+class BookedUsersCardsAdapter @Inject constructor(): RecyclerView.Adapter<BookedUsersCardsAdapter.BookedUsersCardsHolder>(), AllCardsAdapterInterface {
 
     private var listener: Listener? = null
 

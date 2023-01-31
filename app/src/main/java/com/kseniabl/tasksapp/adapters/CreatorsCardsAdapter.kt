@@ -14,11 +14,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
 import javax.inject.Inject
 
-class CreatorsCardsAdapter: RecyclerView.Adapter<CreatorsCardsAdapter.CreatorCardsHolder>(), AllCardsAdapterInterface {
-
-    @Inject
-    @ApplicationContext
-    lateinit var context: Context
+class CreatorsCardsAdapter @Inject constructor(private val context: Context): RecyclerView.Adapter<CreatorsCardsAdapter.CreatorCardsHolder>(), AllCardsAdapterInterface {
 
     private var listener: AddTasksAdapter.Listener? = null
 
@@ -47,6 +43,10 @@ class CreatorsCardsAdapter: RecyclerView.Adapter<CreatorsCardsAdapter.CreatorCar
         holder.binding.apply {
             cardText.text = item.title
             cardDescr.text = item.description
+            if (item.prepayment)
+                cardPrepayment.text = context.resources.getString(R.string.with_prepayment)
+            else
+                cardPrepayment.text = context.resources.getString(R.string.without_prepayment)
             if (item.agreement)
                 cardCost.text = context.resources.getString(R.string.by_agreement)
             else

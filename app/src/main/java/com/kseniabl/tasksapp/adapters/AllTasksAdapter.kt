@@ -14,13 +14,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
 import javax.inject.Inject
 
-class AllTasksAdapter: RecyclerView.Adapter<AllTasksAdapter.ActiveTasksHolder>(), AllCardsAdapterInterface {
+class AllTasksAdapter @Inject constructor(private val context: Context): RecyclerView.Adapter<AllTasksAdapter.ActiveTasksHolder>(), AllCardsAdapterInterface {
 
     private var listener: AddTasksAdapter.Listener? = null
-
-    @Inject
-    @ApplicationContext
-    lateinit var context: Context
 
     private val diffCallback = object : DiffUtil.ItemCallback<CardModel>() {
         override fun areItemsTheSame(oldItem: CardModel, newItem: CardModel): Boolean =
@@ -47,6 +43,10 @@ class AllTasksAdapter: RecyclerView.Adapter<AllTasksAdapter.ActiveTasksHolder>()
         holder.binding.apply {
             cardText.text = item.title
             cardDescr.text = item.description
+            if (item.prepayment)
+                cardPrepayment.text = context.resources.getString(R.string.with_prepayment)
+            else
+                cardPrepayment.text = context.resources.getString(R.string.without_prepayment)
             if (item.agreement)
                 cardCost.text = context.resources.getString(R.string.by_agreement)
             else

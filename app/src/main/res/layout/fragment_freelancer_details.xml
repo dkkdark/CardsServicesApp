@@ -31,7 +31,7 @@
             app:layout_constraintTop_toBottomOf="@id/imageViewFreelancer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            style="@style/MainTextStyle"
+            android:textColor="@color/white"
             android:fontFamily="@font/opensans_bold"/>
 
         <com.google.android.material.button.MaterialButton

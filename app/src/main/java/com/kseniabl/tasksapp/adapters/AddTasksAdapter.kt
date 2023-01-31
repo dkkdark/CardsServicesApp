@@ -19,13 +19,9 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-class AddTasksAdapter: RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(), AllCardsAdapterInterface {
+class AddTasksAdapter @Inject constructor(private val context: Context): RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(), AllCardsAdapterInterface {
 
     private var listener: Listener? = null
-
-    @Inject
-    @ApplicationContext
-    lateinit var context: Context
 
     private val diffCallback = object : DiffUtil.ItemCallback<CardModel>() {
         override fun areItemsTheSame(oldItem: CardModel, newItem: CardModel): Boolean =
@@ -52,6 +48,10 @@ class AddTasksAdapter: RecyclerView.Adapter<AddTasksAdapter.DraftTasksHolder>(),
         holder.binding.apply {
             cardText.text = item.title
             cardDescr.text = item.description
+            if (item.prepayment)
+                cardPrepayment.text = context.resources.getString(R.string.with_prepayment)
+            else
+                cardPrepayment.text = context.resources.getString(R.string.without_prepayment)
             if (item.agreement)
                 cardCost.text = context.resources.getString(R.string.by_agreement)
             else

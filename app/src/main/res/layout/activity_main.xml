@@ -34,6 +34,7 @@
             app:elevation="0dp"
             app:title="@string/all_cards"
             app:titleCentered="true"
+            app:titleTextColor="@color/white"
             app:titleTextAppearance="@style/OPSansBoldTextViewStyle"/>
 
     </com.google.android.material.appbar.AppBarLayout>

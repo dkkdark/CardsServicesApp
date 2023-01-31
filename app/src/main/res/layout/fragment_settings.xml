@@ -36,7 +36,7 @@
             android:textSize="14sp"
             android:layout_below="@id/imageViewProfile"
             android:layout_centerHorizontal="true"
-            style="@style/SmallTextStyle"
+            android:textColor="@color/white"
             android:fontFamily="@font/opensans_bold"/>
 
         <ImageView

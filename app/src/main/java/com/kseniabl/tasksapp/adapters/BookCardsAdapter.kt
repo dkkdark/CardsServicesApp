@@ -18,11 +18,7 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-class BookCardsAdapter: RecyclerView.Adapter<BookCardsAdapter.BookCardsHolder>(), AllCardsAdapterInterface {
-
-    @Inject
-    @ApplicationContext
-    lateinit var context: Context
+class BookCardsAdapter @Inject constructor(private val context: Context): RecyclerView.Adapter<BookCardsAdapter.BookCardsHolder>(), AllCardsAdapterInterface {
 
     private var listener: Listener? = null
     var userId: String? = null
@@ -52,6 +48,10 @@ class BookCardsAdapter: RecyclerView.Adapter<BookCardsAdapter.BookCardsHolder>()
         holder.binding.apply {
             cardText.text = item.title
             cardDescr.text = item.description
+            if (item.prepayment)
+                cardPrepayment.text = context.resources.getString(R.string.with_prepayment)
+            else
+                cardPrepayment.text = context.resources.getString(R.string.without_prepayment)
             if (item.agreement)
                 cardCost.text = context.resources.getString(R.string.by_agreement)
             else

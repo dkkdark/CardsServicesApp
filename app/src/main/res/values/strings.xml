@@ -66,6 +66,8 @@
     <string name="fix_price">Fix price</string>
     <string name="dollar">$</string>
     <string name="by_agreement">By agreement</string>
+    <string name="with_prepayment">With prepayment</string>
+    <string name="without_prepayment">Without prepayment</string>
     <string name="add_book_date">Add book date +</string>
     <string name="submit">Submit</string>
     <string name="your_specialization">Your specialization</string>
@@ -82,5 +84,5 @@
     <string name="minutes_ago">%1$d minutes ago</string>
     <string name="hours_ago">%1$d hours ago</string>
     <string name="days_ago">%1$d days ago</string>
-    <string name="cost_num">%1$d $</string>
+    <string name="cost_num">%1$.2f $</string>
 </resources>

@@ -74,7 +74,7 @@
                 app:layout_constraintHorizontal_bias="0.0"/>
 
             <TextView
-                android:id="@+id/cardDate"
+                android:id="@+id/cardPrepayment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -99,7 +99,7 @@
                 android:textSize="12sp"
                 style="@style/MainTextStyle"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/cardDate"
+                app:layout_constraintStart_toEndOf="@id/cardPrepayment"
                 app:layout_constraintTop_toBottomOf="@id/cardDescr" />
 
             <androidx.constraintlayout.helper.widget.Flow
@@ -109,7 +109,7 @@
                 app:layout_constraintTop_toBottomOf="@id/cardDescr"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:constraint_referenced_ids="cardDate, cardCost"
+                app:constraint_referenced_ids="cardPrepayment, cardCost"
                 app:flow_horizontalBias="0"
                 app:flow_horizontalGap="10dp"
                 app:flow_horizontalStyle="spread_inside"
