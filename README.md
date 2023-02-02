@@ -10,11 +10,11 @@
 
 Для создания приложения применялись:
 - шаблон MVVM, 
-- hilt (в частности для работы с вью-моделями),
+- hilt (для удобной работы с вью-моделями),
 - retrofit,
 - coroutines flow,
-- navigation component
-- в скором времени room (он использовался в старой версии приложения https://github.com/dkkdark/CardsOffers)
+- navigation component,
+- в скором времени room (он использовался в старой версии приложения https://github.com/dkkdark/CardsOffers),
 - была создана custom view (тэги в карточках).
 
 
