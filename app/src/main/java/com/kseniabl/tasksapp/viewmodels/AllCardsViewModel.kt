@@ -30,8 +30,8 @@ class AllCardsViewModel @Inject constructor(
     val userDataStore: UserDataStore
 ): ViewModel(), AddTasksAdapter.Listener, FreelancersAdapter.Listener {
 
-    private val _adapterValue = MutableLiveData<AllCardsAdapterInterface>(null)
-    val adapterValue: LiveData<AllCardsAdapterInterface> = _adapterValue
+    private val _adapterValue = MutableStateFlow<AllCardsAdapterInterface?>(null)
+    val adapterValue = _adapterValue.asStateFlow()
 
     private val _adapterTasksList = MutableStateFlow<ArrayList<CardModel>?>(null)
     val adapterTasksList = _adapterTasksList.asStateFlow()

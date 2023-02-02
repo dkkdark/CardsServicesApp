@@ -59,7 +59,7 @@ class AllCardsFragment: Fragment() {
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.SPACE_AROUND
 
-        viewModel.changeAdapter(allTasksAdapter)
+        viewModel.changeAdapter(viewModel.adapterValue.value ?: allTasksAdapter)
 
         binding.apply {
             allCardsRecycler.layoutManager = layoutManager
@@ -83,14 +83,6 @@ class AllCardsFragment: Fragment() {
             }
         }
 
-        viewModel.adapterValue.observe(viewLifecycleOwner) {
-            if (it is AllTasksAdapter)
-                setupAllTasksRecyclerView(viewModel.adapterTasksList.value ?: arrayListOf())
-            if (it is FreelancersAdapter) {
-                setupFreelancersRecyclerView(viewModel.creatorInfoHolder.value ?: arrayListOf())
-            }
-        }
-
         viewModel.getCards()
         viewModel.getUsers()
         allTasksAdapter.setOnClickListener(viewModel)
@@ -98,6 +90,15 @@ class AllCardsFragment: Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.adapterValue.collect {
+                        if (it is AllTasksAdapter)
+                            setupAllTasksRecyclerView(viewModel.adapterTasksList.value ?: arrayListOf())
+                        if (it is FreelancersAdapter) {
+                            setupFreelancersRecyclerView(viewModel.creatorInfoHolder.value ?: arrayListOf())
+                        }
+                    }
+                }
                 launch {
                     viewModel.dialogsTrigger.collect {
                         callSnackbar(view, it)

@@ -28,8 +28,8 @@ class BookedCardsViewModel @Inject constructor(
     private val userTokenDataStore: UserTokenDataStore
 ): ViewModel(), BookCardsAdapter.Listener, BookedUsersCardsAdapter.Listener {
 
-    private val _adapterValue = MutableLiveData<AllCardsAdapterInterface>(null)
-    val adapterValue: LiveData<AllCardsAdapterInterface> = _adapterValue
+    private val _adapterValue = MutableStateFlow<AllCardsAdapterInterface?>(null)
+    val adapterValue = _adapterValue.asStateFlow()
 
     private val _cards = MutableStateFlow<ArrayList<CardModel>?>(null)
     val cards = _cards.asStateFlow()

@@ -37,7 +37,6 @@ class AddCardsViewModel @Inject constructor(
     fun isUserCreator() {
         viewModelScope.launch {
             val user = userDataStore.readUser.first()
-            Log.e("qqq", "user loaded $user")
             if (user.userInfo?.creator == true)
                 _dialogTrigger.emit(Resource.Success(null))
             else

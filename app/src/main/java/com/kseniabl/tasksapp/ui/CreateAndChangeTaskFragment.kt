@@ -65,6 +65,7 @@ class CreateAndChangeTaskFragment: Fragment(), DatePickerDialog.OnDateSetListene
         card = args.card
         tagsList = card?.tags ?: arrayListOf()
         bookList = card?.bookDates ?: arrayListOf()
+        binding.dialogTaskCostText.setText("0")
         card?.let { setDataToDialog(it) }
         setListener()
         clickOnButtonsListeners(view)
@@ -75,12 +76,12 @@ class CreateAndChangeTaskFragment: Fragment(), DatePickerDialog.OnDateSetListene
         binding.apply {
             dialogTaskTitleText.setText(card.title)
             dialogTaskDescriptionText.setText(card.description)
-            if (card.active) {
-                dialogTaskCostText.visibility = View.VISIBLE
-                dialogTaskCostText.setText(card.cost.toString())
-            }
+            dialogTaskCostText.setText(card.cost.toString())
+            if (!card.agreement)
+                dialogTaskCostField.visibility = View.VISIBLE
+
             else
-                dialogTaskCostText.visibility = View.GONE
+                dialogTaskCostField.visibility = View.GONE
 
             dialogCheckBox.isChecked = card.active
             dialogByAgreementCheckBox.isChecked = card.agreement

@@ -16,7 +16,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.kseniabl.tasksapp.adapters.AddTasksAdapter
 import com.kseniabl.tasksapp.databinding.FragmentAddCardsBinding
 import com.kseniabl.tasksapp.di.AddCardsScope
-import com.kseniabl.tasksapp.dialogs.CreateNewTaskDialog
 import com.kseniabl.tasksapp.models.CardModel
 import com.kseniabl.tasksapp.models.FreelancerModel
 import com.kseniabl.tasksapp.utils.HelperFunctions.generateRandomKey

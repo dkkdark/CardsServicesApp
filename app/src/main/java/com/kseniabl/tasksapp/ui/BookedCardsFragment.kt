@@ -52,7 +52,7 @@ class BookedCardsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.changeAdapter(bookCardsAdapter)
+        viewModel.changeAdapter(viewModel.adapterValue.value ?: bookCardsAdapter)
 
         binding.apply {
             bookedCardsRecycler.layoutManager = linearLayoutManager.get()
@@ -69,16 +69,17 @@ class BookedCardsFragment: Fragment() {
 
         setupBookCardsAdapterRecyclerView(viewModel.cards.value ?: arrayListOf())
 
-        viewModel.adapterValue.observe(viewLifecycleOwner) {
-            if (it is BookCardsAdapter)
-                setupBookCardsAdapterRecyclerView(viewModel.cards.value ?: arrayListOf())
-            if (it is BookedUsersCardsAdapter) {
-                setupBookedUsersCardsRecyclerView(viewModel.bookedInfo.value?.data?.body() ?: arrayListOf())
-            }
-        }
-
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.adapterValue.collect {
+                        if (it is BookCardsAdapter)
+                            setupBookCardsAdapterRecyclerView(viewModel.cards.value ?: arrayListOf())
+                        if (it is BookedUsersCardsAdapter) {
+                            setupBookedUsersCardsRecyclerView(viewModel.bookedInfo.value?.data?.body() ?: arrayListOf())
+                        }
+                    }
+                }
                 launch {
                     viewModel.id.collect {
                         bookCardsAdapter.userId = it
