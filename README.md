@@ -15,7 +15,7 @@
 - coroutines flow,
 - navigation component
 - в скором времени room (он использовался в старой версии приложения https://github.com/dkkdark/CardsOffers)
-была создана custom view.
+- была создана custom view (тэги в карточках).
 
 
 
