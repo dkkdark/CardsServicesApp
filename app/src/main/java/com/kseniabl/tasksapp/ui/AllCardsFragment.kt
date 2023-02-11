@@ -5,25 +5,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.google.android.material.snackbar.Snackbar
-import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.adapters.AllTasksAdapter
 import com.kseniabl.tasksapp.adapters.FreelancersAdapter
 import com.kseniabl.tasksapp.databinding.FragmentAllCardsBinding
 import com.kseniabl.tasksapp.di.AllCardsScope
 import com.kseniabl.tasksapp.models.*
-import com.kseniabl.tasksapp.utils.Resource
 import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.viewmodels.AllCardsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,7 +54,7 @@ class AllCardsFragment: Fragment() {
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.SPACE_AROUND
 
-        viewModel.changeAdapter(viewModel.adapterValue.value ?: allTasksAdapter)
+        viewModel.changeAdapter(viewModel.allCardsState.value.adapterValue ?: allTasksAdapter)
 
         binding.apply {
             allCardsRecycler.layoutManager = layoutManager
@@ -69,14 +64,14 @@ class AllCardsFragment: Fragment() {
 
         binding.apply {
             allCardsRecycler.layoutManager = layoutManager
-            setupAllTasksRecyclerView(viewModel.adapterTasksList.value ?: arrayListOf())
+            setupAllTasksRecyclerView(viewModel.allCardsState.value.cardsList)
             allCardsRecycler.setItemViewCacheSize(20)
 
             activeTasksButton.setOnClickListener { viewModel.changeAdapter(allTasksAdapter) }
             freelancersButton.setOnClickListener { viewModel.changeAdapter(creatorsAdapter) }
 
             searchText.addTextChangedListener {
-                if (viewModel.adapterValue.value is AllTasksAdapter)
+                if (viewModel.allCardsState.value.adapterValue is AllTasksAdapter)
                     viewModel.onSearchQueryChanged(searchText.text.toString().lowercase())
                 else
                     viewModel.onSearchQueryChangedCreators(searchText.text.toString().lowercase())
@@ -91,77 +86,55 @@ class AllCardsFragment: Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.adapterValue.collect {
-                        if (it is AllTasksAdapter)
-                            setupAllTasksRecyclerView(viewModel.adapterTasksList.value ?: arrayListOf())
-                        if (it is FreelancersAdapter) {
-                            setupFreelancersRecyclerView(viewModel.creatorInfoHolder.value ?: arrayListOf())
+                    viewModel.actionsTrigger.collect {
+                        when (it) {
+                            is AllCardsViewModel.UIActionsAllCards.OpenDetailsCard -> {
+                                findTopNavController().navigate(
+                                    TabsFragmentDirections.actionTabsFragmentToCardDetailsFragment(it.card)
+                                )
+                            }
+                            is AllCardsViewModel.UIActionsAllCards.OpenFreelancerDetails -> {
+                                findTopNavController().navigate(
+                                    TabsFragmentDirections.actionTabsFragmentToFreelancerDetailsFragment(it.freelancer)
+                                )
+                            }
                         }
-                    }
-                }
-                launch {
-                    viewModel.dialogsTrigger.collect {
-                        callSnackbar(view, it)
-                    }
-                }
-                launch {
-                    viewModel.adapterTasksList.collect { value ->
-                        if (viewModel.adapterValue.value is AllTasksAdapter) {
-                            setupAllTasksRecyclerView(value ?: arrayListOf())
-                            viewModel.setCardsList(value)
-                        }
-                    }
-                }
-                launch {
-                    viewModel.matchedCards.collect {
-                        if (viewModel.adapterValue.value is AllTasksAdapter)
-                            setupAllTasksRecyclerView(it ?: arrayListOf())
                     }
                 }
                 launch {
                     viewModel.creatorInfoData.collect {
-                        viewModel.setCreatorsList(it)
-                        if (viewModel.adapterValue.value is FreelancersAdapter) {
+                        if (viewModel.allCardsState.value.adapterValue is FreelancersAdapter) {
                             setupFreelancersRecyclerView(it)
                         }
                     }
                 }
                 launch {
-                    viewModel.creatorInfoHolder.collect {
-                        if (viewModel.adapterValue.value is FreelancersAdapter) {
-                            setupFreelancersRecyclerView(it ?: arrayListOf())
+                    viewModel.allCardsState.collect {
+                        when (it.adapterValue) {
+                            is AllTasksAdapter -> {
+                                setupAllTasksRecyclerView(it.cardsList)
+                            }
+                            is FreelancersAdapter -> {
+                                setupFreelancersRecyclerView(it.creatorList)
+                            }
                         }
-                    }
-                }
-                launch {
-                    viewModel.openDetailsTrigger.collect {
-                        findTopNavController().navigate(
-                            TabsFragmentDirections.actionTabsFragmentToCardDetailsFragment(it)
-                        )
-                    }
-                }
-                launch {
-                    viewModel.openDetailsFreelancer.collect {
-                        findTopNavController().navigate(
-                            TabsFragmentDirections.actionTabsFragmentToFreelancerDetailsFragment(it)
-                        )
                     }
                 }
             }
         }
     }
 
-    private fun callSnackbar(view: View, text: String) {
-        Snackbar.make(view, text, Snackbar.LENGTH_SHORT).show()
-    }
-
     private fun setupAllTasksRecyclerView(list: List<CardModel>) {
-        binding.allCardsRecycler.adapter = allTasksAdapter
+        if (binding.allCardsRecycler.adapter !is AllTasksAdapter) {
+            binding.allCardsRecycler.adapter = allTasksAdapter
+        }
         allTasksAdapter.submitList(list)
     }
 
     private fun setupFreelancersRecyclerView(list: List<FreelancerModel>) {
-        binding.allCardsRecycler.adapter = creatorsAdapter
+        if (binding.allCardsRecycler.adapter !is FreelancersAdapter) {
+            binding.allCardsRecycler.adapter = creatorsAdapter
+        }
         creatorsAdapter.submitList(list)
     }
 

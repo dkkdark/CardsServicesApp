@@ -1,12 +1,9 @@
 package com.kseniabl.tasksapp.ui
 
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,7 +19,6 @@ import com.kseniabl.tasksapp.models.AddUserModel
 import com.kseniabl.tasksapp.utils.Constants.masterPassword
 import com.kseniabl.tasksapp.utils.Constants.ordinary
 import com.kseniabl.tasksapp.utils.HelperFunctions.isValidPassword
-import com.kseniabl.tasksapp.utils.Resource
 import com.kseniabl.tasksapp.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -66,17 +62,14 @@ class RegistrationFragment: Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.registrationStatus.collect { state ->
-                        if (state is Resource.Loading<*>) {
-                            // TODO loading
-                        }
-                        if (state is Resource.Success<*>) {
-                            Snackbar.make(view, "Please sign in", Snackbar.LENGTH_SHORT).show()
-                            guideToLoginFragment(email)
-                        }
-                        if (state is Resource.Error<*>) {
-                            Snackbar.make(view, "${state.message}", Snackbar.LENGTH_SHORT).show()
-                            Log.e("qqq", "${state.message}")
+                    viewModel.uiActionsRegistration.collect {
+                        when(it) {
+                            is MainViewModel.UIActionsRegistration.ShowSnackbar -> {
+                                Snackbar.make(view, it.message, Snackbar.LENGTH_SHORT).show()
+                            }
+                            is MainViewModel.UIActionsRegistration.ToLoginFragment -> {
+                                guideToLoginFragment(email)
+                            }
                         }
                     }
                 }

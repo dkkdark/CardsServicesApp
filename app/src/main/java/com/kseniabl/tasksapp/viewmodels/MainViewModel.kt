@@ -25,32 +25,30 @@ class MainViewModel @Inject constructor(
     private val _tokenFlowData = MutableStateFlow<String?>(null)
     val tokenFlowData = _tokenFlowData.asStateFlow()
 
-    private val _loginStatus = MutableSharedFlow<Resource<Response<TokenModel>>>()
-    val loginStatus = _loginStatus.asSharedFlow()
+    private val _uiActionsRegistration = MutableSharedFlow<UIActionsRegistration>()
+    val uiActionsRegistration = _uiActionsRegistration.asSharedFlow()
 
-    private val _registrationStatus = MutableSharedFlow<Resource<Response<Void>>>()
-    val registrationStatus = _registrationStatus.asSharedFlow()
+    private val _uiActionsLogin = MutableSharedFlow<UIActionsLogin>()
+    val uiActionsLogin = _uiActionsLogin.asSharedFlow()
 
     private val _user = MutableStateFlow<Resource<UserModel>?>(null)
     private val _specialization = MutableStateFlow<Resource<Specialization>?>(null)
     private val _addInf = MutableStateFlow<Resource<AdditionalInfo>?>(null)
 
-    private val _saved = MutableStateFlow(false)
-    val saved = _saved.asStateFlow()
+    private val _token = MutableStateFlow<String?>(null)
 
     val userAllData = combine(
         _user,
         _specialization,
-        _addInf
-    ) { user, spec, addInf ->
-        var userDate: Resource<FreelancerModel>? = null
-        if (user is Resource.Success<*> && spec is Resource.Success<*> && addInf is Resource.Success<*>) {
-            userDate = Resource.Success(FreelancerModel(user.data, spec.data, addInf.data))
+        _addInf,
+        _token
+    ) { user, spec, addInf, token ->
+        if (user is Resource.Success<*> && spec is Resource.Success<*> && addInf is Resource.Success<*> && !token.isNullOrEmpty()) {
+            saveUser(FreelancerModel(user.data, spec.data, addInf.data), token)
         }
         if (user is Resource.Error<*>) {
-            userDate = Resource.Error(user.message)
+            _uiActionsLogin.emit(UIActionsLogin.ShowSnackbar("Sign in was unsuccessful"))
         }
-        userDate
     }
 
     init {
@@ -61,42 +59,41 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun saveToken(token: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            userTokenDataStore.saveToken(token)
-        }
-    }
-
-    fun saveUser(user: FreelancerModel) {
+    private fun saveUser(user: FreelancerModel, token: String) {
         viewModelScope.launch(Dispatchers.IO) {
             userDataStore.writeUser(user)
-            _saved.value = true
+            userTokenDataStore.saveToken(token)
         }
     }
 
     fun signUp(addUserModel: AddUserModel) {
         viewModelScope.launch {
-            _registrationStatus.emit(Resource.Loading())
             try {
-                _registrationStatus.emit(Resource.Success(data = repository.addUser(addUserModel)))
+                repository.addUser(addUserModel)
+                _uiActionsRegistration.emit(UIActionsRegistration.ShowSnackbar("Please sign in"))
+                _uiActionsRegistration.emit(UIActionsRegistration.ToLoginFragment)
             } catch (exception: Exception) {
-                _registrationStatus.emit(Resource.Error(errorMessage = exception.message ?: "Some error occurred"))
+                _uiActionsRegistration.emit(UIActionsRegistration.ShowSnackbar("Registration was unsuccessful"))
             }
         }
     }
 
     fun signIn(loginModel: UserLoginModel) {
         viewModelScope.launch {
-            _loginStatus.emit(Resource.Loading())
             try {
-                _loginStatus.emit(Resource.Success(data = repository.loginUser(loginModel)))
+                val token = repository.loginUser(loginModel).body()?.token
+                if (token != null) {
+                    getUser(token)
+                    // TODO: load user's cards and save them
+                }
+                else _uiActionsLogin.emit(UIActionsLogin.ShowSnackbar("Sign in was unsuccessful"))
             } catch (exception: Exception) {
-                _loginStatus.emit(Resource.Error(errorMessage = exception.message ?: "Some error occurred"))
+                _uiActionsLogin.emit(UIActionsLogin.ShowSnackbar("Sign in was unsuccessful"))
             }
         }
     }
 
-    fun getUser(token: String) {
+    private fun getUser(token: String) {
         viewModelScope.launch {
             try {
                 val user = repository.getUserByToken(token).body()
@@ -110,8 +107,9 @@ class MainViewModel @Inject constructor(
                         addInf = repository.getAddInf(token, IdBody(user.addInf)).body()
 
                     _user.value = Resource.Success(user)
-                    _specialization.value= Resource.Success(spec)
+                    _specialization.value = Resource.Success(spec)
                     _addInf.value = Resource.Success(addInf)
+                    _token.value = token
                 }
                 else {
                     _user.value = Resource.Error("Some object is null")
@@ -123,4 +121,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    sealed class UIActionsRegistration {
+        data class ShowSnackbar(val message: String): UIActionsRegistration()
+        object ToLoginFragment: UIActionsRegistration()
+    }
+
+    sealed class UIActionsLogin {
+        data class ShowSnackbar(val message: String): UIActionsLogin()
+
+    }
 }

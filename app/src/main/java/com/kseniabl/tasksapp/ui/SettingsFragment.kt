@@ -70,19 +70,16 @@ class SettingsFragment: Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.stateChange.collect { data ->
-                        if (data is Resource.Loading<*>) {
-                            // TODO loading
-                        }
-                        if (data is Resource.Success<*>) {
-                            if (data.data?.isSuccessful == true) {
+                    viewModel.stateChange.collect {
+                        when(it) {
+                            is SettingsViewModel.UIActions.ShowSnackbar -> {
+                                Snackbar.make(view, it.message, Snackbar.LENGTH_SHORT).show()
+                            }
+                            is SettingsViewModel.UIActions.SetCreatorSettings -> {
                                 Snackbar.make(view, "You became a creator!", Snackbar.LENGTH_SHORT).show()
                                 binding.beCreatorButton.isEnabled = false
                                 binding.beCreatorButton.text = "You are creator"
                             }
-                        }
-                        if (data is Resource.Error<*>) {
-                            Snackbar.make(view, data.message ?: "Some error. You cannot change state", Snackbar.LENGTH_SHORT).show()
                         }
                     }
                 }

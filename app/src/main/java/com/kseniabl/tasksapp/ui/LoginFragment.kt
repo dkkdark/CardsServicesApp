@@ -23,6 +23,7 @@ import com.kseniabl.tasksapp.utils.Resource
 import com.kseniabl.tasksapp.utils.UserTokenDataStore
 import com.kseniabl.tasksapp.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -54,83 +55,34 @@ class LoginFragment: Fragment() {
             findNavController().navigate(R.id.action_loginFragment_to_registrationFragment)
         }
         binding.enterButton.setOnClickListener {
-            signIn(view, binding.loginText.text.toString(), binding.passwordText.text.toString())
+            signIn(binding.loginText.text.toString(), binding.passwordText.text.toString())
         }
 
         parentFragmentManager.setFragmentResultListener(REQUEST_CODE, viewLifecycleOwner) { _, data ->
             val email = data.getString(EMAIL_EXTRA)
             binding.loginText.setText(email)
         }
-    }
-
-    /** load user's cards and save them **/
-    private fun getUserCards(view: View) {
-        //CoroutineScope(Dispatchers.IO).launch { repository.insertAllCards(list) }
-    }
-
-    private fun guidToTabs() {
-        findNavController().navigate(R.id.action_loginFragment_to_tabsFragment)
-    }
-
-    /** save user data, additional info, spec, tags, etc. **/
-    private fun loadUserData(view: View, token: String) {
-        viewModel.getUser(token)
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.userAllData.collect { data ->
-                        if (data != null) {
-                            if (data is Resource.Success<*>) {
-                                if (data.data != null) {
-                                    viewModel.saveUser(data.data)
-                                    Log.e("qqq", "User: ${data.data}")
-                                }
-                            }
-                            if (data is Resource.Error<*>) {
-                                Snackbar.make(view, "${data.message}", Snackbar.LENGTH_SHORT).show()
+                    viewModel.uiActionsLogin.collect {
+                        when(it) {
+                            is MainViewModel.UIActionsLogin.ShowSnackbar -> {
+                                Snackbar.make(view, it.message, Snackbar.LENGTH_SHORT).show()
                             }
                         }
                     }
                 }
                 launch {
-                    viewModel.saved.collect {
-                        if (it) viewModel.saveToken(token)
-                    }
+                    viewModel.userAllData.collect()
                 }
             }
         }
     }
 
-    private fun signIn(view: View, email: String, password: String) {
+    private fun signIn(email: String, password: String) {
         viewModel.signIn(UserLoginModel(email, password))
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.loginStatus.collect { state ->
-                        if (state is Resource.Loading<*>) {
-                            // TODO loading
-                        }
-                        if (state is Resource.Success<*>) {
-                            val token = state.data?.body()?.token
-                            if (token != null) {
-                                loadUserData(view, token)
-                                getUserCards(view)
-                            }
-                            else {
-                                Snackbar.make(view, "${state.message}", Snackbar.LENGTH_SHORT).show()
-                                Log.e("qqq", "${state.message}")
-                            }
-                        }
-                        if (state is Resource.Error<*>) {
-                            Snackbar.make(view, "${state.message}", Snackbar.LENGTH_SHORT).show()
-                            Log.e("qqq", "${state.message}")
-                        }
-                    }
-                }
-            }
-        }
     }
 
     override fun onDestroyView() {

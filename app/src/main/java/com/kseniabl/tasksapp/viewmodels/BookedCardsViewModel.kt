@@ -10,6 +10,7 @@ import com.kseniabl.tasksapp.adapters.AllTasksAdapter
 import com.kseniabl.tasksapp.adapters.BookCardsAdapter
 import com.kseniabl.tasksapp.adapters.BookedUsersCardsAdapter
 import com.kseniabl.tasksapp.models.BookInfoModel
+import com.kseniabl.tasksapp.models.BookedCardsModel
 import com.kseniabl.tasksapp.models.CardModel
 import com.kseniabl.tasksapp.network.Repository
 import com.kseniabl.tasksapp.utils.Resource
@@ -28,20 +29,11 @@ class BookedCardsViewModel @Inject constructor(
     private val userTokenDataStore: UserTokenDataStore
 ): ViewModel(), BookCardsAdapter.Listener, BookedUsersCardsAdapter.Listener {
 
-    private val _adapterValue = MutableStateFlow<AllCardsAdapterInterface?>(null)
-    val adapterValue = _adapterValue.asStateFlow()
+    private val _bookedCardsState = MutableStateFlow(BookedCardsModel())
+    val bookedCardsState = _bookedCardsState.asStateFlow()
 
-    private val _cards = MutableStateFlow<ArrayList<CardModel>?>(null)
-    val cards = _cards.asStateFlow()
-
-    private val _bookedInfo = MutableStateFlow<Resource<Response<ArrayList<BookInfoModel>>>?>(null)
-    val bookedInfo = _bookedInfo.asStateFlow()
-
-    private val _openDetailsCardsTrigger = MutableSharedFlow<CardModel>()
-    val openDetailsCardsTrigger = _openDetailsCardsTrigger.asSharedFlow()
-
-    private val _openDetailsBookInfo = MutableSharedFlow<BookInfoModel>()
-    val openDetailsBookInfo = _openDetailsBookInfo.asSharedFlow()
+    private val _uiActionsTrigger = MutableSharedFlow<UIActions>()
+    val uiActionsTrigger = _uiActionsTrigger.asSharedFlow()
 
     private val _id = MutableStateFlow<String?>(null)
     val id = _id.asStateFlow()
@@ -54,7 +46,7 @@ class BookedCardsViewModel @Inject constructor(
     }
 
     fun changeAdapter(adapter: AllCardsAdapterInterface) {
-        _adapterValue.value = adapter
+        _bookedCardsState.value = _bookedCardsState.value.copy(adapterValue = adapter)
     }
 
     fun getCards() {
@@ -62,8 +54,9 @@ class BookedCardsViewModel @Inject constructor(
             val token = userTokenDataStore.readToken.first()
             try {
                 val cards = repository.getBookedCards(token).body()
-                _cards.emit(cards)
+                _bookedCardsState.value = _bookedCardsState.value.copy(cardsList = cards ?: arrayListOf())
             } catch (exception: Exception) {
+                _uiActionsTrigger.emit(UIActions.ShowSnackbar("Problem occurred while data loading"))
                 Log.e("qqq", "load users cards error: ${exception.message}")
             }
         }
@@ -72,24 +65,31 @@ class BookedCardsViewModel @Inject constructor(
     fun getBookedInfo() {
         viewModelScope.launch {
             val token = userTokenDataStore.readToken.first()
-            _bookedInfo.emit(Resource.Loading())
             try {
-                _bookedInfo.emit(Resource.Success(data = repository.getBookedInfoCards(token)))
+                val bookedInfo = repository.getBookedInfoCards(token).body()
+                _bookedCardsState.value = _bookedCardsState.value.copy(bookedInfoList = bookedInfo ?: arrayListOf())
             } catch (exception: Exception) {
-                _bookedInfo.emit(Resource.Error(errorMessage = exception.message ?: "Some error occurred"))
+                _uiActionsTrigger.emit(UIActions.ShowSnackbar("Problem occurred while data loading"))
+                Log.e("qqq", "${exception.message}")
             }
         }
     }
 
     override fun onAddItemClick(item: CardModel) {
         viewModelScope.launch {
-            _openDetailsCardsTrigger.emit(item)
+            _uiActionsTrigger.emit(UIActions.OpenDetailsCard(item))
         }
     }
 
     override fun onAddItemClick(item: BookInfoModel) {
         viewModelScope.launch {
-            _openDetailsBookInfo.emit(item)
+            _uiActionsTrigger.emit(UIActions.OpenDetailsBookInfo(item))
         }
+    }
+
+    sealed class UIActions {
+        data class ShowSnackbar(val message: String): UIActions()
+        data class OpenDetailsCard(val card: CardModel): UIActions()
+        data class OpenDetailsBookInfo(val item: BookInfoModel): UIActions()
     }
 }

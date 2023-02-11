@@ -21,6 +21,8 @@ class FreelancersAdapter @Inject constructor(private val context: Context) : Rec
 
     private var listener: Listener? = null
 
+    private var oldList = listOf<FreelancerModel>()
+
     private val diffCallback = object : DiffUtil.ItemCallback<FreelancerModel>() {
         override fun areItemsTheSame(oldItem: FreelancerModel, newItem: FreelancerModel): Boolean =
             oldItem.userInfo?.id == newItem.userInfo?.id
@@ -31,7 +33,12 @@ class FreelancersAdapter @Inject constructor(private val context: Context) : Rec
 
     private val differ = AsyncListDiffer(this, diffCallback)
 
-    fun submitList(list: List<FreelancerModel>) = differ.submitList(list)
+    fun submitList(list: List<FreelancerModel>) {
+        if (oldList != list) {
+            differ.submitList(list)
+            oldList = list
+        }
+    }
 
     inner class FreelancersHolder(val binding: FreelancerItemBinding) : RecyclerView.ViewHolder(binding.root)
 

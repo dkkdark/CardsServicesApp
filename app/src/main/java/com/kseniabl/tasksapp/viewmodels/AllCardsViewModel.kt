@@ -1,26 +1,18 @@
 package com.kseniabl.tasksapp.viewmodels
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import com.kseniabl.tasksapp.adapters.AddTasksAdapter
 import com.kseniabl.tasksapp.adapters.AllCardsAdapterInterface
-import com.kseniabl.tasksapp.adapters.AllTasksAdapter
 import com.kseniabl.tasksapp.adapters.FreelancersAdapter
 import com.kseniabl.tasksapp.models.*
 import com.kseniabl.tasksapp.network.Repository
 import com.kseniabl.tasksapp.utils.Resource
 import com.kseniabl.tasksapp.utils.UserDataStore
-import com.kseniabl.tasksapp.utils.UserTokenDataStore
 import com.kseniabl.tasksapp.utils.UserTokenDataStoreInterface
-import com.kseniabl.tasksapp.view.TagsModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,28 +22,21 @@ class AllCardsViewModel @Inject constructor(
     val userDataStore: UserDataStore
 ): ViewModel(), AddTasksAdapter.Listener, FreelancersAdapter.Listener {
 
-    private val _adapterValue = MutableStateFlow<AllCardsAdapterInterface?>(null)
-    val adapterValue = _adapterValue.asStateFlow()
-
-    private val _adapterTasksList = MutableStateFlow<ArrayList<CardModel>?>(null)
-    val adapterTasksList = _adapterTasksList.asStateFlow()
-
     private val _adapterCreatorsList = MutableStateFlow<Resource<ArrayList<UserModel>>?>(null)
     private val _specializationDate = MutableStateFlow<Resource<ArrayList<Specialization>>?>(null)
     private val _addInf = MutableStateFlow<Resource<ArrayList<AdditionalInfo>>?>(null)
-
-    private val _openDetailsTrigger = MutableSharedFlow<CardModel>()
-    val openDetailsTrigger = _openDetailsTrigger.asSharedFlow()
-
-    private val _openDetailsFreelancer = MutableSharedFlow<FreelancerModel>()
-    val openDetailsFreelancer = _openDetailsFreelancer.asSharedFlow()
 
     private val _creatorCards = MutableStateFlow<ArrayList<CardModel>?>(null)
     val creatorCards = _creatorCards.asStateFlow()
 
     private var _allCards: ArrayList<CardModel>? = arrayListOf()
-    private val _matchedCards = MutableStateFlow<ArrayList<CardModel>?>(null)
-    var matchedCards = _matchedCards.asStateFlow()
+    private var _allCreatorInfo: ArrayList<FreelancerModel>? = arrayListOf()
+
+    private val _actionsTrigger = MutableSharedFlow<UIActionsAllCards>()
+    val actionsTrigger = _actionsTrigger.asSharedFlow()
+
+    private val _allCardsState = MutableStateFlow(AllCardsModel())
+    val allCardsState = _allCardsState.asStateFlow()
 
     val creatorInfoData = combine(
         _adapterCreatorsList,
@@ -62,7 +47,8 @@ class AllCardsViewModel @Inject constructor(
         if (list is Resource.Success<*> && spec is Resource.Success<*> && addInf is Resource.Success<*>) {
             if (!list.data.isNullOrEmpty() && !spec.data.isNullOrEmpty() && !addInf.data.isNullOrEmpty()) {
                 arrayList = list.data.mapIndexed { idx, el -> FreelancerModel(el, spec.data[idx], addInf.data[idx]) } as ArrayList<FreelancerModel>
-                _creatorInfoHolder.value = arrayList
+                _allCreatorInfo = arrayList
+                _allCardsState.value = _allCardsState.value.copy(creatorList = arrayList)
             }
         }
         if (list is Resource.Error<*> || spec is Resource.Error<*>) {
@@ -71,16 +57,8 @@ class AllCardsViewModel @Inject constructor(
         arrayList
     }
 
-    private var _allCreatorInfo: ArrayList<FreelancerModel>? = arrayListOf()
-    private val _creatorInfoHolder = MutableStateFlow<ArrayList<FreelancerModel>?>(arrayListOf())
-    val creatorInfoHolder = _creatorInfoHolder.asStateFlow()
-
-    private val _dialogsTrigger = MutableSharedFlow<String>()
-    val dialogsTrigger: SharedFlow<String> = _dialogsTrigger
-
-
     fun changeAdapter(adapter: AllCardsAdapterInterface) {
-        _adapterValue.value = adapter
+        _allCardsState.value = _allCardsState.value.copy(adapterValue = adapter)
     }
 
     fun getUsers() {
@@ -138,63 +116,61 @@ class AllCardsViewModel @Inject constructor(
             val token = userTokenDataStore.readToken.first()
             try {
                 val cards = repository.getTasks(token).body()
-                _adapterTasksList.emit(cards)
+                _allCards = cards
+
+                _allCardsState.value = _allCardsState.value.copy(cardsList = cards ?: arrayListOf())
             } catch (exception: Exception) {
                 Log.e("qqq", "load users cards error: ${exception.message}")
             }
         }
     }
 
-    fun setCreatorsList(list: ArrayList<FreelancerModel>?) {
-        _allCreatorInfo = list
-        viewModelScope.launch {
-            _creatorInfoHolder.value = _allCreatorInfo
-        }
-    }
-
-    fun setCardsList(list: ArrayList<CardModel>?) {
-        _allCards = list
-        viewModelScope.launch {
-            _matchedCards.value = _allCards
-        }
-    }
-
     fun onSearchQueryChanged(search: String) {
         viewModelScope.launch {
             if (search.isEmpty()) {
-                _matchedCards.value = _allCards
+                _allCardsState.value = _allCardsState.value.copy(cardsList = _allCards ?: arrayListOf())
                 return@launch
             }
             val filterList = _allCards?.filter { el ->
-                el.tags.contains(TagsModel(search)) || el.title.lowercase().contains(search)
+                el.tags.map { it.name.lowercase() }.contains(search) || el.title.lowercase().contains(search)
             } as ArrayList<CardModel>
-            _matchedCards.value = filterList
+            _allCardsState.value = _allCardsState.value.copy(cardsList = filterList )
         }
     }
 
     fun onSearchQueryChangedCreators(search: String) {
         viewModelScope.launch {
             if (search.isEmpty()) {
-                _creatorInfoHolder.value = _allCreatorInfo
+                _allCardsState.value = _allCardsState.value.copy(creatorList = _allCreatorInfo ?: arrayListOf())
                 return@launch
             }
             val filterList = _allCreatorInfo?.filter { el ->
                 el.userInfo?.username?.lowercase()?.contains(search) == true || el.specialization?.specialization?.lowercase()?.contains(search) == true
             } as ArrayList<FreelancerModel>
-            _creatorInfoHolder.value = filterList
+            _allCardsState.value = _allCardsState.value.copy(creatorList = filterList)
         }
     }
 
     override fun onAddItemClick(item: CardModel) {
         viewModelScope.launch {
-            _openDetailsTrigger.emit(item)
+            _actionsTrigger.emit(UIActionsAllCards.OpenDetailsCard(item))
         }
     }
 
     override fun onAddItemClick(item: FreelancerModel) {
         viewModelScope.launch {
-            _openDetailsFreelancer.emit(item)
+            _actionsTrigger.emit(UIActionsAllCards.OpenFreelancerDetails(item))
         }
+    }
+
+    sealed class UIActionsAllCards {
+        data class OpenDetailsCard(val card: CardModel): UIActionsAllCards()
+        data class OpenFreelancerDetails(val freelancer: FreelancerModel): UIActionsAllCards()
+    }
+
+    sealed class UIActionsDetails {
+        data class ShowSnackbar(val message: String): UIActionsDetails()
+        object GoToDetails: UIActionsDetails()
     }
 
 
@@ -206,7 +182,7 @@ class AllCardsViewModel @Inject constructor(
     private val _specializationOneUser = MutableStateFlow<Resource<Specialization>?>(null)
     private val _addInfOneUser = MutableStateFlow<Resource<AdditionalInfo>?>(null)
 
-    private val _stateChange = MutableSharedFlow<Resource<Response<Void>>>()
+    private val _stateChange = MutableSharedFlow<UIActionsDetails>()
     val stateChange = _stateChange.asSharedFlow()
 
     val userAllData = combine(
@@ -214,12 +190,13 @@ class AllCardsViewModel @Inject constructor(
         _specializationOneUser,
         _addInfOneUser
     ) { user, spec, addInfOneUser ->
-        var userDate: Resource<FreelancerModel>? = null
+        var userDate: FreelancerModel? = null
         if (user is Resource.Success<*> && spec is Resource.Success<*> && addInfOneUser is Resource.Success<*>) {
-            userDate = Resource.Success(FreelancerModel(user.data, spec.data, addInfOneUser.data))
+            userDate = FreelancerModel(user.data, spec.data, addInfOneUser.data)
         }
         if (user is Resource.Error<*>) {
-            userDate = Resource.Error(user.message)
+            _stateChange.emit(UIActionsDetails.ShowSnackbar(user.message ?: "User was not load"))
+            userDate = null
         }
         userDate
     }
@@ -234,11 +211,11 @@ class AllCardsViewModel @Inject constructor(
             }
             else {
                 try {
-                    _stateChange.emit(Resource.Success(repository.updateBookDateUser(
-                        token,
-                        UpdateBookDateUser(userId, bookDateId)
-                    )))
+                    repository.updateBookDateUser(token, UpdateBookDateUser(userId, bookDateId))
+                    _stateChange.emit(UIActionsDetails.ShowSnackbar("You booked successfully"))
+                    _stateChange.emit(UIActionsDetails.GoToDetails)
                 } catch (e: Exception) {
+                    _stateChange.emit(UIActionsDetails.ShowSnackbar("Something went wrong"))
                     Log.e("qqq", "Error updateBookDateUser: ${e.message}")
                 }
             }

@@ -24,11 +24,8 @@ class SettingsViewModel @Inject constructor(
     private val userDataStore: UserDataStore
 ) : ViewModel() {
 
-    private val _stateChange = MutableSharedFlow<Resource<Response<Void>>>()
+    private val _stateChange = MutableSharedFlow<UIActions>()
     val stateChange = _stateChange.asSharedFlow()
-
-    private val _signOutState = MutableSharedFlow<Boolean>()
-    val signOutState = _signOutState.asSharedFlow()
 
 
     fun updateSpecialization(spec: String, desc: String) {
@@ -100,19 +97,24 @@ class SettingsViewModel @Inject constructor(
             if (!user.specialization?.specialization.isNullOrEmpty() && !user.specialization?.description.isNullOrEmpty() &&
                 !user.additionalInfo?.description.isNullOrEmpty() && !user.additionalInfo?.country.isNullOrEmpty() && !user.additionalInfo?.city.isNullOrEmpty()
                 && !user.additionalInfo?.typeOfWork.isNullOrEmpty() && !user.userInfo?.id.isNullOrEmpty() && !user.userInfo?.username.isNullOrEmpty()) {
-                _stateChange.emit(Resource.Loading())
                 try {
-                    _stateChange.emit(Resource.Success(repository.updateCreatorState(token, UpdateCreatorStatus(user.userInfo!!.id, user.userInfo.username))))
+                    repository.updateCreatorState(token, UpdateCreatorStatus(user.userInfo!!.id, user.userInfo.username))
                     val newUser = FreelancerModel(UserModel(user.userInfo.id, user.userInfo.username, true, user.userInfo.img, "creator", user.userInfo.specialization,
                         user.userInfo.addInf), user.specialization, user.additionalInfo)
                     userDataStore.writeUser(newUser)
+                    _stateChange.emit(UIActions.SetCreatorSettings)
                 } catch (exception: Exception) {
-                    _stateChange.emit(Resource.Error(errorMessage = "State cannot be update"))
+                    _stateChange.emit(UIActions.ShowSnackbar("State cannot be update"))
                 }
             }
             else {
-                _stateChange.emit(Resource.Error("Fill all fields to become a creator"))
+                _stateChange.emit(UIActions.ShowSnackbar("Fill all fields to become a creator"))
             }
         }
+    }
+
+    sealed class UIActions {
+        data class ShowSnackbar(val message: String): UIActions()
+        object SetCreatorSettings: UIActions()
     }
 }

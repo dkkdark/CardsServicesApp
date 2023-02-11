@@ -82,25 +82,20 @@ class CardDetailsFragment: Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.userAllData.collect { data ->
-                        if (data != null) {
-                            if (data is Resource.Success<*>) {
-                                if (data.data != null) {
-                                    binding.nameText.text = data.data.userInfo?.username
-                                    binding.specializationText.text = data.data.specialization?.specialization
-                                    binding.specializationDescrText.text = data.data.specialization?.description
-                                }
-                            }
-                            if (data is Resource.Error<*>) {
-                                Snackbar.make(view, "${data.message}", Snackbar.LENGTH_SHORT).show()
-                            }
-                        }
+                        binding.nameText.text = data?.userInfo?.username
+                        binding.specializationText.text = data?.specialization?.specialization
+                        binding.specializationDescrText.text = data?.specialization?.description
                     }
                 }
                 launch {
                     viewModel.stateChange.collect {
-                        if (it is Resource.Success<*>) {
-                            Snackbar.make(view, "You booked successfully", Snackbar.LENGTH_SHORT).show()
-                            findTopNavController().popBackStack()
+                        when(it) {
+                            is AllCardsViewModel.UIActionsDetails.ShowSnackbar -> {
+                                Snackbar.make(view, it.message, Snackbar.LENGTH_SHORT).show()
+                            }
+                            is AllCardsViewModel.UIActionsDetails.GoToDetails -> {
+                                findTopNavController().popBackStack()
+                            }
                         }
                     }
                 }

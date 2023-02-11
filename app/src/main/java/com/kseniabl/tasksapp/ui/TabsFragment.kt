@@ -1,6 +1,7 @@
 package com.kseniabl.tasksapp.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ class TabsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.e("qqq", "Tags frag created")
         val navHost = childFragmentManager.findFragmentById(R.id.tabsContainer) as NavHostFragment
         val navController = navHost.navController
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController)

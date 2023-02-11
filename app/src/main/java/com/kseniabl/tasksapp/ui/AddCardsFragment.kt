@@ -1,7 +1,6 @@
 package com.kseniabl.tasksapp.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.kseniabl.tasksapp.adapters.AddTasksAdapter
@@ -19,10 +17,8 @@ import com.kseniabl.tasksapp.di.AddCardsScope
 import com.kseniabl.tasksapp.models.CardModel
 import com.kseniabl.tasksapp.models.FreelancerModel
 import com.kseniabl.tasksapp.utils.HelperFunctions.generateRandomKey
-import com.kseniabl.tasksapp.utils.Resource
 import com.kseniabl.tasksapp.utils.UserDataStore
 import com.kseniabl.tasksapp.utils.findTopNavController
-import com.kseniabl.tasksapp.view.TagsModel
 import com.kseniabl.tasksapp.viewmodels.AddCardsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -80,12 +76,15 @@ class AddCardsFragment: Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.dialogTrigger.collect {
-                        if (it is Resource.Success<*>) {
-                            showCreateTaskDialog(it.data)
+                    viewModel.actionsTrigger.collect {
+                        when (it) {
+                            is AddCardsViewModel.UIActions.GoToDialog -> {
+                                showCreateTaskDialog(it.card)
+                            }
+                            is AddCardsViewModel.UIActions.ShowSnackbar -> {
+                                Snackbar.make(view, it.message, Snackbar.LENGTH_SHORT).show()
+                            }
                         }
-                        if (it is Resource.Error<*>)
-                            Snackbar.make(view, it.message ?: "You cannot add cards", Snackbar.LENGTH_SHORT).show()
                     }
                 }
                 launch {

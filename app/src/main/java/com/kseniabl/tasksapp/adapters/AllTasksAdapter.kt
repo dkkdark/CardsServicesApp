@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.CardItemBinding
 import com.kseniabl.tasksapp.models.CardModel
+import com.kseniabl.tasksapp.models.FreelancerModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
 import javax.inject.Inject
@@ -17,6 +18,8 @@ import javax.inject.Inject
 class AllTasksAdapter @Inject constructor(private val context: Context): RecyclerView.Adapter<AllTasksAdapter.ActiveTasksHolder>(), AllCardsAdapterInterface {
 
     private var listener: AddTasksAdapter.Listener? = null
+
+    private var oldList = listOf<CardModel>()
 
     private val diffCallback = object : DiffUtil.ItemCallback<CardModel>() {
         override fun areItemsTheSame(oldItem: CardModel, newItem: CardModel): Boolean =
@@ -28,7 +31,12 @@ class AllTasksAdapter @Inject constructor(private val context: Context): Recycle
 
     private val differ = AsyncListDiffer(this, diffCallback)
 
-    fun submitList(list: List<CardModel>) = differ.submitList(list)
+    fun submitList(list: List<CardModel>) {
+        if (oldList != list) {
+            differ.submitList(list)
+            oldList = list
+        }
+    }
 
     inner class ActiveTasksHolder(val binding: CardItemBinding) : RecyclerView.ViewHolder(binding.root)
 

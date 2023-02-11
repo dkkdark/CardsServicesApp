@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.kseniabl.tasksapp.adapters.*
 import com.kseniabl.tasksapp.databinding.FragmentBookedCardsBinding
 import com.kseniabl.tasksapp.di.BookCardsAnnotation
@@ -52,7 +53,7 @@ class BookedCardsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.changeAdapter(viewModel.adapterValue.value ?: bookCardsAdapter)
+        viewModel.changeAdapter(viewModel.bookedCardsState.value.adapterValue ?: bookCardsAdapter)
 
         binding.apply {
             bookedCardsRecycler.layoutManager = linearLayoutManager.get()
@@ -67,62 +68,46 @@ class BookedCardsFragment: Fragment() {
         bookCardsAdapter.setOnClickListener(viewModel)
         bookedUsersCardsAdapter.setOnClickListener(viewModel)
 
-        setupBookCardsAdapterRecyclerView(viewModel.cards.value ?: arrayListOf())
+        setupBookCardsAdapterRecyclerView(viewModel.bookedCardsState.value.cardsList)
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.adapterValue.collect {
-                        if (it is BookCardsAdapter)
-                            setupBookCardsAdapterRecyclerView(viewModel.cards.value ?: arrayListOf())
-                        if (it is BookedUsersCardsAdapter) {
-                            setupBookedUsersCardsRecyclerView(viewModel.bookedInfo.value?.data?.body() ?: arrayListOf())
-                        }
-                    }
-                }
                 launch {
                     viewModel.id.collect {
                         bookCardsAdapter.userId = it
                     }
                 }
                 launch {
-                    viewModel.cards.collect {
-                        if (it != null && viewModel.adapterValue.value is BookCardsAdapter) {
-                            val list = arrayListOf<CardModel>()
-                            list.addAll(it)
-                            setupBookCardsAdapterRecyclerView(list)
-                        }
-                    }
-                }
-                launch {
-                    viewModel.bookedInfo.collect { value ->
-                        if (viewModel.adapterValue.value is BookedUsersCardsAdapter) {
-                            if (value is Resource.Loading<*>) {
-                                // TODO
+                    viewModel.bookedCardsState.collect {
+                        when(it.adapterValue) {
+                            is BookCardsAdapter -> {
+                                setupBookCardsAdapterRecyclerView(it.cardsList)
                             }
-                            if (value is Resource.Success<*>) {
-                                setupBookedUsersCardsRecyclerView(value.data?.body() ?: arrayListOf())
-                            }
-                            if (value is Resource.Error<*>) {
-                                Log.e("qqq", "Error: ${value.message}")
+                            is BookedUsersCardsAdapter -> {
+                                setupBookedUsersCardsRecyclerView(it.bookedInfoList)
                             }
                         }
                     }
                 }
                 launch {
-                    viewModel.openDetailsCardsTrigger.collect {
-                        findTopNavController().navigate(
-                            TabsFragmentDirections.actionTabsFragmentToCardDetailsFragment(it)
-                        )
-                    }
-                }
-                launch {
-                    viewModel.openDetailsBookInfo.collect {
-                        findTopNavController().navigate(
-                            TabsFragmentDirections.actionTabsFragmentToFreelancerDetailsFragment(
-                                FreelancerModel(UserModel(it.userId))
-                            )
-                        )
+                    viewModel.uiActionsTrigger.collect {
+                        when(it) {
+                            is BookedCardsViewModel.UIActions.OpenDetailsCard -> {
+                                findTopNavController().navigate(
+                                    TabsFragmentDirections.actionTabsFragmentToCardDetailsFragment(it.card)
+                                )
+                            }
+                            is BookedCardsViewModel.UIActions.OpenDetailsBookInfo -> {
+                                findTopNavController().navigate(
+                                    TabsFragmentDirections.actionTabsFragmentToFreelancerDetailsFragment(
+                                        FreelancerModel(UserModel(it.item.userId))
+                                    )
+                                )
+                            }
+                            is BookedCardsViewModel.UIActions.ShowSnackbar -> {
+                                Snackbar.make(view, it.message, Snackbar.LENGTH_SHORT).show()
+                            }
+                        }
                     }
                 }
             }
