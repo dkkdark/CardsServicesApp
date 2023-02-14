@@ -28,11 +28,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class RegistrationFragment: Fragment() {
 
-    @Inject
-    lateinit var auth: FirebaseAuth
-    @Inject
-    lateinit var database: DatabaseReference
-
     private val viewModel: MainViewModel by viewModels()
 
     private var _binding: FragmentRegistrationBinding? = null

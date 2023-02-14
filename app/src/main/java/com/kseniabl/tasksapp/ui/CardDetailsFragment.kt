@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.kseniabl.tasksapp.adapters.DatesDetailAdapter
 import com.kseniabl.tasksapp.databinding.FragmentCardDetailsBinding
-import com.kseniabl.tasksapp.di.CardDetailsAnnotation
-import com.kseniabl.tasksapp.utils.Resource
+import com.kseniabl.tasksapp.di.scopes.CardDetailsAnnotation
 import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.viewmodels.AllCardsViewModel
 import dagger.hilt.android.AndroidEntryPoint

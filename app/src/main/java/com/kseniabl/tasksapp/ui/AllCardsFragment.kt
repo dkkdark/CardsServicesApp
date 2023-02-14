@@ -1,7 +1,6 @@
 package com.kseniabl.tasksapp.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,7 @@ import com.google.android.flexbox.JustifyContent
 import com.kseniabl.tasksapp.adapters.AllTasksAdapter
 import com.kseniabl.tasksapp.adapters.FreelancersAdapter
 import com.kseniabl.tasksapp.databinding.FragmentAllCardsBinding
-import com.kseniabl.tasksapp.di.AllCardsScope
+import com.kseniabl.tasksapp.di.scopes.AllCardsScope
 import com.kseniabl.tasksapp.models.*
 import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.viewmodels.AllCardsViewModel

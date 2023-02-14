@@ -1,4 +1,4 @@
-package com.kseniabl.tasksapp.di
+package com.kseniabl.tasksapp.di.scopes
 
 import javax.inject.Qualifier
 

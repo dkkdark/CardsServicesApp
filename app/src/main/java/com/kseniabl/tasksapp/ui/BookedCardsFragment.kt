@@ -1,7 +1,6 @@
 package com.kseniabl.tasksapp.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.kseniabl.tasksapp.adapters.*
 import com.kseniabl.tasksapp.databinding.FragmentBookedCardsBinding
-import com.kseniabl.tasksapp.di.BookCardsAnnotation
+import com.kseniabl.tasksapp.di.scopes.BookCardsAnnotation
 import com.kseniabl.tasksapp.models.BookInfoModel
 import com.kseniabl.tasksapp.models.CardModel
 import com.kseniabl.tasksapp.models.FreelancerModel
 import com.kseniabl.tasksapp.models.UserModel
-import com.kseniabl.tasksapp.utils.Resource
 import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.viewmodels.BookedCardsViewModel
 import dagger.hilt.android.AndroidEntryPoint

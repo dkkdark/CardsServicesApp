@@ -1,9 +1,14 @@
 package com.kseniabl.tasksapp.di
 
 import android.content.Context
+import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.kseniabl.tasksapp.db.CardsDao
+import com.kseniabl.tasksapp.db.CardsTasksDatabase
+import com.kseniabl.tasksapp.db.CardsTasksDatabase.Companion.DATABASE_NAME
+import com.kseniabl.tasksapp.db.TasksRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -16,11 +21,21 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Singleton
     @Provides
-    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+    @Singleton
+    fun provideDatabase(@ApplicationContext context: Context): CardsTasksDatabase =
+        Room.databaseBuilder(
+            context,
+            CardsTasksDatabase::class.java,
+            DATABASE_NAME
+        ).build()
 
-    @Singleton
     @Provides
-    fun provideFirebaseDbReference(): DatabaseReference = FirebaseDatabase.getInstance().reference
+    @Singleton
+    fun provideDao(database: CardsTasksDatabase): CardsDao = database.addCardDao()
+
+    @Provides
+    @Singleton
+    fun provideDatabaseRepository(dao: CardsDao): TasksRepository =
+        TasksRepository(dao)
 }

@@ -14,7 +14,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.ActivityMainBinding
 import com.kseniabl.tasksapp.utils.HelperFunctions
@@ -25,9 +24,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var auth: FirebaseAuth
 
     private val viewModel: MainViewModel by viewModels()
 

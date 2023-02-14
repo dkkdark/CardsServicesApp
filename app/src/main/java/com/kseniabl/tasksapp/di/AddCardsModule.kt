@@ -3,11 +3,8 @@ package com.kseniabl.tasksapp.di
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kseniabl.tasksapp.adapters.AddTasksAdapter
-import com.kseniabl.tasksapp.adapters.AllCardsAdapterInterface
+import com.kseniabl.tasksapp.di.scopes.AddCardsScope
 import com.kseniabl.tasksapp.ui.AddCardsFragment
-import com.kseniabl.tasksapp.ui.AllCardsFragment
-import com.kseniabl.tasksapp.viewmodels.AddCardsViewModel
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

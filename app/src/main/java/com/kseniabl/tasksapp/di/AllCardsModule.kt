@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.kseniabl.tasksapp.adapters.AllTasksAdapter
 import com.kseniabl.tasksapp.adapters.FreelancersAdapter
-import com.kseniabl.tasksapp.ui.AddCardsFragment
+import com.kseniabl.tasksapp.di.scopes.AllCardsScope
 import com.kseniabl.tasksapp.ui.AllCardsFragment
 import dagger.Module
 import dagger.Provides

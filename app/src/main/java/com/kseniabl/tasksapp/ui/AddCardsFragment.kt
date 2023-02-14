@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.kseniabl.tasksapp.adapters.AddTasksAdapter
 import com.kseniabl.tasksapp.databinding.FragmentAddCardsBinding
-import com.kseniabl.tasksapp.di.AddCardsScope
+import com.kseniabl.tasksapp.di.scopes.AddCardsScope
 import com.kseniabl.tasksapp.models.CardModel
 import com.kseniabl.tasksapp.models.FreelancerModel
 import com.kseniabl.tasksapp.utils.HelperFunctions.generateRandomKey
@@ -28,7 +28,6 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Provider
-import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class AddCardsFragment: Fragment() {
@@ -69,12 +68,18 @@ class AddCardsFragment: Fragment() {
                 viewModel.isUserCreator()
             }
 
-            viewModel.getCards()
+            //viewModel.getCards()
             tasksAdapter.setOnClickListener(viewModel)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.getCashCards().collect {
+                        setupTasksRecyclerView(viewModel.adapterList.value, it)
+                        viewModel.setCards(it)
+                    }
+                }
                 launch {
                     viewModel.actionsTrigger.collect {
                         when (it) {
@@ -94,11 +99,11 @@ class AddCardsFragment: Fragment() {
                             setupTasksRecyclerView(it, cards)
                     }
                 }
-                launch {
+                /*launch {
                     viewModel.cards.collect {
                         setupTasksRecyclerView(viewModel.adapterList.value, it)
                     }
-                }
+                }*/
                 launch {
                     user = userDataStore.readUser.first()
                 }
@@ -108,9 +113,9 @@ class AddCardsFragment: Fragment() {
         observeBackStackEntry()
     }
 
-    private fun setupTasksRecyclerView(active: Boolean, array: ArrayList<CardModel>?) {
+    private fun setupTasksRecyclerView(active: Boolean, array: List<CardModel>?) {
         val list = array?.filter { if (active) it.active else !it.active}
-        CoroutineScope(Dispatchers.Main).launch { tasksAdapter.submitList(list ?: arrayListOf()) }
+        CoroutineScope(Dispatchers.Main).launch { tasksAdapter.submitList(list ?: listOf()) }
     }
 
     override fun onDestroyView() {

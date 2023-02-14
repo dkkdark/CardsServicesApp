@@ -1,13 +1,11 @@
 package com.kseniabl.tasksapp.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.kseniabl.tasksapp.models.CardModel
-import com.kseniabl.tasksapp.models.UserModel
 import kotlinx.coroutines.flow.Flow
 
-/*@Dao
-interface AddCardDao {
+@Dao
+interface CardsDao {
     @Query("SELECT * FROM CardModel")
     fun loadAllCardsLive(): Flow<List<CardModel>>
 
@@ -28,4 +26,4 @@ interface AddCardDao {
 
     @Delete
     fun deleteCard(card: CardModel)
-}*/
+}

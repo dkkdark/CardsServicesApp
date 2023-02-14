@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kseniabl.tasksapp.adapters.BookCardsAdapter
 import com.kseniabl.tasksapp.adapters.BookedUsersCardsAdapter
+import com.kseniabl.tasksapp.di.scopes.BookCardsAnnotation
 import com.kseniabl.tasksapp.ui.BookedCardsFragment
 import dagger.Module
 import dagger.Provides

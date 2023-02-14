@@ -31,11 +31,6 @@ import javax.inject.Inject
 class LoginFragment: Fragment() {
 
     @Inject
-    lateinit var auth: FirebaseAuth
-    @Inject
-    lateinit var database: DatabaseReference
-
-    @Inject
     lateinit var userTokenDataStore: UserTokenDataStore
 
     private val viewModel: MainViewModel by viewModels()

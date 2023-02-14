@@ -2,11 +2,8 @@ package com.kseniabl.tasksapp.di
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.kseniabl.tasksapp.adapters.AddTasksAdapter
 import com.kseniabl.tasksapp.adapters.CreatorsCardsAdapter
-import com.kseniabl.tasksapp.ui.AddCardsFragment
-import com.kseniabl.tasksapp.ui.AllCardsFragment
+import com.kseniabl.tasksapp.di.scopes.CreatorCardsScope
 import com.kseniabl.tasksapp.ui.FreelancerCardsFragment
 import dagger.Module
 import dagger.Provides

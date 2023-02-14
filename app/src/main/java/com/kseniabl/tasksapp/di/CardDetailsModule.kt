@@ -1,10 +1,9 @@
 package com.kseniabl.tasksapp.di
 
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kseniabl.tasksapp.adapters.BookDateAdapter
 import com.kseniabl.tasksapp.adapters.DatesDetailAdapter
+import com.kseniabl.tasksapp.di.scopes.CardDetailsAnnotation
 import com.kseniabl.tasksapp.ui.CardDetailsFragment
-import com.kseniabl.tasksapp.ui.CreateAndChangeTaskFragment
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
