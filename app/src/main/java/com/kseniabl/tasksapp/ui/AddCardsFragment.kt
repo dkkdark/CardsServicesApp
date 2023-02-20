@@ -68,7 +68,6 @@ class AddCardsFragment: Fragment() {
                 viewModel.isUserCreator()
             }
 
-            //viewModel.getCards()
             tasksAdapter.setOnClickListener(viewModel)
         }
 
@@ -99,11 +98,6 @@ class AddCardsFragment: Fragment() {
                             setupTasksRecyclerView(it, cards)
                     }
                 }
-                /*launch {
-                    viewModel.cards.collect {
-                        setupTasksRecyclerView(viewModel.adapterList.value, it)
-                    }
-                }*/
                 launch {
                     user = userDataStore.readUser.first()
                 }

@@ -1,7 +1,6 @@
 package com.kseniabl.tasksapp.adapters
 
 import android.graphics.Paint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -9,11 +8,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kseniabl.tasksapp.databinding.BookDateWithCheckboxItemBinding
 import com.kseniabl.tasksapp.models.BookDate
+import com.kseniabl.tasksapp.models.CardModel
 import javax.inject.Inject
 
 class DatesDetailAdapter @Inject constructor() : RecyclerView.Adapter<DatesDetailAdapter.DatesDetailHolder>() {
 
-    var selected = -1
+    private var listener: Listener? = null
+
+    private var selected = -1
 
     private val diffCallback = object : DiffUtil.ItemCallback<BookDate>() {
         override fun areItemsTheSame(oldItem: BookDate, newItem: BookDate): Boolean =
@@ -48,17 +50,19 @@ class DatesDetailAdapter @Inject constructor() : RecyclerView.Adapter<DatesDetai
             }
 
             checkbox.setOnCheckedChangeListener { _, state ->
-                if (state)
+                if (state) {
                     if (selected != -1) {
                         checkbox.isChecked = false
-                    }
-                    else {
+                    } else {
                         checkbox.isChecked = true
                         selected = position
+                        listener?.onSelectChosen(selected)
                     }
+                }
                 else {
                     checkbox.isChecked = false
                     selected = -1
+                    listener?.onSelectChosen(selected)
                 }
             }
         }
@@ -66,4 +70,11 @@ class DatesDetailAdapter @Inject constructor() : RecyclerView.Adapter<DatesDetai
 
     override fun getItemCount(): Int = differ.currentList.size
 
+    fun setOnClickListener(onClickListener: Listener) {
+        listener = onClickListener
+    }
+
+    interface Listener {
+        fun onSelectChosen(position: Int)
+    }
 }

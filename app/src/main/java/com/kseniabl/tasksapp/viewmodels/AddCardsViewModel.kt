@@ -56,7 +56,6 @@ class AddCardsViewModel @Inject constructor(
             }
         },
         dbCall = {
-            Log.e("qqq", "dbCall")
             dbRepository.getAddCards()
         },
         saveData = {

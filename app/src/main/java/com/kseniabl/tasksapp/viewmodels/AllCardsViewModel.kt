@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.kseniabl.tasksapp.adapters.AddTasksAdapter
 import com.kseniabl.tasksapp.adapters.AllCardsAdapterInterface
+import com.kseniabl.tasksapp.adapters.DatesDetailAdapter
 import com.kseniabl.tasksapp.adapters.FreelancersAdapter
 import com.kseniabl.tasksapp.models.*
 import com.kseniabl.tasksapp.network.Repository
@@ -20,7 +21,7 @@ class AllCardsViewModel @Inject constructor(
     private val repository: Repository,
     private val userTokenDataStore: UserTokenDataStoreInterface,
     val userDataStore: UserDataStore
-): ViewModel(), AddTasksAdapter.Listener, FreelancersAdapter.Listener {
+): ViewModel(), AddTasksAdapter.Listener, FreelancersAdapter.Listener, DatesDetailAdapter.Listener {
 
     private val _adapterCreatorsList = MutableStateFlow<Resource<ArrayList<UserModel>>?>(null)
     private val _specializationDate = MutableStateFlow<Resource<ArrayList<Specialization>>?>(null)
@@ -185,6 +186,8 @@ class AllCardsViewModel @Inject constructor(
     private val _stateChange = MutableSharedFlow<UIActionsDetails>()
     val stateChange = _stateChange.asSharedFlow()
 
+    private var position = -1
+
     val userAllData = combine(
         _user,
         _specializationOneUser,
@@ -201,23 +204,31 @@ class AllCardsViewModel @Inject constructor(
         userDate
     }
 
-    fun updateBookDateUser(bookDateId: String) {
+    fun onRespondToTaskButtonClick(bookDate: ArrayList<BookDate>) {
         viewModelScope.launch {
-            val token = userTokenDataStore.readToken.first()
-            val user = userDataStore.readUser.first()
-            val userId = user.userInfo?.id
-            if (userId.isNullOrEmpty()) {
-                Log.e("qqq", "User id is null")
-            }
-            else {
-                try {
-                    repository.updateBookDateUser(token, UpdateBookDateUser(userId, bookDateId))
-                    _stateChange.emit(UIActionsDetails.ShowSnackbar("You booked successfully"))
-                    _stateChange.emit(UIActionsDetails.GoToDetails)
-                } catch (e: Exception) {
-                    _stateChange.emit(UIActionsDetails.ShowSnackbar("Something went wrong"))
-                    Log.e("qqq", "Error updateBookDateUser: ${e.message}")
-                }
+            if (position != -1) {
+                val id = bookDate[position].id
+                updateBookDateUser(id)
+            } else
+                _stateChange.emit(UIActionsDetails.ShowSnackbar("Please choose date to book"))
+        }
+    }
+
+    private suspend fun updateBookDateUser(bookDateId: String) {
+        val token = userTokenDataStore.readToken.first()
+        val user = userDataStore.readUser.first()
+        val userId = user.userInfo?.id
+        if (userId.isNullOrEmpty()) {
+            Log.e("qqq", "User id is null")
+        }
+        else {
+            try {
+                repository.updateBookDateUser(token, UpdateBookDateUser(userId, bookDateId))
+                _stateChange.emit(UIActionsDetails.ShowSnackbar("You booked successfully"))
+                _stateChange.emit(UIActionsDetails.GoToDetails)
+            } catch (e: Exception) {
+                _stateChange.emit(UIActionsDetails.ShowSnackbar("Something went wrong"))
+                Log.e("qqq", "Error updateBookDateUser: ${e.message}")
             }
         }
     }
@@ -247,4 +258,9 @@ class AllCardsViewModel @Inject constructor(
             }
         }
     }
+
+    override fun onSelectChosen(position: Int) {
+        this.position = position
+    }
+
 }

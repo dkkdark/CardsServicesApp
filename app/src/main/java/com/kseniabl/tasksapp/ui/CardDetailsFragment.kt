@@ -67,13 +67,10 @@ class CardDetailsFragment: Fragment() {
             else
                 adapter.submitList(card.bookDates)
 
+            adapter.setOnClickListener(viewModel)
+
             respondToTask.setOnClickListener {
-                if (adapter.selected == -1)
-                    Snackbar.make(view, "Please choose date to book", Snackbar.LENGTH_SHORT)
-                        .show()
-                else {
-                    viewModel.updateBookDateUser(card.bookDates[adapter.selected].id)
-                }
+                viewModel.onRespondToTaskButtonClick(card.bookDates)
             }
         }
 
