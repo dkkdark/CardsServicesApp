@@ -1,32 +1,40 @@
 package com.kseniabl.tasksapp.ui
 
+import android.content.ContentResolver
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.FragmentSettingsBinding
 import com.kseniabl.tasksapp.dialogs.ChangeAdditionalInfoDialog
 import com.kseniabl.tasksapp.dialogs.ChangeNameDialogFragment
 import com.kseniabl.tasksapp.dialogs.ChangeProfessionDialogFragment
-import com.kseniabl.tasksapp.models.UserModel
 import com.kseniabl.tasksapp.utils.HelperFunctions.getTextGradient
-import com.kseniabl.tasksapp.utils.Resource
 import com.kseniabl.tasksapp.utils.UserDataStore
-import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.viewmodels.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class SettingsFragment: Fragment() {
@@ -49,6 +57,7 @@ class SettingsFragment: Fragment() {
         setGradient()
 
         binding.apply {
+            imageViewProfile.setOnClickListener { updateProfileImage() }
             changeNameImage.setOnClickListener { showChangeNameDialog() }
             editProfessionImage.setOnClickListener { showChangeProfessionDialog() }
             editAdditionalInfoImage.setOnClickListener { showChangeAdditionalInfoDialog() }
@@ -63,7 +72,42 @@ class SettingsFragment: Fragment() {
         }
 
         setLoadedInfo()
+        setProfileImage()
         updateState(view)
+
+        viewModel.getImage()
+    }
+
+    private fun updateProfileImage() {
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri?.path != null) {
+            val stream = requireContext().contentResolver.openInputStream(uri)
+            val ext = requireContext().contentResolver.getType(uri)?.substringAfter("/")
+                ?: "jpeg"
+            Glide.with(requireContext())
+                .load(uri).placeholder(R.drawable.user).into(binding.imageViewProfile)
+
+            stream?.let { viewModel.uploadImage(it, ext) }
+
+        } else {
+            Log.d("PhotoPicker", "No media selected")
+        }
+    }
+
+    private fun setProfileImage() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.profileImage.collect {
+                        Glide.with(requireContext()).asBitmap()
+                            .load(it).placeholder(R.drawable.user).into(binding.imageViewProfile)
+                    }
+                }
+            }
+        }
     }
 
     private fun updateState(view: View) {
@@ -80,6 +124,7 @@ class SettingsFragment: Fragment() {
                                 binding.beCreatorButton.isEnabled = false
                                 binding.beCreatorButton.text = "You are creator"
                             }
+                            else -> {}
                         }
                     }
                 }
@@ -93,15 +138,15 @@ class SettingsFragment: Fragment() {
                 launch {
                     binding.apply {
                         userDataStore.readUser.collect { user ->
-                            checkIsEmpty(profileNameText, user.userInfo?.username)
+                            checkIsEmpty(profileNameText, user.username)
                             checkIsEmpty(specializationChangeText, user.specialization?.specialization)
                             checkIsEmpty(descriptionSpecializationChangeText, user.specialization?.description)
-                            checkIsEmpty(descriptionAddInfoChangeText, user.additionalInfo?.description)
-                            checkIsEmpty(countryChangeText, user.additionalInfo?.country)
-                            checkIsEmpty(cityChangeText, user.additionalInfo?.city)
-                            checkIsEmpty(typeOfWorkChangeText, user.additionalInfo?.typeOfWork)
+                            checkIsEmpty(descriptionAddInfoChangeText, user.addInf?.description)
+                            checkIsEmpty(countryChangeText, user.addInf?.country)
+                            checkIsEmpty(cityChangeText, user.addInf?.city)
+                            checkIsEmpty(typeOfWorkChangeText, user.addInf?.typeOfWork)
 
-                            if (user.userInfo?.creator == true) {
+                            if (user.creator) {
                                 beCreatorButton.isEnabled = false
                                 beCreatorButton.text = "You are creator"
                             }

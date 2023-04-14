@@ -16,7 +16,6 @@ import com.kseniabl.tasksapp.databinding.FragmentBookedCardsBinding
 import com.kseniabl.tasksapp.di.scopes.BookCardsAnnotation
 import com.kseniabl.tasksapp.models.BookInfoModel
 import com.kseniabl.tasksapp.models.CardModel
-import com.kseniabl.tasksapp.models.FreelancerModel
 import com.kseniabl.tasksapp.models.UserModel
 import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.viewmodels.BookedCardsViewModel
@@ -98,7 +97,7 @@ class BookedCardsFragment: Fragment() {
                             is BookedCardsViewModel.UIActions.OpenDetailsBookInfo -> {
                                 findTopNavController().navigate(
                                     TabsFragmentDirections.actionTabsFragmentToFreelancerDetailsFragment(
-                                        FreelancerModel(UserModel(it.item.userId))
+                                        UserModel(it.item.userId)
                                     )
                                 )
                             }

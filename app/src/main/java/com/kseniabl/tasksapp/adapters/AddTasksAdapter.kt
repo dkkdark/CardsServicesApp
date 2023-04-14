@@ -67,7 +67,6 @@ class AddTasksAdapter @Inject constructor(private val context: Context): Recycle
                 tagView.tags = item.tags
             }
 
-
             val tagsList =
                 item.bookDates.filter { it.userId.isNotEmpty() }.map { TagsModel(it.date) }
             if (tagsList.isNotEmpty()) {

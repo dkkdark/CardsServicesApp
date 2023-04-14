@@ -8,7 +8,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.kseniabl.tasksapp.models.FreelancerModel
 import com.kseniabl.tasksapp.models.UserModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -47,19 +46,19 @@ class UserDataStore @Inject constructor(
     @ApplicationContext var context: Context
 ): UserDataStoreInterface {
 
-    override val readUser: Flow<FreelancerModel> = context.userDataStore.data
+    override val readUser: Flow<UserModel> = context.userDataStore.data
         .map { user ->
             user
         }
 
-    override suspend fun writeUser(user: FreelancerModel) {
+    override suspend fun writeUser(user: UserModel) {
         context.userDataStore.updateData {
             user
         }
     }
 
     companion object {
-        val Context.userDataStore: DataStore<FreelancerModel> by dataStore(
+        val Context.userDataStore: DataStore<UserModel> by dataStore(
             fileName = "settings.pb",
             serializer = UsersSerializer
         )
@@ -67,15 +66,15 @@ class UserDataStore @Inject constructor(
 }
 
 @Suppress("BlockingMethodInNonBlockingContext")
-object UsersSerializer : Serializer<FreelancerModel> {
+object UsersSerializer : Serializer<UserModel> {
 
-    override val defaultValue: FreelancerModel
-        get() = FreelancerModel()
+    override val defaultValue: UserModel
+        get() = UserModel()
 
-    override suspend fun readFrom(input: InputStream): FreelancerModel {
+    override suspend fun readFrom(input: InputStream): UserModel {
         return try {
             Json.decodeFromString(
-                deserializer = FreelancerModel.serializer(),
+                deserializer = UserModel.serializer(),
                 string = input.readBytes().decodeToString()
             )
         } catch (e: Exception) {
@@ -84,10 +83,10 @@ object UsersSerializer : Serializer<FreelancerModel> {
         }
     }
 
-    override suspend fun writeTo(t: FreelancerModel, output: OutputStream) {
+    override suspend fun writeTo(t: UserModel, output: OutputStream) {
         output.write(
             Json.encodeToString(
-                serializer = FreelancerModel.serializer(),
+                serializer = UserModel.serializer(),
                 value = t
             ).encodeToByteArray()
         )

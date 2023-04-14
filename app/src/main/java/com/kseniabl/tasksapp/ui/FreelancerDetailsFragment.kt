@@ -1,6 +1,7 @@
 package com.kseniabl.tasksapp.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.FragmentFreelancerDetailsBinding
-import com.kseniabl.tasksapp.models.FreelancerModel
+
+import com.kseniabl.tasksapp.models.UserModel
+import com.kseniabl.tasksapp.utils.HelperFunctions
 import com.kseniabl.tasksapp.viewmodels.AllCardsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -39,20 +43,20 @@ class FreelancerDetailsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var user = args.freelancer
+        var user = args.user
 
         val navHost = childFragmentManager.findFragmentById(R.id.fragmentCont) as NavHostFragment
         val navController = navHost.navController
 
-        if (user.userInfo?.username == "" && user.userInfo?.id != null) {
-            viewModel.getCreator(user.userInfo!!.id)
+        if (user.username == "" && user.id != "") {
+            viewModel.getCreator(user.id)
             viewLifecycleOwner.lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     launch {
                         viewModel.userAllData.collect { data ->
                             if (data != null) user = data
                             goToFreelancerInfoFragment(navController, user)
-                            binding.freelancerNameText.text = user.userInfo?.username
+                            binding.freelancerNameText.text = user.username
                         }
                     }
                     launch {
@@ -61,7 +65,7 @@ class FreelancerDetailsFragment: Fragment() {
                                 is AllCardsViewModel.UIActionsDetails.ShowSnackbar -> {
                                     Snackbar.make(view, it.message, Snackbar.LENGTH_SHORT).show()
                                 }
-                                is AllCardsViewModel.UIActionsDetails.GoToDetails -> { /** do nothing **/ }
+                                is AllCardsViewModel.UIActionsDetails.GoToDetails -> { /** do nothing in this very fragment **/ }
                             }
                         }
                     }
@@ -70,15 +74,21 @@ class FreelancerDetailsFragment: Fragment() {
         }
 
         goToFreelancerInfoFragment(navController, user)
-        binding.freelancerNameText.text = user.userInfo?.username
+        binding.freelancerNameText.text = user.username
+        Log.e("qqq", "img ${user}")
+        val bitmap = user.img?.content?.let { HelperFunctions.getImageBitmap(it) }
+        bitmap?.let {
+            Glide.with(requireContext()).asBitmap()
+                .load(bitmap).placeholder(R.drawable.user).into(binding.imageViewFreelancer)
+        }
 
         binding.apply {
             infoButton.setOnClickListener { goToFreelancerInfoFragment(navController, user) }
-            cardsButton.setOnClickListener { goToFreelancerCardsFragment(navController, user.userInfo?.id) }
+            cardsButton.setOnClickListener { goToFreelancerCardsFragment(navController, user.id) }
         }
     }
 
-    private fun goToFreelancerInfoFragment(navController: NavController, user: FreelancerModel) {
+    private fun goToFreelancerInfoFragment(navController: NavController, user: UserModel) {
         navController.navigate(
             R.id.freelancerInfoFragment,
             bundleOf("user" to user)

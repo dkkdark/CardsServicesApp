@@ -30,9 +30,10 @@ data class Specialization(
     val description: String = "",
 ): Parcelable
 
+@kotlinx.serialization.Serializable
+@Parcelize
 data class ImageModel (
-    val id: Int = 0,
-    val img: String = "",
-    val name: String = "",
-    val mimeType: String = ""
-)
+    val filename: String = "",
+    val content: String? = null,
+    val type: String = "",
+): Parcelable

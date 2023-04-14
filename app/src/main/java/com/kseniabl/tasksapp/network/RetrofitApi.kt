@@ -1,13 +1,9 @@
 package com.kseniabl.tasksapp.network
 
 import com.kseniabl.tasksapp.models.*
+import okhttp3.MultipartBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.PATCH
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface RetrofitApi {
     @POST("login")
@@ -60,4 +56,11 @@ interface RetrofitApi {
 
     @POST("update-card")
     suspend fun updateCard(@Header("Authorization") token: String, @Body updateCardModel: CardModel): Response<Void>
+
+    @Multipart
+    @POST("upload-image")
+    suspend fun uploadImage(@Header("Authorization") token: String, @Part image: MultipartBody.Part): Response<Void>
+
+    @GET("get-image")
+    suspend fun getImage(@Header("Authorization") token: String): Response<ImageModel>
 }

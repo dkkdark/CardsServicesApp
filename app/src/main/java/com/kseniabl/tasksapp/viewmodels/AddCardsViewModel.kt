@@ -39,7 +39,7 @@ class AddCardsViewModel @Inject constructor(
     fun isUserCreator() {
         viewModelScope.launch {
             val user = userDataStore.readUser.first()
-            if (user.userInfo?.creator == true)
+            if (user.creator)
                 _actionsTrigger.emit(UIActions.GoToDialog(null))
             else
                 _actionsTrigger.emit(UIActions.ShowSnackbar("You must became a creator to add card"))

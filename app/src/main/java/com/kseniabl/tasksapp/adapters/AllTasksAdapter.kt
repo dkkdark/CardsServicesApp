@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.CardItemBinding
 import com.kseniabl.tasksapp.models.CardModel
-import com.kseniabl.tasksapp.models.FreelancerModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
 import javax.inject.Inject
 

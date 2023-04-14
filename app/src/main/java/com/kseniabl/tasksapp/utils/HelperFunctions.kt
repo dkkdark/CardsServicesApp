@@ -1,11 +1,13 @@
 package com.kseniabl.tasksapp.utils
 
 import android.app.Activity
-import android.graphics.LinearGradient
-import android.graphics.Shader
+import android.graphics.*
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
+import androidx.exifinterface.media.ExifInterface
 import com.kseniabl.tasksapp.R
+import java.io.ByteArrayInputStream
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -51,5 +53,20 @@ object HelperFunctions {
         val pattern = Pattern.compile(PASSWORD_PATTERN)
         val matcher = pattern.matcher(password)
         return matcher.matches()
+    }
+
+    fun getImageBitmap(content: String): Bitmap {
+        val contentBytes = Base64.decode(content, Base64.DEFAULT)
+        val bitmap = BitmapFactory.decodeByteArray(contentBytes, 0, contentBytes.size)
+        val exif = ExifInterface(ByteArrayInputStream(contentBytes))
+        val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+
+        val matrix = Matrix()
+        when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
+            ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
+        }
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 }

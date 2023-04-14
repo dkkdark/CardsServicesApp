@@ -40,7 +40,7 @@ class BookedCardsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val userId = userDataStore.readUser.first().userInfo?.id
+            val userId = userDataStore.readUser.first().id
             _id.emit(userId)
         }
     }

@@ -69,9 +69,9 @@ class LoginFragment: Fragment() {
                         }
                     }
                 }
-                launch {
+                /*launch {
                     viewModel.userAllData.collect()
-                }
+                }*/
             }
         }
     }

@@ -6,10 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.navArgs
-import com.kseniabl.tasksapp.databinding.FragmentAddCardsBinding
 import com.kseniabl.tasksapp.databinding.FragmentFreelancerInfoBinding
-import com.kseniabl.tasksapp.models.FreelancerModel
+import com.kseniabl.tasksapp.models.UserModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +26,7 @@ class FreelancerInfoFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val user = if (Build.VERSION.SDK_INT >= 33) {
-            arguments?.getParcelable("user", FreelancerModel::class.java)
+            arguments?.getParcelable("user", UserModel::class.java)
         } else {
             @Suppress("DEPRECATION") arguments?.getParcelable("user")
         }
@@ -36,10 +34,10 @@ class FreelancerInfoFragment: Fragment() {
         binding.apply {
             specializationChangeTextFreelancerDetails.text = user?.specialization?.specialization
             descriptionSpecializationChangeTextFreelancerDetails.text = user?.specialization?.description
-            descriptionAddInfoChangeTextFreelancerDetails.text = user?.additionalInfo?.description
-            countryChangeTextFreelancerDetails.text = user?.additionalInfo?.country
-            cityChangeTextFreelancerDetails.text = user?.additionalInfo?.city
-            typeOfWorkChangeTextFreelancerDetails.text = user?.additionalInfo?.typeOfWork
+            descriptionAddInfoChangeTextFreelancerDetails.text = user?.addInf?.description
+            countryChangeTextFreelancerDetails.text = user?.addInf?.country
+            cityChangeTextFreelancerDetails.text = user?.addInf?.city
+            typeOfWorkChangeTextFreelancerDetails.text = user?.addInf?.typeOfWork
         }
     }
 

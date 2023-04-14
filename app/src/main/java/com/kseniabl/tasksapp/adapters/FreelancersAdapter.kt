@@ -11,29 +11,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kseniabl.tasksapp.R
 import com.kseniabl.tasksapp.databinding.FreelancerItemBinding
-import com.kseniabl.tasksapp.models.CardModel
-import com.kseniabl.tasksapp.models.FreelancerModel
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.FragmentScoped
+import com.kseniabl.tasksapp.models.UserModel
+import com.kseniabl.tasksapp.utils.HelperFunctions
 import javax.inject.Inject
 
 class FreelancersAdapter @Inject constructor(private val context: Context) : RecyclerView.Adapter<FreelancersAdapter.FreelancersHolder>(), AllCardsAdapterInterface {
 
     private var listener: Listener? = null
 
-    private var oldList = listOf<FreelancerModel>()
+    private var oldList = listOf<UserModel>()
 
-    private val diffCallback = object : DiffUtil.ItemCallback<FreelancerModel>() {
-        override fun areItemsTheSame(oldItem: FreelancerModel, newItem: FreelancerModel): Boolean =
-            oldItem.userInfo?.id == newItem.userInfo?.id
+    private val diffCallback = object : DiffUtil.ItemCallback<UserModel>() {
+        override fun areItemsTheSame(oldItem: UserModel, newItem: UserModel): Boolean =
+            oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: FreelancerModel, newItem: FreelancerModel): Boolean =
+        override fun areContentsTheSame(oldItem: UserModel, newItem: UserModel): Boolean =
             oldItem.hashCode() == newItem.hashCode()
     }
 
     private val differ = AsyncListDiffer(this, diffCallback)
 
-    fun submitList(list: List<FreelancerModel>) {
+    fun submitList(list: List<UserModel>) {
         if (oldList != list) {
             differ.submitList(list)
             oldList = list
@@ -51,10 +49,14 @@ class FreelancersAdapter @Inject constructor(private val context: Context) : Rec
         val item = differ.currentList[position]
 
         holder.binding.apply {
-            itemExeName.text = item.userInfo?.username
+            itemExeName.text = item.username
             itemExeDescr.text = item.specialization?.specialization
-            //val bytes = Base64.decode(item.img?.img, Base64.DEFAULT)
-            //Glide.with(context).load(bytes).placeholder(R.drawable.user).into(imageViewItemExe)
+
+            val bitmap = item.img?.content?.let { HelperFunctions.getImageBitmap(it) }
+            bitmap?.let {
+                Glide.with(context).asBitmap()
+                    .load(bitmap).placeholder(R.drawable.user).into(imageViewItemExe)
+            }
         }
 
         holder.itemView.setOnClickListener {
@@ -69,6 +71,6 @@ class FreelancersAdapter @Inject constructor(private val context: Context) : Rec
     }
 
     interface Listener {
-        fun onAddItemClick(item: FreelancerModel)
+        fun onAddItemClick(user: UserModel)
     }
 }

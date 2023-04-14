@@ -15,11 +15,11 @@ data class UserModel(
     @SerializedName("is_creator")
     val creator: Boolean = false,
     @SerializedName("image")
-    val img: String = "",
+    val img: ImageModel? = null,
     @SerializedName("role_name")
     val rolename: String = "",
     @SerializedName("specialization")
-    val specialization: String = "",
+    val specialization: Specialization? = null,
     @SerializedName("add_inf")
-    val addInf: String = ""
+    val addInf: AdditionalInfo? = null
 ): Parcelable

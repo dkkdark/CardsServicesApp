@@ -15,7 +15,8 @@ import com.kseniabl.tasksapp.adapters.AddTasksAdapter
 import com.kseniabl.tasksapp.databinding.FragmentAddCardsBinding
 import com.kseniabl.tasksapp.di.scopes.AddCardsScope
 import com.kseniabl.tasksapp.models.CardModel
-import com.kseniabl.tasksapp.models.FreelancerModel
+
+import com.kseniabl.tasksapp.models.UserModel
 import com.kseniabl.tasksapp.utils.HelperFunctions.generateRandomKey
 import com.kseniabl.tasksapp.utils.UserDataStore
 import com.kseniabl.tasksapp.utils.findTopNavController
@@ -47,7 +48,7 @@ class AddCardsFragment: Fragment() {
     @Inject
     lateinit var userDataStore: UserDataStore
 
-    private var user: FreelancerModel? = null
+    private var user: UserModel? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAddCardsBinding.inflate(inflater, container, false)
@@ -127,8 +128,8 @@ class AddCardsFragment: Fragment() {
                 if (card.id.isEmpty()) {
                     card.id = generateRandomKey()
                 }
-                if (card.user_id.isEmpty() && user?.userInfo != null) {
-                    card.user_id = user!!.userInfo!!.id
+                if (card.user_id.isEmpty() && user != null) {
+                    card.user_id = user!!.id
                 }
 
                 viewModel.updateCard(

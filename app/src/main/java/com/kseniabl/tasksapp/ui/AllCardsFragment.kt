@@ -1,6 +1,7 @@
 package com.kseniabl.tasksapp.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -94,16 +95,9 @@ class AllCardsFragment: Fragment() {
                             }
                             is AllCardsViewModel.UIActionsAllCards.OpenFreelancerDetails -> {
                                 findTopNavController().navigate(
-                                    TabsFragmentDirections.actionTabsFragmentToFreelancerDetailsFragment(it.freelancer)
+                                    TabsFragmentDirections.actionTabsFragmentToFreelancerDetailsFragment(it.user)
                                 )
                             }
-                        }
-                    }
-                }
-                launch {
-                    viewModel.creatorInfoData.collect {
-                        if (viewModel.allCardsState.value.adapterValue is FreelancersAdapter) {
-                            setupFreelancersRecyclerView(it)
                         }
                     }
                 }
@@ -130,7 +124,7 @@ class AllCardsFragment: Fragment() {
         allTasksAdapter.submitList(list)
     }
 
-    private fun setupFreelancersRecyclerView(list: List<FreelancerModel>) {
+    private fun setupFreelancersRecyclerView(list: List<UserModel>) {
         if (binding.allCardsRecycler.adapter !is FreelancersAdapter) {
             binding.allCardsRecycler.adapter = creatorsAdapter
         }

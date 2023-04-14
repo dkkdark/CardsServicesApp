@@ -78,7 +78,7 @@ class CardDetailsFragment: Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.userAllData.collect { data ->
-                        binding.nameText.text = data?.userInfo?.username
+                        binding.nameText.text = data?.username
                         binding.specializationText.text = data?.specialization?.specialization
                         binding.specializationDescrText.text = data?.specialization?.description
                     }
