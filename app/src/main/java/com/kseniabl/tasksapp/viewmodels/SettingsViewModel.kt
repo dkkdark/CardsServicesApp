@@ -91,6 +91,7 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             userTokenDataStore.saveToken("")
             userDataStore.writeUser(UserModel())
+            _stateChange.emit(UIActions.MoveToLoginFragment)
         }
     }
 
@@ -184,5 +185,6 @@ class SettingsViewModel @Inject constructor(
     sealed class UIActions {
         data class ShowSnackbar(val message: String): UIActions()
         object SetCreatorSettings: UIActions()
+        object MoveToLoginFragment: UIActions()
     }
 }

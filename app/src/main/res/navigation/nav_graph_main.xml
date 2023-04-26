@@ -36,13 +36,13 @@
             android:id="@+id/action_tabsFragment_to_freelancerDetailsFragment"
             app:destination="@id/freelancerDetailsFragment" />
         <action
+            android:id="@+id/action_tabsFragment_to_createAndChangeTaskFragment"
+            app:destination="@id/createAndChangeTaskFragment" />
+        <action
             android:id="@+id/action_tabsFragment_to_loginFragment"
             app:destination="@id/loginFragment"
             app:popUpTo="@id/tabsFragment"
             app:popUpToInclusive="true"/>
-        <action
-            android:id="@+id/action_tabsFragment_to_createAndChangeTaskFragment"
-            app:destination="@id/createAndChangeTaskFragment" />
     </fragment>
     <fragment
         android:id="@+id/cardDetailsFragment"
@@ -72,5 +72,31 @@
     <fragment
         android:id="@+id/loadingScreen"
         android:name="com.kseniabl.tasksapp.ui.LoadingScreen"
-        android:label="LoadingScreen" />
+        android:label="LoadingScreen" >
+        <action
+            android:id="@+id/action_loadingScreen_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loadingScreen"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_loadingScreen_to_tabsFragment"
+            app:destination="@id/tabsFragment"
+            app:popUpTo="@id/loadingScreen"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_loadingScreen_to_welcomeFragment"
+            app:destination="@id/welcomeFragment"
+            app:popUpTo="@id/loadingScreen"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.kseniabl.tasksapp.ui.WelcomeFragment"
+        android:label="WelcomeFragment" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>

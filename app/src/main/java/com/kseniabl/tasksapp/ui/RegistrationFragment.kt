@@ -1,6 +1,7 @@
 package com.kseniabl.tasksapp.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,12 +60,13 @@ class RegistrationFragment: Fragment() {
                 launch {
                     viewModel.uiActionsRegistration.collect {
                         when(it) {
-                            is MainViewModel.UIActionsRegistration.ShowSnackbar -> {
+                            is MainViewModel.UIActions.ShowSnackbar -> {
                                 Snackbar.make(view, it.message, Snackbar.LENGTH_SHORT).show()
                             }
-                            is MainViewModel.UIActionsRegistration.ToLoginFragment -> {
+                            is MainViewModel.UIActions.ToLoginFragment -> {
                                 guideToLoginFragment(email)
                             }
+                            else -> { Log.e("qqq", "do nothing") }
                         }
                     }
                 }

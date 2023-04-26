@@ -1,7 +1,5 @@
 package com.kseniabl.tasksapp.di
 
-import android.content.Context
-import com.kseniabl.tasksapp.db.TasksRepositoryInterface
 import com.kseniabl.tasksapp.utils.*
 import dagger.Binds
 import dagger.Module
@@ -21,11 +19,7 @@ abstract class DataSaveModule {
     @Binds
     abstract fun bindSaveUser(userSave: UserDataStore): UserDataStoreInterface
 
-    /*@Singleton
-    @Binds
-    abstract fun bindSaveUser(userSave: UserSave): UserSaveInterface
-
     @Singleton
     @Binds
-    abstract fun bindRepository(tasksRepository: TasksRepository): TasksRepositoryInterface*/
+    abstract fun bindSaveUserFirstEntranceState(state: WelcomeScreenDataStore): WelcomeScreenDataStoreInterface
 }

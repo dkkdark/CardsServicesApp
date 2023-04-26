@@ -63,15 +63,16 @@ class LoginFragment: Fragment() {
                 launch {
                     viewModel.uiActionsLogin.collect {
                         when(it) {
-                            is MainViewModel.UIActionsLogin.ShowSnackbar -> {
+                            is MainViewModel.UIActions.ShowSnackbar -> {
                                 Snackbar.make(view, it.message, Snackbar.LENGTH_SHORT).show()
                             }
+                            is MainViewModel.UIActions.ToTabFragment -> {
+                                findNavController().navigate(R.id.action_loginFragment_to_tabsFragment)
+                            }
+                            else -> { Log.e("qqq", "do nothing") }
                         }
                     }
                 }
-                /*launch {
-                    viewModel.userAllData.collect()
-                }*/
             }
         }
     }

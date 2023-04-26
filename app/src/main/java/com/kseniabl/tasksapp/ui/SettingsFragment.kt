@@ -21,6 +21,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.kseniabl.tasksapp.R
@@ -30,6 +31,7 @@ import com.kseniabl.tasksapp.dialogs.ChangeNameDialogFragment
 import com.kseniabl.tasksapp.dialogs.ChangeProfessionDialogFragment
 import com.kseniabl.tasksapp.utils.HelperFunctions.getTextGradient
 import com.kseniabl.tasksapp.utils.UserDataStore
+import com.kseniabl.tasksapp.utils.findTopNavController
 import com.kseniabl.tasksapp.viewmodels.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -124,7 +126,9 @@ class SettingsFragment: Fragment() {
                                 binding.beCreatorButton.isEnabled = false
                                 binding.beCreatorButton.text = "You are creator"
                             }
-                            else -> {}
+                            is SettingsViewModel.UIActions.MoveToLoginFragment -> {
+                                findTopNavController().navigate(R.id.action_tabsFragment_to_loginFragment)
+                            }
                         }
                     }
                 }
