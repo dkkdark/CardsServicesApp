@@ -20,3 +20,6 @@
 
 
 ![YouCut_20230202_143330065](https://user-images.githubusercontent.com/49618961/216315205-42b879cb-49ec-46f4-b40b-44412bfa886c.gif)
+<img width="270" alt="Снимок экрана 2023-04-26 в 17 10 22" src="https://user-images.githubusercontent.com/49618961/234603474-8ba9ee45-1684-402f-ab12-d1ecdfb3e84b.png">
+
+
